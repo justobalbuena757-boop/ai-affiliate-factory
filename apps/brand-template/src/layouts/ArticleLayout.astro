@@ -1,0 +1,367 @@
+---
+import { cn } from 'design-system-base';
+import Layout from './Layout.astro';
+import { Container, Breadcrumb, CTASection, Card } from 'design-system-base';
+import AuthorBio from '../components/mdx/AuthorBio.svelte';
+import AffiliateDisclosure from '../components/mdx/AffiliateDisclosure.svelte';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  headings: { depth: number; slug: string; text: string }[];
+  relatedArticles?: CollectionEntry<'articles'>[];
+}
+
+const { article, headings, relatedArticles = [] } = Astro.props;
+const { data } = article;
+
+const articleSlug = article.id.replace('.mdx', '').split('/').pop();
+const pillarSlug = data.pillar;
+const clusterSlug = data.cluster;
+
+const stageColors: Record<string, string> = {
+  tofu: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  mofu: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  bofu: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+};
+const stageLabels: Record<string, string> = {
+  tofu: 'TOFU — Awareness',
+  mofu: 'MOFU — Consideration',
+  bofu: 'BOFU — Decision',
+};
+
+const readingTime = Math.ceil(article.body?.split(/\s+/).length / 200) || 4;
+const hasToc = headings.filter(h => h.depth <= 3).length > 0;
+
+const siteUrl = (Astro.site?.toString() || 'https://metabolic40plus.com').replace(/\/$/, '');
+const articleUrl = `${siteUrl}/${pillarSlug}/${clusterSlug}/${articleSlug}`;
+const articleImage = data.ogImage || `${siteUrl}/og-default.jpg`;
+
+// Use modifiedDate from frontmatter, fall back to pubDate, fall back to file modification time
+const dateModified = (data as any).modifiedDate
+  ? new Date((data as any).modifiedDate)
+  : data.pubDate;
+
+const authorName = data.author || 'AI Affiliate Factory';
+const authorUrl = `${siteUrl}/about`;
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: authorName,
+  url: authorUrl,
+  jobTitle: 'Editorial Team',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Metabolic 40+',
+    url: siteUrl,
+  },
+  knowsAbout: [
+    'Metabolic Health',
+    'Sleep Science',
+    'Healthy Aging',
+    'Nutritional Science',
+    'Exercise Physiology',
+  ],
+};
+
+const articleJsonLd: any = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description: data.description,
+  image: articleImage,
+  datePublished: data.pubDate.toISOString(),
+  dateModified: dateModified.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: authorName,
+    url: authorUrl,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Metabolic 40+',
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/favicon.svg`,
+      width: 64,
+      height: 64,
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': articleUrl,
+  },
+  keywords: data.tags.join(', '),
+  articleSection: pillarSlug.replace(/-/g, ' '),
+  articleBody: data.description,
+  inLanguage: 'en-US',
+  wordCount: article.body?.split(/\s+/).length || 0,
+};
+
+// Add Review schema for BOFU (product review) articles
+if (data.stage === 'bofu') {
+  articleJsonLd.review = {
+    '@type': 'Review',
+    name: data.title,
+    reviewBody: data.description,
+    datePublished: data.pubDate.toISOString(),
+    author: {
+      '@type': 'Person',
+      name: authorName,
+    },
+    itemReviewed: {
+      '@type': 'Product',
+      name: 'Java Burn',
+      description: 'Flavorless, instant-dissolve metabolic support powder designed to be added to morning coffee. Contains 7 science-backed ingredients for adults over 40.',
+      brand: {
+        '@type': 'Brand',
+        name: 'Java Burn',
+      },
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'USD',
+        lowPrice: '69',
+        highPrice: '147',
+        offerCount: 3,
+        offers: [
+          {
+            '@type': 'Offer',
+            name: '1 Month Supply',
+            price: '69.00',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: 'https://www.javaburn.net/',
+          },
+          {
+            '@type': 'Offer',
+            name: '3 Month Supply',
+            price: '117.00',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: 'https://www.javaburn.net/',
+          },
+          {
+            '@type': 'Offer',
+            name: '6 Month Supply',
+            price: '147.00',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: 'https://www.javaburn.net/',
+          },
+        ],
+      },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.6',
+        reviewCount: '1000',
+        bestRating: '5',
+        worstRating: '1',
+      },
+    },
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: '4.6',
+      bestRating: '5',
+      worstRating: '1',
+    },
+  };
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: siteUrl,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: pillarSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+      item: `${siteUrl}/${pillarSlug}`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: clusterSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+      item: `${siteUrl}/${pillarSlug}/${clusterSlug}`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: data.title,
+      item: articleUrl,
+    },
+  ],
+};
+---
+
+<Layout
+  title={data.title}
+  description={data.description}
+  image={articleImage}
+  type="article"
+  pubDate={data.pubDate}
+  author={data.author}
+  tags={data.tags}
+  canonical={articleUrl}
+  jsonLd={[personJsonLd, articleJsonLd, breadcrumbJsonLd]}
+>
+  <div class="bg-gray-50 dark:bg-gray-800/30 border-b border-gray-200 dark:border-gray-800">
+    <Container class="py-4">
+      <Breadcrumb
+        items={[
+          { label: pillarSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()), href: `/${pillarSlug}` },
+          { label: clusterSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) },
+          { label: data.title },
+        ]}
+      />
+    </Container>
+  </div>
+
+  <Container class="py-8 sm:py-12 lg:py-16">
+    <main class="lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
+      <article class="min-w-0">
+        <header class="mb-10">
+          <div class="flex items-center gap-3 mb-4">
+            <span class={cn('inline-block text-xs font-semibold px-2.5 py-1 rounded-full', stageColors[data.stage])}>
+              {stageLabels[data.stage] || data.stage}
+            </span>
+            <span class="text-sm text-gray-400">
+              {new Date(data.pubDate).toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric',
+              })}
+            </span>
+            <span class="text-sm text-gray-400">&middot;</span>
+            <span class="text-sm text-gray-400">{readingTime} min read</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4 leading-tight">
+            {data.title}
+          </h1>
+
+          <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+            {data.description}
+          </p>
+        </header>
+
+        {(data.stage === 'mofu' || data.stage === 'bofu') && (
+          <AffiliateDisclosure
+            client:load
+            product="Java Burn"
+            network="official website"
+          />
+        )}
+
+        <div class="max-w-none">
+          <slot />
+        </div>
+
+        {data.tags.length > 0 && (
+          <footer class="mt-10 flex flex-wrap gap-2">
+            {data.tags.map((tag: string) => (
+              <span class="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                #{tag}
+              </span>
+            ))}
+          </footer>
+        )}
+
+        <AuthorBio
+          client:load
+          name={data.author || 'AI Affiliate Factory'}
+          role="Editorial Team"
+          bio="The AI Affiliate Factory editorial team combines nutritional science research, sleep science, and AI-powered content creation to deliver evidence-based health information specifically tailored for adults over 40."
+          expertise={['Metabolic Health', 'Sleep Science', 'Healthy Aging']}
+          publishDate={data.pubDate.toISOString()}
+          lastUpdated={dateModified.toISOString()}
+        />
+      </article>
+
+      {hasToc && (
+        <aside class="hidden lg:block">
+          <div class="sticky top-24">
+            <nav class="p-5 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700" aria-label="Table of contents">
+              <h2 class="text-xs font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-widest">
+                On this page
+              </h2>
+              <ul class="space-y-2.5">
+                {headings.filter(h => h.depth <= 3).map(h => (
+                  <li>
+                    <a
+                      href={`#${h.slug}`}
+                      class={cn(
+                        'block text-sm text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors no-underline leading-snug',
+                        h.depth === 3 && 'pl-4',
+                      )}
+                    >
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div class="mt-6 p-5 bg-accent/5 dark:bg-accent/10 rounded-xl border border-accent/10 dark:border-accent/20">
+              <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-2">Try Java Burn</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">
+                Science-backed metabolic support in your morning coffee.
+              </p>
+              <a
+                href="https://www.javaburn.net/"
+                class="inline-block text-xs font-bold text-white bg-accent hover:bg-accent-dark px-4 py-2 rounded-lg transition-colors w-full text-center"
+              >
+                Shop Now
+              </a>
+            </div>
+          </div>
+        </aside>
+      )}
+    </div>
+  </Container>
+
+  {relatedArticles.length > 0 && (
+    <section class="bg-gray-50 dark:bg-gray-800/20 border-t border-gray-200 dark:border-gray-800 py-14 sm:py-18">
+      <Container>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          Related Articles
+        </h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
+          {relatedArticles.slice(0, 3).map(r => {
+            const rSlug = r.id.replace('.mdx', '').split('/').pop();
+            const rColor = stageColors[r.data.stage] || 'bg-gray-100 text-gray-700';
+            const rLabel = stageLabels[r.data.stage] || r.data.stage;
+            return (
+              <a href={`/${r.data.pillar}/${r.data.cluster}/${rSlug}`} class="block group">
+                <Card variant="interactive" class="h-full">
+                  <span class={cn('inline-block text-xs font-semibold px-2 py-0.5 rounded-full mb-3', rColor)}>
+                    {rLabel}
+                  </span>
+                  <h3 class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors leading-snug">
+                    {r.data.title}
+                  </h3>
+                  <p class="mt-2 text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                    {r.data.description}
+                  </p>
+                </Card>
+              </a>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
+  )}
+
+  <CTASection
+    title="Ready to Transform Your Health?"
+    subtitle="Join thousands of people over 40 who have discovered the power of enhanced coffee for metabolism, sleep, and recovery."
+    cta={{ label: 'Visit Java Burn Official Site', href: 'https://www.javaburn.net/' }}
+    variant="glass"
+  />
+</Layout>
+
+

@@ -1,0 +1,26 @@
+---
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+const isBlock = className?.startsWith('language-');
+const lang = className?.replace('language-', '') || '';
+---
+
+{isBlock ? (
+  <div class="relative group my-8">
+    {lang && (
+      <span class="absolute top-0 right-0 px-3 py-1 text-xs font-mono text-gray-400 dark:text-gray-600 bg-gray-100 dark:bg-gray-800 rounded-bl-lg rounded-tr-xl border-l border-b border-gray-200 dark:border-gray-700">
+        {lang}
+      </span>
+    )}
+    <pre class="overflow-x-auto rounded-xl bg-gray-900 dark:bg-gray-950 text-gray-100 p-5 pt-8 text-sm leading-relaxed">
+      <slot />
+    </pre>
+  </div>
+) : (
+  <code class="inline-block bg-gray-100 dark:bg-gray-800 text-primary-dark dark:text-primary-light font-mono text-sm px-1.5 py-0.5 rounded-md -my-0.5">
+    <slot />
+  </code>
+)}

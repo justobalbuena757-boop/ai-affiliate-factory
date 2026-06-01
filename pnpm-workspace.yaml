@@ -1,0 +1,9 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'tooling/*'
+  - 'python-packages/*'
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true

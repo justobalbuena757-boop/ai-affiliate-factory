@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "pubDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "modifiedDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "pillar": {
+      "type": "string"
+    },
+    "cluster": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 9
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "tofu",
+        "mofu",
+        "bofu"
+      ]
+    },
+    "author": {
+      "default": {
+        "name": "AI Affiliate Factory",
+        "sameAs": []
+      },
+      "type": "object",
+      "properties": {
+        "name": {
+          "default": "AI Affiliate Factory",
+          "type": "string"
+        },
+        "sameAs": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tags": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ogImage": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "pubDate",
+    "pillar",
+    "cluster",
+    "order",
+    "stage"
+  ]
+}

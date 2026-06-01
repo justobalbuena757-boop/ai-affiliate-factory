@@ -1,0 +1,120 @@
+$ astro check
+02:28:03 [content] Syncing content
+02:28:03 [content] Synced content
+02:28:03 [types] Generated 1.13s
+02:28:03 [check] Getting diagnostics for Astro files in /home/jfb/project/ai-affiliate-factory/apps/brand-template...
+[96msrc/components/SEO.astro[0m:[93m108[0m:[93m11[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m108[0m   <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 0)} />
+[7m   [0m [93m          ~~~~[0m
+
+[96msrc/components/mdx/MdxLink.astro[0m:[93m9[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'isMail' is declared but its value is never read.
+
+[7m9[0m const isMail = href.startsWith('mailto:') || href.startsWith('tel:');
+[7m [0m [93m      ~~~~~~[0m
+
+[96msrc/layouts/ArticleLayout.astro[0m:[93m266[0m:[93m28[0m - [91merror[0m[90m ts(7006): [0mParameter 'tag' implicitly has an 'any' type.
+
+[7m266[0m             {data.tags.map(tag => (
+[7m   [0m [91m                           ~~~[0m
+
+[96msrc/layouts/Layout.astro[0m:[93m180[0m:[93m28[0m - [91merror[0m[90m ts(7006): [0mParameter 'p' implicitly has an 'any' type.
+
+[7m180[0m               {pillars.map(p => (
+[7m   [0m [91m                           ~[0m
+[96msrc/layouts/Layout.astro[0m:[93m130[0m:[93m26[0m - [91merror[0m[90m ts(7006): [0mParameter 'p' implicitly has an 'any' type.
+
+[7m130[0m             {pillars.map(p => (
+[7m   [0m [91m                         ~[0m
+
+[96msrc/layouts/PillarLayout.astro[0m:[93m4[0m:[93m27[0m - [93mwarning[0m[90m ts(6133): [0m'Button' is declared but its value is never read.
+
+[7m4[0m import { Container, Card, Button, Hero } from 'design-system-base';
+[7m [0m [93m                          ~~~~~~[0m
+
+[96msrc/pages/rss.xml.ts[0m:[93m13[0m:[93m11[0m - [91merror[0m[90m ts(7006): [0mParameter 'article' implicitly has an 'any' type.
+
+[7m13[0m     .map((article) => {
+[7m  [0m [91m          ~~~~~~~[0m
+[96msrc/pages/rss.xml.ts[0m:[93m9[0m:[93m9[0m - [91merror[0m[90m ts(7006): [0mParameter 'b' implicitly has an 'any' type.
+
+[7m9[0m     (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+[7m [0m [91m        ~[0m
+[96msrc/pages/rss.xml.ts[0m:[93m9[0m:[93m6[0m - [91merror[0m[90m ts(7006): [0mParameter 'a' implicitly has an 'any' type.
+
+[7m9[0m     (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+[7m [0m [91m     ~[0m
+
+[96msrc/pages/sitemap.astro[0m:[93m102[0m:[93m21[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any; key: string; }' is not assignable to type 'LiHTMLAttributes'.
+  Property 'key' does not exist on type 'LiHTMLAttributes'.
+
+[7m102[0m                 <li key={articleUrl}>
+[7m   [0m [91m                    ~~~[0m
+[96msrc/pages/sitemap.astro[0m:[93m98[0m:[93m33[0m - [91merror[0m[90m ts(7006): [0mParameter 'article' implicitly has an 'any' type.
+
+[7m98[0m             {pillarArticles.map(article => {
+[7m  [0m [91m                                ~~~~~~~[0m
+[96msrc/pages/sitemap.astro[0m:[93m80[0m:[93m18[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any[]; key: any; }' is not assignable to type 'HTMLAttributes'.
+  Property 'key' does not exist on type 'HTMLAttributes'.
+
+[7m80[0m         <section key={pillar.id}>
+[7m  [0m [91m                 ~~~[0m
+[96msrc/pages/sitemap.astro[0m:[93m79[0m:[93m50[0m - [91merror[0m[90m ts(7031): [0mBinding element 'pillarArticles' implicitly has an 'any' type.
+
+[7m79[0m       {articlesByPillar.map(({ pillar, articles: pillarArticles }) => (
+[7m  [0m [91m                                                 ~~~~~~~~~~~~~~[0m
+[96msrc/pages/sitemap.astro[0m:[93m79[0m:[93m32[0m - [91merror[0m[90m ts(7031): [0mBinding element 'pillar' implicitly has an 'any' type.
+
+[7m79[0m       {articlesByPillar.map(({ pillar, articles: pillarArticles }) => (
+[7m  [0m [91m                               ~~~~~~[0m
+[96msrc/pages/sitemap.astro[0m:[93m62[0m:[93m17[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any; key: string; }' is not assignable to type 'LiHTMLAttributes'.
+  Property 'key' does not exist on type 'LiHTMLAttributes'.
+
+[7m62[0m             <li key={page.href}>
+[7m  [0m [91m                ~~~[0m
+[96msrc/pages/sitemap.astro[0m:[93m22[0m:[93m17[0m - [91merror[0m[90m ts(7006): [0mParameter 'b' implicitly has an 'any' type.
+
+[7m22[0m       .sort((a, b) => a.data.order - b.data.order),
+[7m  [0m [91m                ~[0m
+[96msrc/pages/sitemap.astro[0m:[93m22[0m:[93m14[0m - [91merror[0m[90m ts(7006): [0mParameter 'a' implicitly has an 'any' type.
+
+[7m22[0m       .sort((a, b) => a.data.order - b.data.order),
+[7m  [0m [91m             ~[0m
+[96msrc/pages/sitemap.astro[0m:[93m21[0m:[93m15[0m - [91merror[0m[90m ts(7006): [0mParameter 'a' implicitly has an 'any' type.
+
+[7m21[0m       .filter(a => a.data.pillar === pillarSlug)
+[7m  [0m [91m              ~[0m
+[96msrc/pages/sitemap.astro[0m:[93m16[0m:[93m38[0m - [91merror[0m[90m ts(7006): [0mParameter 'p' implicitly has an 'any' type.
+
+[7m16[0m const articlesByPillar = pillars.map(p => {
+[7m  [0m [91m                                     ~[0m
+
+[96msrc/pages/[pillar]/index.astro[0m:[93m7[0m:[93m23[0m - [91merror[0m[90m ts(7006): [0mParameter 'entry' implicitly has an 'any' type.
+
+[7m7[0m   return pillars.map((entry) => ({
+[7m [0m [91m                      ~~~~~[0m
+
+[96msrc/pages/[pillar]/[cluster]/[article].astro[0m:[93m8[0m:[93m24[0m - [91merror[0m[90m ts(7006): [0mParameter 'entry' implicitly has an 'any' type.
+
+[7m8[0m   return articles.map((entry) => {
+[7m [0m [91m                       ~~~~~[0m
+[96msrc/pages/[pillar]/[cluster]/[article].astro[0m:[93m22[0m:[93m7[0m - [93mwarning[0m[90m ts(6198): [0mAll destructured elements are unused.
+
+[7m22[0m const { pillar, cluster, article } = Astro.params;
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/pages/about/index.astro[0m:[93m3[0m:[93m21[0m - [93mwarning[0m[90m ts(6133): [0m'Card' is declared but its value is never read.
+
+[7m3[0m import { Container, Card } from 'design-system-base';
+[7m [0m [93m                    ~~~~[0m
+
+Result (28 files): 
+- 18 errors
+- 0 warnings
+- 5 hints
+
+[ELIFECYCLE] Command failed with exit code 1.

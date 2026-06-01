@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-tablet: 640px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1280px;
+
+  --font-size-display: clamp(2.5rem, 6vw, 4.5rem);
+  --font-size-h1: clamp(2.25rem, 5vw, 4rem);
+  --font-size-h2: clamp(1.75rem, 4vw, 3rem);
+  --font-size-h3: clamp(1.5rem, 3vw, 2.25rem);
+  --font-size-body-lg: clamp(1.125rem, 2vw, 1.25rem);
+  --font-size-body: clamp(1rem, 1.5vw, 1.125rem);
+
+  --color-primary: #6366f1;
+  --color-primary-dark: #4f46e5;
+  --color-primary-light: #a5b4fc;
+  --color-secondary: #84cc16;
+  --color-secondary-dark: #65a30d;
+  --color-secondary-light: #bef264;
+  --color-accent: #f59e0b;
+  --color-accent-dark: #d97706;
+  --color-success: #22c55e;
+  --color-success-dark: #16a34a;
+  --color-warning: #f59e0b;
+  --color-warning-dark: #d97706;
+  --color-error: #ef4444;
+  --color-error-dark: #dc2626;
+  --color-info: #3b82f6;
+  --color-info-dark: #2563eb;
+}
+
+.mdx-table table th,
+.mdx-table table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgb(229 231 235);
+}
+.mdx-table table thead th {
+  background-color: rgb(249 250 251);
+  font-weight: 600;
+  color: rgb(17 24 39);
+  border-bottom: 2px solid rgb(229 231 235);
+}
+.mdx-table table tbody tr:last-child td {
+  border-bottom: none;
+}
+.dark .mdx-table table th,
+.dark .mdx-table table td {
+  border-color: rgb(75 85 99);
+}
+.dark .mdx-table table thead th {
+  background-color: rgb(31 41 55);
+  color: rgb(243 244 246);
+  border-color: rgb(75 85 99);
+}
+
+html {
+  scroll-behavior: smooth;
+}

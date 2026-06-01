@@ -1,0 +1,60 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  decoding?: 'async' | 'sync' | 'auto';
+  class?: string;
+  figureCaption?: string;
+  rounded?: boolean;
+}
+
+const {
+  src,
+  alt,
+  width = 1200,
+  height = 675,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  decoding = 'async',
+  class: className = '',
+  figureCaption,
+  rounded = true,
+} = Astro.props;
+
+const aspectRatio = `${width} / ${height}`;
+
+const optimizeUnsplash = (url: string): string => {
+  if (!url.includes('images.unsplash.com')) return url;
+  if (url.includes('w=') || url.includes('fm=')) return url;
+  return `${url.split('?')[0]}?w=${width}&q=80&auto=format&fit=crop&fm=webp`;
+};
+
+const optimizedSrc = optimizeUnsplash(src);
+---
+
+<figure class={`my-8 ${className}`}>
+  <div
+    class={`overflow-hidden ${rounded ? 'rounded-xl' : ''}`}
+    style={`aspect-ratio: ${aspectRatio};`}
+  >
+    <img
+      src={optimizedSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding={decoding}
+      class="w-full h-full object-cover"
+    />
+  </div>
+  {figureCaption && (
+    <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400 italic">
+      {figureCaption}
+    </figcaption>
+  )}
+</figure>

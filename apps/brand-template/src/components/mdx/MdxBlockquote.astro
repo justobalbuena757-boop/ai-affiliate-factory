@@ -1,0 +1,15 @@
+---
+const props = Astro.props;
+---
+
+<blockquote
+  class="relative border-l-4 border-primary bg-primary/5 dark:bg-primary/10 rounded-r-xl px-6 py-5 my-8 text-gray-700 dark:text-gray-300 italic leading-relaxed"
+  {...props}
+>
+  <svg class="absolute -top-2 left-4 w-8 h-8 text-primary/20 dark:text-primary/10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.166 11 15c0 1.933-1.567 3.5-3.5 3.5-1.255 0-2.444-.52-3.293-1.423l.376-.756zm10.427 0c-1.03-1.094-1.583-2.321-1.583-4.31 0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C20.018 11.69 21.417 13.166 21.417 15c0 1.933-1.567 3.5-3.5 3.5-1.255 0-2.444-.52-3.293-1.423l.376-.756z" />
+  </svg>
+  <figure class="relative z-10">
+    <slot />
+  </figure>
+</blockquote>

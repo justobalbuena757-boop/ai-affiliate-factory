@@ -1,0 +1,6 @@
+name = "ai-affiliate-factory"
+pages_build_output_dir = "./apps/brand-template/dist"
+compatibility_date = "2026-05-31"
+
+[env.production]
+compatibility_flags = ["nodejs_compat"]
