@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Design tokens base para AI Affiliate Factory",
   "main": "index.js",
+  "exports": {
+    ".": {
+      "default": "./css/tokens.css"
+    }
+  },
   "scripts": {
     "build": "echo \"Build tokens\""
   },

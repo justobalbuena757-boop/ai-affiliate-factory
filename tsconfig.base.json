@@ -11,6 +11,7 @@
     "paths": {
       "@/*": ["apps/brand-template/src/*"],
       "design-system-base": ["packages/design-system-base/src/index.js"],
+      "design-system-base/*": ["packages/design-system-base/src/*"],
       "design-tokens-base": ["packages/design-tokens-base/css/tokens.css"]
     }
   },
