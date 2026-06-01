@@ -24,7 +24,7 @@
             {item.label}
           </a>
         {:else}
-          <span class="text-gray-900 dark:text-white font-medium">{item.label}</span>
+          <span class="text-gray-900 dark:text-white font-medium" aria-current="page">{item.label}</span>
         {/if}
       </li>
     {/each}
