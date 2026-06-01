@@ -23,7 +23,7 @@
       "format": "uri"
     },
     "dateModified": {
-      "default": "2026-06-01T06:32:46.429Z",
+      "default": "2026-06-01T13:24:01.111Z",
       "type": "string",
       "format": "date-time"
     },
