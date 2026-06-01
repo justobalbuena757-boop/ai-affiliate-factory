@@ -1,10 +1,10 @@
 <script>
   import { onMount } from 'svelte';
 
-  let step = 1;
-  let answers = { q1: '', q2: '', q3: '' };
-  let result = null;
-  let selectedOption = '';
+  let step = $state(1);
+  let answers = $state({ q1: '', q2: '', q3: '' });
+  let result = $state(null);
+  let selectedOption = $state('');
 
   const questions = [
     {
@@ -102,7 +102,7 @@
         <div class="space-y-3">
           {#each questions[step - 1].options as opt}
             <button
-              on:click={() => select(opt.value)}
+              onclick={() => select(opt.value)}
               class={`w-full text-left p-4 rounded-lg border transition-all duration-200 text-sm ${
                 selectedOption === opt.value 
                   ? 'border-primary bg-primary/10 dark:bg-primary/20' 
@@ -124,7 +124,7 @@
       <div class="flex justify-between pt-4">
         {#if step > 1}
           <button
-            on:click={prev}
+            onclick={prev}
             class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             ← Back
@@ -134,7 +134,7 @@
         {/if}
         {#if selectedOption}
           <button
-            on:click={step === 3 ? getResult : next}
+            onclick={step === 3 ? getResult : next}
             class="text-sm font-medium text-white bg-primary px-4 py-1 rounded hover:bg-primary-dark transition-colors"
           >
             {step === 3 ? 'See Result' : 'Next →'}
@@ -158,7 +158,7 @@
         {result.cta}
       </a>
       <button
-        on:click={() => { result = null; step = 1; answers = { q1: '', q2: '', q3: '' }; }}
+        onclick={() => { result = null; step = 1; answers = { q1: '', q2: '', q3: '' }; }}
         class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
       >
         Take quiz again
