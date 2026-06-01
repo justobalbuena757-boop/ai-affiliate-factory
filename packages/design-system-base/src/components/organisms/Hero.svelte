@@ -1,40 +1,31 @@
 <script lang="ts">
   import { Button } from 'design-system-base';
-  import { onMount } from 'svelte';
   import { cn } from '../../lib/cn.js';
 
-  // Desestructurar props con $state
-  // 1. Desestructurar props SIN $state
   let {
     title = '',
     subtitle = '',
     primaryCta = { label: 'Comenzar', href: '#' },
     secondaryCta = null,
-    variant = 'default', // Valor por defecto SIN $state
+    variant = 'default',
     backgroundImage = '',
     overlay = true,
     class: className = '',
     ...rest
   } = $props();
 
-  // 2. Declarar variant como estado reactivo DESPUÉS
-  let variantState = $state(variant);
+  let variantState = $derived(variant);
 
-  // 3. Actualizar variantState si variant cambia
-  $effect(() => {
-    variantState = variant;
-  });
-
-  // Detect browser environment
   const isBrowser = typeof window !== 'undefined';
 
-  onMount(() => {
+  $effect(() => {
     if (backgroundImage && isBrowser) {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
       link.href = backgroundImage;
       document.head.appendChild(link);
+      return () => document.head.removeChild(link);
     }
   });
 </script>
