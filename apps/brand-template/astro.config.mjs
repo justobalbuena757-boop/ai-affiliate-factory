@@ -4,7 +4,6 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@tailwindcss/vite';
 
-// https://astro.build/config
 export default defineConfig({
   site: 'https://metabolic40plus.com',
   output: 'static',
@@ -21,10 +20,6 @@ export default defineConfig({
     plugins: [tailwind()],
     optimizeDeps: {
       include: ['svelte'],
-      exclude: ['tailwind-merge', 'class-variance-authority'],
-    },
-    ssr: {
-      noExternal: ['tailwind-merge', 'class-variance-authority'],
     },
   },
 });

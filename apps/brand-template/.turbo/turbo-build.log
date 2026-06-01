@@ -1,36 +1,35 @@
 $ astro build
-02:43:34 [content] Syncing content
-02:43:34 [content] Content config changed
-02:43:34 [content] Clearing content store
-02:43:34 [content] Synced content
-02:43:34 [types] Generated 1.03s
-02:43:34 [build] output: "static"
-02:43:34 [build] mode: "static"
-02:43:34 [build] directory: /home/jfb/project/ai-affiliate-factory/apps/brand-template/dist/
-02:43:34 [build] Collecting build info...
-02:43:34 [build] ✓ Completed in 1.12s.
-02:43:34 [build] Building static entrypoints...
-02:43:40 [vite] ✓ built in 5.63s
-02:43:41 [vite] ✓ built in 751ms
-02:43:41 [build] Rearranging server assets...
+03:26:24 [vite] Re-optimizing dependencies because vite config has changed
+03:26:25 [content] Syncing content
+03:26:25 [content] Synced content
+03:26:25 [types] Generated 1.13s
+03:26:25 [build] output: "static"
+03:26:25 [build] mode: "static"
+03:26:25 [build] directory: /home/jfb/project/ai-affiliate-factory/apps/brand-template/dist/
+03:26:25 [build] Collecting build info...
+03:26:25 [build] ✓ Completed in 1.22s.
+03:26:25 [build] Building static entrypoints...
+03:26:29 [vite] ✓ built in 3.82s
+03:26:30 [vite] ✓ built in 502ms
+03:26:30 [build] Rearranging server assets...
 
  generating static routes 
-02:43:41   ├─ /about/index.html (+37ms) 
-02:43:41   ├─ /disclosure/index.html (+11ms) 
-02:43:41   ├─ /rss.xml (+7ms) 
-02:43:41   ├─ /sitemap/index.html (+23ms) 
-02:43:41   ├─ /coffee-wellness/coffee-metabolism/article-1-tofu/index.html (+46ms) 
-02:43:41   ├─ /coffee-wellness/coffee-metabolism/article-2-mofu/index.html (+25ms) 
-02:43:41   ├─ /coffee-wellness/coffee-metabolism/article-3-bofu/index.html (+40ms) 
-02:43:41   ├─ /sleep-recovery/sleep-metabolism/article-1-tofu/index.html (+45ms) 
-02:43:41   ├─ /sleep-recovery/sleep-metabolism/article-2-mofu/index.html (+34ms) 
-02:43:41   ├─ /sleep-recovery/sleep-metabolism/article-3-bofu/index.html (+34ms) 
-02:43:41   ├─ /coffee-wellness/index.html (+24ms) 
-02:43:42   ├─ /sleep-recovery/index.html (+6ms) 
-02:43:42   ├─ /index.html (+25ms) 
-02:43:42 ✓ Completed in 682ms.
+03:26:30   ├─ /about/index.html (+30ms) 
+03:26:30   ├─ /disclosure/index.html (+8ms) 
+03:26:30   ├─ /rss.xml (+7ms) 
+03:26:30   ├─ /sitemap/index.html (+12ms) 
+03:26:30   ├─ /coffee-wellness/coffee-metabolism/article-1-tofu/index.html (+32ms) 
+03:26:30   ├─ /coffee-wellness/coffee-metabolism/article-2-mofu/index.html (+14ms) 
+03:26:30   ├─ /coffee-wellness/coffee-metabolism/article-3-bofu/index.html (+14ms) 
+03:26:30   ├─ /sleep-recovery/sleep-metabolism/article-1-tofu/index.html (+15ms) 
+03:26:30   ├─ /sleep-recovery/sleep-metabolism/article-2-mofu/index.html (+15ms) 
+03:26:30   ├─ /sleep-recovery/sleep-metabolism/article-3-bofu/index.html (+18ms) 
+03:26:30   ├─ /coffee-wellness/index.html (+11ms) 
+03:26:30   ├─ /sleep-recovery/index.html (+5ms) 
+03:26:30   ├─ /index.html (+20ms) 
+03:26:30 ✓ Completed in 435ms.
 
-02:43:42 [build] ✓ Completed in 7.29s.
-02:43:42 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
-02:43:42 [build] 12 page(s) built in 8.45s
-02:43:42 [build] Complete!
+03:26:30 [build] ✓ Completed in 4.91s.
+03:26:30 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+03:26:30 [build] 12 page(s) built in 6.15s
+03:26:30 [build] Complete!
