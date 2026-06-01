@@ -1,3 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://metabolic40plus.com/sitemap-index.xml
+
 User-agent: GPTBot
 Allow: /
 
@@ -6,3 +13,9 @@ Allow: /
 
 User-agent: ClaudeBot
 Allow: /
+
+User-agent: Googlebot
+Disallow: /api/
+
+User-agent: Bingbot
+Disallow: /api/

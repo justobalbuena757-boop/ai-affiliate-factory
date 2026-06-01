@@ -3,16 +3,29 @@
   "type": "object",
   "properties": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 60
     },
     "description": {
-      "type": "string"
+      "type": "string",
+      "minLength": 110,
+      "maxLength": 155
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 200
     },
     "icon": {
       "type": "string"
     },
     "ogImage": {
-      "type": "string"
+      "type": "string",
+      "format": "uri"
+    },
+    "dateModified": {
+      "default": "2026-06-01T05:43:34.657Z",
+      "type": "string",
+      "format": "date-time"
     },
     "$schema": {
       "type": "string"

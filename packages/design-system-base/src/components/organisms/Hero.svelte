@@ -53,9 +53,20 @@
   {...rest}
 >
   {#if backgroundImage}
+    <img
+      src={backgroundImage}
+      alt=""
+      width="1920"
+      height="1080"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+      class="absolute inset-0 -z-30 w-full h-full object-cover"
+      aria-hidden="true"
+    />
     <div
       class="absolute inset-0 -z-20 bg-cover bg-center"
-      style="background-image: url({backgroundImage}); background-color: #333;"
+      style="background-image: url({backgroundImage});"
       aria-hidden="true"
     ></div>
     {#if overlay}
