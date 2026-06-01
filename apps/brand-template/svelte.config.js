@@ -1,7 +1,7 @@
-import adapter from '@astrojs/svelte';
+import { vitePreprocess } from '@astrojs/svelte';
 
 export default {
-  kit: { adapter: adapter() },
+  preprocess: vitePreprocess(),
   compilerOptions: {
     runes: true,
   },

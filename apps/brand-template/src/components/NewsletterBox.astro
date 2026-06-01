@@ -1,0 +1,25 @@
+---
+export const title = 'NewsletterBox';
+---
+
+<form action="/api/subscribe" method="POST" class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl text-center">
+  <h3 class="text-xl font-bold text-gray-900 dark:text-white">Get weekly metabolic tips</h3>
+  <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+    Evidence-based insights for metabolic health after 40.
+  </p>
+  <div class="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
+    <input
+      type="email"
+      name="email"
+      placeholder="Your email"
+      required
+      class="px-4 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+    />
+    <button
+      type="submit"
+      class="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors"
+    >
+      Subscribe
+    </button>
+  </div>
+</form>

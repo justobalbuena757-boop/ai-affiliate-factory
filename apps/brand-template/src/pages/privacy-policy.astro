@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Container } from 'design-system-base';
+---
+
+<Layout
+  title="Privacy Policy — Metabolic 40+"
+  description="How we collect, use, and protect your personal information."
+  type="website"
+>
+  <Container class="py-16 sm:py-20 max-w-3xl">
+    <article class="prose dark:prose-invert max-w-none">
+      <header class="mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white">Privacy Policy</h1>
+        <p class="mt-4 text-gray-500 dark:text-gray-400">Last updated: June 2026</p>
+      </header>
+
+      <div class="space-y-8">
+        <section>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Information We Collect</h2>
+          <p class="text-gray-600 dark:text-gray-400">
+            We collect information you provide directly to us, including:
+          </p>
+          <ul class="mt-2 list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
+            <li>Email addresses for newsletter subscription</li>
+            <li>Names and contact details for account creation</li>
+            <li>Feedback and communications you provide</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">How We Use Information</h2>
+          <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2">
+            <li>Provide and improve our content and services</li>
+            <li>Send you newsletters and updates (only if subscribed)</li>
+            <li>Personalize your experience on our site</li>
+            <li>Analyze site usage to improve user experience</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Data Protection</h2>
+          <p class="text-gray-600 dark:text-gray-400">
+            We use secure methods to protect your personal information. However, no method of transmission over 
+            the internet or electronic storage is 100% secure. We cannot guarantee absolute security.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Cookies</h2>
+          <p class="text-gray-600 dark:text-gray-400">
+            We use cookies to enhance your browsing experience. This includes essential cookies for site 
+            functionality and analytics cookies to understand how visitors interact with our site.
+          </p>
+        </section>
+      </div>
+    </article>
+  </Container>
+</Layout>

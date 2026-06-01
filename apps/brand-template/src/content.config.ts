@@ -38,4 +38,14 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { pillars, articles };
+const leadMagnets = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/lead-magnets' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    downloadUrl: z.string().url(),
+    emailRequired: z.boolean().default(true),
+  }),
+});
+
+export const collections = { pillars, articles, leadMagnets };

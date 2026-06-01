@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { Container, Card, Button, Badge, ProgressBar, Alert, Hero, FeaturesGrid, StatsGrid, CTASection } from 'design-system-base';
 import { getCollection } from 'astro:content';
+import NewsletterBox from '../components/NewsletterBox.astro';
 
 const pillars = await getCollection('pillars');
 
@@ -236,4 +237,10 @@ const stats = [
     cta={{ label: 'Visit Java Burn Official Site', href: 'https://www.javaburn.net/' }}
     variant="glass"
   />
+
+  <section class="py-12 sm:py-16">
+    <Container>
+      <NewsletterBox />
+    </Container>
+  </section>
 </Layout>
