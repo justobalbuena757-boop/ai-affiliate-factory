@@ -9,7 +9,6 @@
     secondaryCta = null,
     variant = 'default',
     backgroundImage = '',
-    overlay = true,
     class: className = '',
     ...rest
   } = $props();
@@ -56,16 +55,9 @@
       aria-hidden="true"
     />
     <div
-      class="absolute inset-0 -z-20 bg-cover bg-center"
-      style="background-image: url({backgroundImage});"
+      class="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900/70 via-gray-900/50 to-gray-900/80"
       aria-hidden="true"
     ></div>
-    {#if overlay}
-      <div
-        class="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900/70 via-gray-900/50 to-gray-900/80"
-        aria-hidden="true"
-      ></div>
-    {/if}
   {/if}
   <div
     class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"

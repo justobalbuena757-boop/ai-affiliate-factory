@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Container, Card, Button, CTASection, Hero, Badge } from 'design-system-base';
+import { Container, Card, Button, CTASection, Hero } from 'design-system-base';
 import { getCollection } from 'astro:content';
 import NewsletterBox from '../components/NewsletterBox.astro';
 
@@ -12,35 +12,29 @@ const trendingPosts = publishedPosts.slice(0, 3);
 ---
 
 <Layout
-  title="Metabolic 40+ — Coffee & Wellness for Healthy Aging"
-  description="Science-backed content about metabolic health, coffee, sleep, and healthy aging for adults over 40. Transform your daily habits."
-  image="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80"
+  title="Metabolic 40+ — Evidence-Based Wellness Intelligence for Adults 40+"
+  description="Research-driven insights on metabolism, coffee, sleep, hormones, and healthy aging for adults over 40."
+  image="/images/hero-coffe.png"
   type="website"
 >
   <Hero
-    title="Evidence‑Based Wellness Intelligence for Healthy Aging After 40"
-    subtitle="Research‑curated insights on metabolism, coffee, sleep, and hormonal health for adults over 40."
-    primaryCta={{ label: 'Explore Coffee & Wellness', href: '/coffee-wellness' }}
-    secondaryCta={{ label: 'Learn About Sleep & Recovery', href: '/sleep-recovery' }}
+    title="Evidence-Based Wellness Intelligence for Adults 40+"
+    subtitle="Expertly curated insights on metabolism, coffee, sleep, hormones, and healthy aging to help adults over 40 feel energized, strong, and in control."
+    primaryCta={{ label: 'Explore Insights', href: '/coffee-wellness' }}
+    secondaryCta={{ label: 'Take the Quiz', href: '/quiz/metabolism-quiz' }}
     variant="gradient"
-    backgroundImage="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&q=80"
+    backgroundImage="/images/hero-coffe.png"
   />
-
-  <div class="flex flex-wrap justify-center gap-2 mt-8 px-4">
-    <Badge variant="outline"><a href="/coffee-wellness">Coffee & Wellness</a></Badge>
-    <Badge variant="outline"><a href="/sleep-recovery">Sleep & Recovery</a></Badge>
-    <Badge variant="outline"><a href="/coffee-wellness">Metabolism</a></Badge>
-    <Badge variant="outline"><a href="/sleep-recovery">Hormones</a></Badge>
-    <Badge variant="outline"><a href="/coffee-wellness">Nutrition</a></Badge>
-  </div>
 
   <section class="py-4 border-b border-gray-200 dark:border-gray-800">
     <Container>
       <div class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-        <span>✓ Research‑Curated</span>
-        <span>✓ Human‑Reviewed</span>
-        <span>✓ AI‑Assisted Editorial Intelligence</span>
-        <span>✓ Transparent Affiliate Disclosure</span>
+        <span>✓ Research Curated</span>
+        <span>✓ Evidence Referenced</span>
+        <span>✓ AI-Assisted Editorial Intelligence</span>
+        <span>✓ Human Reviewed</span>
+        <span>✓ Updated Weekly</span>
+        <span>✓ Transparent & Honest</span>
       </div>
     </Container>
   </section>
@@ -53,7 +47,7 @@ const trendingPosts = publishedPosts.slice(0, 3);
             Explore Research Topics
           </h2>
           <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-            Explore our curated content designed to guide you through the metabolic health journey.
+            Deep-dive into evidence-based wellness topics for healthy aging after 40.
           </p>
         </header>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
