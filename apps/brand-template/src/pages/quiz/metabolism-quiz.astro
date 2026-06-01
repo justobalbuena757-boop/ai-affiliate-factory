@@ -1,14 +1,26 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { Container } from 'design-system-base';
+import { Container, Alert } from 'design-system-base';
 import QuizWidget from '../../components/QuizWidget.svelte';
 ---
 
 <Layout
   title="Metabolic Type Quiz — Metabolic 40+"
-  description="Discover your metabolic type with our 2-minute quiz for adults over 40."
+  description="Discover your metabolic type with our 2-minute quiz for adults over 40. Get personalized insights and recommendations."
   type="website"
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Quiz",
+    "name": "Metabolic Type Quiz",
+    "description": "2-minute quiz to discover your metabolic type after 40",
+    "educationalLevel": "Beginner",
+    "timeRequired": "P2M",
+    "assesses": "Metabolic health, lifestyle habits, age-related changes",
+    "interactivityType": "Mixed",
+    "learningResourceType": "Assessment tool"
+  })} />
+
   <Container class="py-16 sm:py-20 max-w-3xl">
     <header class="mb-12 text-center">
       <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -18,7 +30,25 @@ import QuizWidget from '../../components/QuizWidget.svelte';
         Take our 2-minute quiz to get personalized recommendations for your 40+ wellness journey.
       </p>
     </header>
-    
-    <QuizWidget />
+
+    <noscript>
+      <Alert variant="warning" title="JavaScript required">
+        This quiz requires JavaScript to function. Please enable JavaScript in your browser.
+      </Alert>
+    </noscript>
+
+    <div class="quiz-container">
+      <QuizWidget client:load />
+    </div>
+
+    <footer class="mt-12 text-center text-xs text-gray-400 dark:text-gray-500">
+      <p>✓ No personal data is stored permanently. ✓ Results are instant and private. ✓ You can unsubscribe anytime.</p>
+      <p class="mt-2">
+        By taking this quiz, you agree to our <a href="/privacy-policy" class="underline hover:text-primary">Privacy Policy</a>.
+      </p>
+      <p class="mt-6">
+        <a href="/" class="text-sm text-primary hover:underline">← Back to Home</a>
+      </p>
+    </footer>
   </Container>
 </Layout>

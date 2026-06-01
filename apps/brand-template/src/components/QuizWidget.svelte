@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  let { quizId = 'metabolic-type' } = $props();
 
   let step = $state(1);
   let answers = $state({ q1: '', q2: '', q3: '' });
