@@ -17,15 +17,40 @@ const trendingPosts = publishedPosts.slice(0, 3);
   image="/images/hero-coffe.png"
   type="website"
 >
-<Hero
-    title="Evidence-Based Wellness Intelligence for Adults 40+"
-    subtitle="Expertly curated insights on metabolism, coffee, sleep, hormones, and healthy aging to help adults over 40 feel energized, strong, and in control."
-    primaryCta={{ label: 'Explore Insights', href: '/coffee-wellness' }}
-    secondaryCta={{ label: 'Take the Quiz', href: '/quiz/metabolism-quiz' }}
-    variant="gradient"
-    backgroundImage="/images/hero-coffe.png"
-    align="left"
-  />
+  <section class="relative overflow-hidden py-20 sm:py-28 lg:py-36">
+    <img
+      src="/images/hero-coffe.png"
+      alt="Woman enjoying coffee for metabolic health after 40"
+      width="1920"
+      height="1080"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+      class="absolute inset-0 -z-20 w-full h-full object-cover object-right"
+    />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900/60 via-gray-900/40 to-gray-900/50" aria-hidden="true"></div>
+
+    <Container class="relative z-10">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="text-left">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-lg">
+            Evidence-Based Wellness Intelligence for Adults 40+
+          </h1>
+          <p class="mt-6 text-lg sm:text-xl max-w-xl text-gray-200 drop-shadow-md">
+            Expertly curated insights on metabolism, coffee, sleep, hormones, and healthy aging to help adults over 40 feel energized, strong, and in control.
+          </p>
+          <div class="mt-10 flex flex-wrap gap-4 justify-start">
+            <Button variant="outline" size="lg" href="/coffee-wellness" class="border-white text-white hover:bg-white hover:text-gray-900">
+              Explore Insights
+            </Button>
+            <Button variant="ghost" size="lg" href="/quiz/metabolism-quiz" class="text-white hover:bg-white/10">
+              Take the Quiz
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
 
   <section class="py-4 border-b border-gray-200 dark:border-gray-800">
     <Container>
