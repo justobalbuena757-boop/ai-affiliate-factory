@@ -9,6 +9,7 @@
     secondaryCta = null,
     variant = 'default',
     backgroundImage = '',
+    align = 'center',
     class: className = '',
     ...rest
   } = $props();
@@ -51,7 +52,7 @@
       loading="eager"
       fetchpriority="high"
       decoding="sync"
-      class="absolute inset-0 -z-30 w-full h-full object-cover"
+      class="absolute inset-0 -z-30 w-full h-full object-cover object-right"
       aria-hidden="true"
     />
     <div
@@ -60,7 +61,11 @@
     ></div>
   {/if}
   <div
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+    class={cn(
+      'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10',
+      align === 'left' && backgroundImage ? 'text-left' : 'text-center',
+      align === 'left' && !backgroundImage ? 'text-left' : '',
+    )}
   >
     <h1
       class={cn(
@@ -68,6 +73,7 @@
         backgroundImage
           ? 'text-white drop-shadow-lg'
           : 'text-gray-900 dark:text-white',
+        align === 'left' ? 'sm:text-left' : '',
       )}
     >
       {title}
@@ -75,16 +81,20 @@
     {#if subtitle}
       <p
         class={cn(
-          'mt-6 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed',
+          'mt-6 text-lg sm:text-xl max-w-3xl leading-relaxed',
           backgroundImage
             ? 'text-gray-200 drop-shadow-md'
             : 'text-gray-600 dark:text-gray-400',
+        align === 'left' ? 'sm:max-w-2xl sm:mx-0' : 'mx-auto',
         )}
       >
         {subtitle}
       </p>
     {/if}
-    <div class="mt-10 flex items-center justify-center gap-4 flex-wrap">
+    <div class={cn(
+      'mt-10 flex flex-wrap gap-4',
+      align === 'left' ? 'justify-start' : 'justify-center',
+    )}>
       <Button variant={backgroundImage ? 'outline' : 'primary'} size="lg" href={primaryCta.href}
         class={backgroundImage ? 'border-white text-white hover:bg-white hover:text-gray-900' : ''}>
         {primaryCta.label}
