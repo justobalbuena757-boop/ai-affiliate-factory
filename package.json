@@ -6,13 +6,15 @@
     "dev": "turbo dev --filter=brand-template",
     "build": "turbo build --filter=brand-template",
     "check": "turbo check --filter=brand-template",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "turbo clean --filter=brand-template",
+    "test": "echo \"See apps/brand-template for tests\" && exit 0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@11.3.0",
   "engines": {
+    "node": "^22.0.0",
     "pnpm": "^11.3.0"
   },
   "type": "module",
