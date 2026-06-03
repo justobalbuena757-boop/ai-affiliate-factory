@@ -7,6 +7,8 @@
 		"build": "turbo build --filter=brand-template",
 		"check": "turbo check --filter=brand-template",
 		"clean": "turbo clean --filter=brand-template",
+		"preview": "npx serve apps/brand-template/dist/client",
+		"preview:api": "npx wrangler pages dev apps/brand-template/dist/client",
 		"test": "echo \"See apps/brand-template for tests\" && exit 0",
 		"format": "biome format --write",
 		"lint": "biome check",
