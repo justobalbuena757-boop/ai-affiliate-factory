@@ -2,13 +2,8 @@
 import { cva } from "class-variance-authority";
 import { cn } from "../../lib/cn.js";
 
-const isBrowser = typeof window !== "undefined";
-const disableAnimations =
-	!isBrowser ||
-	(isBrowser && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-
 const track = cva(
-	"w-full rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700",
+	"w-full rounded-full overflow-hidden bg-muted/20 dark:bg-muted-dark/20",
 	{
 		variants: {
 			size: {
@@ -52,13 +47,13 @@ let percent = $derived((Math.min(Math.max(0, value), max) / max) * 100);
 <div class={cn('w-full', className)}>
   {#if showLabel && label}
     <div class="flex justify-between mb-1.5">
-      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
-      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">{Math.round(percent)}%</span>
+      <span class="text-sm font-medium text-foreground dark:text-foreground-dark">{label}</span>
+      <span class="text-sm font-medium text-muted dark:text-muted-dark">{Math.round(percent)}%</span>
     </div>
   {/if}
   <div class={track({ size })}>
     <div
-      class={cn(fill({ variant }), animated && !disableAnimations && 'animate-pulse')}
+      class={cn(fill({ variant }), animated && 'animate-pulse')}
       style="width: {percent}%"
     ></div>
   </div>

@@ -25,22 +25,22 @@ if (!entry) {
   type="website"
 >
   <Container class="py-16 sm:py-20 max-w-2xl">
-    <article class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 sm:p-12">
+    <article class="bg-surface dark:bg-surface-dark rounded-xl shadow-lg p-8 sm:p-12">
       <header class="mb-8">
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground-dark mb-4">
           {entry.data.title}
         </h1>
-        <p class="text-lg text-gray-600 dark:text-gray-400">
+        <p class="text-lg text-muted dark:text-muted-dark">
           {entry.data.description}
         </p>
       </header>
 
       {entry.data.emailRequired && (
-        <form action="/api/subscribe" method="POST" class="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-lg">
-          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+        <form action="/api/subscribe" method="POST" class="bg-muted/5 dark:bg-surface-dark/30 p-6 rounded-lg">
+          <h3 class="text-lg font-bold text-foreground dark:text-foreground-dark mb-4">
             Get Instant Access
           </h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          <p class="text-sm text-muted dark:text-muted-dark mb-4">
             Enter your email to download this free guide.
           </p>
           <div class="flex flex-col sm:flex-row gap-3">
@@ -49,11 +49,11 @@ if (!entry) {
               name="email"
               placeholder="your@email.com"
               required
-              class="flex-1 px-4 py-3 rounded-lg border dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+              class="flex-1 px-4 py-3 rounded-lg border dark:bg-surface-dark dark:border-border-dark dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <button
               type="submit"
-              class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors"
+              class="bg-primary text-foreground-dark px-6 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors"
             >
               Download
             </button>
@@ -64,7 +64,7 @@ if (!entry) {
       {!entry.data.emailRequired && (
         <a
           href={entry.data.downloadUrl}
-          class="inline-block bg-primary text-white px-8 py-4 rounded-lg font-medium hover:bg-primary-dark transition-colors text-center"
+          class="inline-block bg-primary text-foreground-dark px-8 py-4 rounded-lg font-medium hover:bg-primary-dark transition-colors text-center"
         >
           Download Guide
         </a>

@@ -24,7 +24,7 @@ let variantState = $derived(variant);
       'bg-gradient-to-br from-primary/5 via-transparent to-secondary/5',
     variantState === 'glass' &&
       !backgroundImage &&
-      'bg-white/50 dark:bg-gray-900/50 backdrop-blur-3xl',
+      'bg-surface/50 dark:bg-surface-dark/50 backdrop-blur-3xl',
     className,
   )}
   {...rest}
@@ -42,7 +42,7 @@ let variantState = $derived(variant);
       aria-hidden="true"
     />
     <div
-      class="absolute inset-0 bg-gradient-to-br from-gray-900/70 via-gray-900/50 to-gray-900/80"
+      class="absolute inset-0 bg-gradient-to-br from-bg-dark/70 via-bg-dark/50 to-bg-dark/80"
       aria-hidden="true"
     ></div>
   {/if}
@@ -53,8 +53,8 @@ let variantState = $derived(variant);
       class={cn(
         'text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight',
         backgroundImage
-          ? 'text-white drop-shadow-lg'
-          : 'text-gray-900 dark:text-white',
+          ? 'text-foreground-dark drop-shadow-lg'
+          : 'text-foreground dark:text-foreground-dark',
       )}
     >
       {title}
@@ -64,8 +64,8 @@ let variantState = $derived(variant);
         class={cn(
           'mt-6 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed',
           backgroundImage
-            ? 'text-gray-200 drop-shadow-md'
-            : 'text-gray-600 dark:text-gray-400',
+            ? 'text-muted-dark drop-shadow-md'
+            : 'text-muted dark:text-muted-dark',
         )}
       >
         {subtitle}
@@ -73,12 +73,12 @@ let variantState = $derived(variant);
     {/if}
     <div class="mt-10 flex items-center justify-center gap-4 flex-wrap">
       <Button variant={backgroundImage ? 'outline' : 'primary'} size="lg" href={primaryCta.href}
-        class={backgroundImage ? 'border-white text-white hover:bg-white hover:text-gray-900' : ''}>
+        class={backgroundImage ? 'border-foreground-dark text-foreground-dark hover:bg-foreground-dark hover:text-foreground' : ''}>
         {primaryCta.label}
       </Button>
       {#if secondaryCta}
         <Button variant={backgroundImage ? 'ghost' : 'ghost'} size="lg" href={secondaryCta.href}
-          class={backgroundImage ? 'text-white hover:bg-white/10' : ''}>
+          class={backgroundImage ? 'text-foreground-dark hover:bg-foreground-dark/10' : ''}>
           {secondaryCta.label}
         </Button>
       {/if}

@@ -2,7 +2,7 @@
 const { class: className, ...rest } = Astro.props;
 ---
 
-<figure {...rest} class:list={["mdx-table w-full overflow-x-auto my-8 rounded-xl border border-gray-200 dark:border-gray-700", className]}>
+<figure {...rest} class:list={["mdx-table w-full overflow-x-auto my-8 rounded-xl border border-border dark:border-border-dark", className]}>
   <table class="w-full text-sm text-left">
     <slot />
   </table>

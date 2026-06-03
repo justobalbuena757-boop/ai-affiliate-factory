@@ -27,15 +27,15 @@ let {
       </div>
     {/if}
     <div class="flex-1 text-center sm:text-left">
-      <h4 class="text-lg font-bold text-gray-900 dark:text-white">{title}</h4>
-      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
+      <h4 class="text-lg font-bold text-foreground dark:text-foreground-dark">{title}</h4>
+      <p class="mt-1 text-sm text-muted dark:text-muted-dark leading-relaxed">{description}</p>
       <div class="mt-3 flex items-center gap-3 justify-center sm:justify-start">
         <span class="text-2xl font-bold text-primary">{price}</span>
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer nofollow sponsored"
-          class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition-colors no-underline"
+          class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-foreground-dark rounded-lg text-sm font-semibold hover:bg-primary-dark transition-colors no-underline"
         >
           Claim Discount
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -1,9 +1,20 @@
 <script>
 import { cn } from "../../lib/cn.js";
 
-let { class: className = "", children, ...rest } = $props();
+let { size = "default", class: className = "", children, ...rest } = $props();
 </script>
 
-<div class={cn('mx-auto w-full px-4 tablet:px-6 md:px-8 desktop:px-8 max-w-6xl', className)} {...rest}>
+<div
+  class={cn(
+    'mx-auto px-4 sm:px-6 lg:px-8',
+    size === 'sm' && 'max-w-3xl',
+    size === 'md' && 'max-w-5xl',
+    size === 'default' && 'max-w-7xl',
+    size === 'lg' && 'max-w-[90rem]',
+    size === 'full' && 'max-w-none',
+    className,
+  )}
+  {...rest}
+>
   {@render children()}
 </div>

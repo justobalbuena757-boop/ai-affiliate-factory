@@ -14,7 +14,7 @@ const gridCols = "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3";
       <Card variant={i === 0 ? 'elevated' : 'bordered'} class="flex flex-col">
         <div class="flex flex-col h-full">
           {#if product.image}
-            <div class="w-full aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 overflow-hidden">
+            <div class="w-full aspect-video bg-muted/10 dark:bg-muted-dark/10 rounded-lg mb-4 overflow-hidden">
               <img
                 src={product.image}
                 alt={product.title}
@@ -28,16 +28,16 @@ const gridCols = "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3";
               {product.badge}
             </span>
           {/if}
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark mb-2">
             {product.title}
           </h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed flex-1">
+          <p class="text-sm text-muted dark:text-muted-dark leading-relaxed flex-1">
             {product.description}
           </p>
           {#if product.price}
             <div class="mt-4 flex items-center gap-2">
               {#if product.compareAtPrice}
-                <span class="text-sm text-gray-400 line-through">${product.compareAtPrice}</span>
+                <span class="text-sm text-muted dark:text-muted-dark line-through">${product.compareAtPrice}</span>
               {/if}
               <span class="text-xl font-bold text-primary">${product.price}</span>
             </div>

@@ -38,7 +38,7 @@ let gridClass = $derived(resolveGrid(columns));
   class={cn(
     'py-16 sm:py-20',
     variant === 'gradient' && 'bg-gradient-to-r from-primary/5 to-secondary/5',
-    variant === 'accent' && 'bg-primary text-white dark:bg-primary-dark',
+    variant === 'accent' && 'bg-primary text-foreground-dark dark:bg-primary-dark',
     className,
   )}
   {...rest}
@@ -48,15 +48,15 @@ let gridClass = $derived(resolveGrid(columns));
       <div class="grid {gridClass} gap-8 lg:gap-12">
         {#each Array(4) as _, i}
           <div class="text-center">
-            <div class="h-12 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse"></div>
-            <div class="mt-2 h-4 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+            <div class="h-12 bg-muted/20 dark:bg-muted-dark/20 rounded-lg animate-pulse"></div>
+            <div class="mt-2 h-4 bg-muted/20 dark:bg-muted-dark/20 rounded-lg animate-pulse"></div>
           </div>
         {/each}
       </div>
     {:else}
       <div class="grid {gridClass} gap-8 lg:gap-12">
         {#each stats as stat, i}
-          <div class="text-center {variant === 'accent' ? '' : 'text-gray-900 dark:text-white'}">
+          <div class="text-center {variant === 'accent' ? '' : 'text-foreground dark:text-foreground-dark'}">
             <div class={cn(
               'text-3xl sm:text-4xl lg:text-5xl font-bold',
               variant === 'accent' ? '' : 'text-primary',
@@ -65,7 +65,7 @@ let gridClass = $derived(resolveGrid(columns));
             </div>
             <div class={cn(
               'mt-2 text-sm sm:text-base',
-              variant === 'accent' ? 'text-white/80' : 'text-gray-500 dark:text-gray-400',
+              variant === 'accent' ? 'text-foreground-dark/80' : 'text-muted dark:text-muted-dark',
             )}>
               {stat.label}
             </div>

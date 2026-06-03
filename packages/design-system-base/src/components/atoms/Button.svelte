@@ -13,17 +13,17 @@ let {
 } = $props();
 
 const button = cva(
-	"no-underline font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-all duration-200 ease-in-out inline-flex items-center justify-center cursor-pointer",
+	"no-underline font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-surface-dark transition-all duration-200 ease-in-out inline-flex items-center justify-center cursor-pointer",
 	{
 		variants: {
 			variant: {
 				primary:
-					"bg-primary text-white hover:bg-primary-dark focus:ring-primary",
+					"bg-primary text-foreground-dark hover:bg-primary-dark focus:ring-primary",
 				secondary:
-					"bg-secondary text-white hover:bg-secondary-dark focus:ring-secondary",
+					"bg-secondary text-foreground-dark hover:bg-secondary-dark focus:ring-secondary",
 				ghost: "text-primary hover:bg-primary/10 focus:ring-primary",
 				outline:
-					"border-2 border-primary text-primary hover:bg-primary hover:text-white focus:ring-primary",
+					"border-2 border-primary text-primary hover:bg-primary hover:text-foreground-dark focus:ring-primary",
 				link: "text-primary underline-offset-4 hover:underline focus:ring-primary",
 			},
 			size: {

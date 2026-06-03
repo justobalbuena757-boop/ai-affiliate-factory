@@ -27,10 +27,10 @@ const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, "");
       <div class="mb-8">
         <span class="text-8xl sm:text-9xl font-black text-gray-100 dark:text-gray-800 select-none">404</span>
       </div>
-      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 -mt-6">
+      <h1 class="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground-dark mb-4 -mt-6">
         Page Not Found
       </h1>
-      <p class="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto leading-relaxed">
+      <p class="text-lg text-muted dark:text-muted-dark mb-8 max-w-md mx-auto leading-relaxed">
         The page you are looking for may have been moved, updated, or no longer exists. Let us help you find what you need.
       </p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
@@ -41,15 +41,15 @@ const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, "");
           View Sitemap
         </Button>
       </div>
-      <div class="border-t border-gray-200 dark:border-gray-800 pt-10">
-        <h2 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-5">
+      <div class="border-t border-border dark:border-border-dark pt-10">
+        <h2 class="text-sm font-bold text-foreground dark:text-foreground-dark uppercase tracking-wider mb-5">
           Explore Our Topics
         </h2>
         <div class="flex flex-wrap justify-center gap-2">
           {pillars.map((p: CollectionEntry<'pillars'>) => (
             <a
               href={`/${p.id.replace('.mdx', '')}`}
-              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-muted/5 dark:bg-surface-dark/30 hover:bg-muted/10 dark:hover:bg-surface-dark text-sm font-medium text-muted dark:text-muted-dark hover:text-primary transition-colors"
             >
               <Icon name={p.id === 'coffee-wellness' ? 'lucide:coffee' : 'lucide:moon'} class="w-4 h-4" />
               {p.data.title}

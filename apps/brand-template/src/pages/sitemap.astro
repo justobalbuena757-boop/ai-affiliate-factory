@@ -64,17 +64,17 @@ const normalizedSiteUrl = siteUrl.replace(/\/$/, "");
   <Container class="py-12 sm:py-16">
     <header class="max-w-3xl mx-auto mb-12 text-center">
       <p class="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Navigation</p>
-      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-foreground dark:text-foreground-dark mb-4">
         Sitemap
       </h1>
-      <p class="text-lg text-gray-600 dark:text-gray-400">
+      <p class="text-lg text-muted dark:text-muted-dark">
         {totalPages} pages and {totalArticles} articles across {pillars.length} content pillars.
       </p>
     </header>
 
     <div class="max-w-4xl mx-auto space-y-12">
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-2xl font-bold text-foreground dark:text-foreground-dark mb-6 pb-2 border-b border-border dark:border-border-dark">
           Main Pages
         </h2>
         <ul class="grid gap-3 sm:grid-cols-2">
@@ -82,12 +82,12 @@ const normalizedSiteUrl = siteUrl.replace(/\/$/, "");
             <li>
               <a
                 href={page.href}
-                class="block p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group"
+                class="block p-4 rounded-lg bg-muted/5 dark:bg-surface-dark/30 hover:bg-muted/10 dark:hover:bg-surface-dark transition-colors group"
               >
-                <span class="block font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                <span class="block font-semibold text-foreground dark:text-foreground-dark group-hover:text-primary transition-colors">
                   {page.label}
                 </span>
-                <span class="block mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <span class="block mt-1 text-sm text-muted dark:text-muted-dark">
                   {page.description}
                 </span>
               </a>
@@ -98,14 +98,14 @@ const normalizedSiteUrl = siteUrl.replace(/\/$/, "");
 
       {articlesByPillar.map(({ pillar, articles: pillarArticles }) => (
         <section>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-foreground dark:text-foreground-dark mb-2 flex items-center gap-3">
             {pillar.data.icon && <span class="text-2xl">{pillar.data.icon}</span>}
             {pillar.data.title}
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <span class="text-sm font-normal text-muted dark:text-muted-dark">
               ({pillarArticles.length} {pillarArticles.length === 1 ? 'article' : 'articles'})
             </span>
           </h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+          <p class="text-sm text-muted dark:text-muted-dark mb-6">
             {pillar.data.description}
           </p>
           <a
@@ -122,17 +122,17 @@ const normalizedSiteUrl = siteUrl.replace(/\/$/, "");
                 <li>
                   <a
                     href={articleUrl}
-                    class="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group"
+                    class="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/5 dark:hover:bg-surface-dark/50 transition-colors group"
                   >
                     <span class="flex-1 min-w-0">
-                      <span class="block font-medium text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                      <span class="block font-medium text-foreground dark:text-foreground-dark group-hover:text-primary transition-colors">
                         {article.data.title}
                       </span>
-                      <span class="block mt-0.5 text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
+                      <span class="block mt-0.5 text-sm text-muted dark:text-muted-dark line-clamp-1">
                         {article.data.description}
                       </span>
                     </span>
-                    <span class="text-xs text-gray-400 dark:text-gray-500 uppercase font-semibold tracking-wider shrink-0 mt-0.5">
+                    <span class="text-xs text-muted dark:text-muted-dark uppercase font-semibold tracking-wider shrink-0 mt-0.5">
                       {article.data.stage}
                     </span>
                   </a>

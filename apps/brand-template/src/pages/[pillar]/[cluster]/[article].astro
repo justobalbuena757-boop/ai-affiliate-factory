@@ -34,9 +34,12 @@ const relatedArticles = allArticles.filter(
 		a.data.pillar === entry.data.pillar && a.id !== entry.id,
 );
 
+const pillars = await getCollection("pillars");
+const pillarEntry = pillars.find((p) => p.id.replace(".mdx", "") === pillar);
+
 const { Content, headings } = await render(entry);
 ---
 
-<ArticleLayout article={entry} headings={headings} relatedArticles={relatedArticles}>
+<ArticleLayout article={entry} headings={headings} relatedArticles={relatedArticles} pillarEntry={pillarEntry}>
   <Content components={mdxComponents} />
 </ArticleLayout>

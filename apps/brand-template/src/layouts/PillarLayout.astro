@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import { cn } from "design-system-base";
 import Layout from "./Layout.astro";
 import { Container, Card, Hero } from "design-system-base";
+import { STAGE_COLORS, STAGE_LABELS_SHORT } from "../lib/stage";
 import tenant from "../config/tenant.json";
 import type { CollectionEntry } from "astro:content";
 
@@ -17,16 +18,6 @@ const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, "");
 const clusters = [...new Set(articles.map((a) => a.data.cluster))];
 const sorted = articles.sort((a, b) => a.data.order - b.data.order);
 
-const stageColors: Record<string, string> = {
-	tofu: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-	mofu: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-	bofu: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-};
-const stageLabels: Record<string, string> = {
-	tofu: "TOFU",
-	mofu: "MOFU",
-	bofu: "BOFU",
-};
 const stageOrder = ["tofu", "mofu", "bofu"];
 ---
 
@@ -63,11 +54,11 @@ const stageOrder = ["tofu", "mofu", "bofu"];
         return (
           <section class="mb-20 last:mb-0">
             <header class="mb-10 text-center">
-              <h2 class="inline-flex items-center gap-2 text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white capitalize">
+              <h2 class="inline-flex items-center gap-2 text-2xl sm:text-3xl font-bold text-foreground dark:text-foreground-dark capitalize">
                 <Icon name={pillar.id === 'coffee-wellness' ? 'lucide:coffee' : 'lucide:moon'} class="w-6 h-6 text-primary" />
                 {cluster.replace(/-/g, ' ')}
               </h2>
-              <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+              <p class="mt-2 text-sm text-muted dark:text-muted-dark max-w-xl mx-auto">
                 {clusterArticles.length} article{clusterArticles.length !== 1 ? 's' : ''} in this cluster
               </p>
             </header>
@@ -83,25 +74,35 @@ const stageOrder = ["tofu", "mofu", "bofu"];
                       class="block group h-full"
                     >
                       <Card variant="interactive" class="h-full">
+                        {article.data.ogImage && (
+                          <div class="relative overflow-hidden aspect-video -mx-6 -mt-6 mb-4 rounded-t-xl">
+                            <img
+                              src={article.data.ogImage}
+                              alt={article.data.title}
+                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                          </div>
+                        )}
                         <div class="flex flex-col h-full">
                           <div class="flex items-center justify-between mb-3">
                             <span
                               class={cn(
                                 'inline-block text-xs font-semibold px-2.5 py-1 rounded-full',
-                                stageColors[article.data.stage],
+                                STAGE_COLORS[article.data.stage],
                               )}
                             >
-                              {stageLabels[article.data.stage]}
+                              {STAGE_LABELS_SHORT[article.data.stage]}
                             </span>
-                            <span class="text-xs text-gray-400">{article.data.order} of {clusterArticles.length}</span>
+                            <span class="text-xs text-muted dark:text-muted-dark">{article.data.order} of {clusterArticles.length}</span>
                           </div>
-                          <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors leading-snug">
+                          <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark group-hover:text-primary transition-colors leading-snug">
                             {article.data.title}
                           </h3>
-                          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-2 flex-1">
+                          <p class="mt-2 text-sm text-muted dark:text-muted-dark line-clamp-2 flex-1">
                             {article.data.description}
                           </p>
-                          <time class="mt-4 text-xs text-gray-400 block">
+                          <time class="mt-4 text-xs text-muted dark:text-muted-dark block">
                             {new Date(article.data.pubDate).toLocaleDateString('en-US', {
                               year: 'numeric', month: 'long', day: 'numeric',
                             })}

@@ -2,17 +2,17 @@
 import Layout from "../layouts/Layout.astro";
 import {
 	Container,
-	Card,
 	Button,
 	Hero,
-	Badge,
 	CTASection,
 	FeaturesGrid,
+	NewsletterSignup,
+	ArticleCard,
 } from "design-system-base";
-import NewsletterBox from "../components/NewsletterBox.astro";
 import tenant from "../config/tenant.json";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { STAGE_LABELS } from "../lib/stage";
 
 const brand = tenant.brand;
 const pillars = await getCollection("pillars");
@@ -47,6 +47,7 @@ const researchBadges = [
 
 const pillarFeatures = pillars.map((p: CollectionEntry<"pillars">) => ({
 	icon: p.id === "coffee-wellness" ? iconSvg.coffee : iconSvg.bed,
+	image: p.data.ogImage || '',
 	title: p.data.title,
 	description: p.data.description,
 	href: `/${p.id}`,
@@ -69,29 +70,24 @@ const pillarFeatures = pillars.map((p: CollectionEntry<"pillars">) => ({
     backgroundImage={brand.defaultOgImage}
   />
 
-  <section class="py-8 sm:py-10 border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
+  <section class="py-10 sm:py-12 bg-muted/5 dark:bg-surface-dark/30 border-y border-border dark:border-border-dark">
     <Container>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
         {trustStats.map((stat) => (
           <div class="text-center">
             <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
               {stat.value}
             </div>
-            <div class="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">
+            <div class="mt-1 text-xs sm:text-sm text-muted dark:text-muted-dark font-medium uppercase tracking-wider">
               {stat.label}
             </div>
           </div>
         ))}
       </div>
-    </Container>
-  </section>
-
-  <section class="py-4 border-b border-gray-200 dark:border-gray-800">
-    <Container>
-      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+      <div class="mt-6 pt-6 border-t border-border/50 dark:border-border-dark/50 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs sm:text-sm text-muted dark:text-muted-dark">
         {researchBadges.map((badge) => (
           <span class="inline-flex items-center gap-1.5">
-            <span class="w-3.5 h-3.5 text-green-500 shrink-0" set:html={iconSvg.check} />
+            <span class="w-4 h-4 text-success shrink-0" set:html={iconSvg.check} />
             {badge.label}
           </span>
         ))}
@@ -108,113 +104,97 @@ const pillarFeatures = pillars.map((p: CollectionEntry<"pillars">) => ({
     />
   )}
 
-  {editorsPicks.length > 0 && (
-    <section class="py-16 sm:py-20 bg-gray-50 dark:bg-gray-800/20">
-      <Container>
-        <header class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Editor's Picks
-          </h2>
-          <p class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-            Our team's top-rated research and analysis for metabolic health after 40.
-          </p>
-        </header>
-        <div class="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
-          {editorsPicks.map((article: any) => (
-              <a href={`/${article.data.pillar}/${article.data.cluster}/${article.id.replace('.mdx', '').split('/').pop()}`} class="block group focus:outline-none focus:ring-2 focus:ring-primary rounded-xl">
-                <Card variant="interactive" class="h-full">
-                  <div class="flex flex-col h-full">
-                    <Badge variant={article.data.stage === 'bofu' ? 'accent' : 'default'} size="sm">
-                      {article.data.stage === 'bofu' ? 'Editor\'s Choice' : 'Featured'}
-                    </Badge>
-                    <h3 class="mt-3 text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors leading-snug">
-                      {article.data.title}
-                    </h3>
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3 flex-1">
-                      {article.data.description}
-                    </p>
-                    <div class="mt-4 flex items-center gap-3 text-xs text-gray-400">
-                      <time>
-                        {new Date(article.data.pubDate).toLocaleDateString('en-US', {
-                          month: 'short', day: 'numeric', year: 'numeric',
-                        })}
-                      </time>
-                      <span class="font-medium text-primary group-hover:text-primary-dark transition-colors">
-                        Read Analysis →
-                      </span>
-                    </div>
-                  </div>
-                </Card>
-              </a>
-          ))}
-        </div>
-      </Container>
-    </section>
-  )}
-
   {featuredArticles.length > 0 && (
     <section class="py-16 sm:py-20">
       <Container>
         <header class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 class="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground-dark mb-4">
             Latest Research & Insights
           </h2>
-          <p class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          <p class="text-lg text-muted dark:text-muted-dark max-w-2xl mx-auto">
             Stay informed with our most recent evidence-based articles.
           </p>
         </header>
         <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
-          {featuredArticles.map((article: any) => (
-              <a href={`/${article.data.pillar}/${article.data.cluster}/${article.id.replace('.mdx', '').split('/').pop()}`} class="block group focus:outline-none focus:ring-2 focus:ring-primary rounded-xl">
-                <Card variant="interactive" class="h-full">
-                  <div class="flex flex-col h-full">
-                    <Badge
-                      variant={article.data.stage === 'bofu' ? 'accent' : article.data.stage === 'mofu' ? 'info' : 'default'}
-                      size="sm"
-                    >
-                      {article.data.stage === 'tofu' ? 'Awareness' : article.data.stage === 'mofu' ? 'Consideration' : 'Review'}
-                    </Badge>
-                    <h3 class="mt-3 text-base font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors leading-snug">
-                      {article.data.title}
-                    </h3>
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-2 flex-1">
-                      {article.data.description}
-                    </p>
-                    <div class="mt-auto pt-4 flex items-center justify-between text-xs text-gray-400">
-                      <time>
-                        {new Date(article.data.pubDate).toLocaleDateString('en-US', {
-                          month: 'short', day: 'numeric',
-                        })}
-                      </time>
-                      <span class="text-primary font-medium group-hover:text-primary-dark transition-colors">
-                        Read more →
-                      </span>
-                    </div>
-                  </div>
-                </Card>
-              </a>
-          ))}
+          {featuredArticles.map((article: any) => {
+            const slug = article.id.replace('.mdx', '').split('/').pop();
+            return (
+              <ArticleCard
+                title={article.data.title}
+                excerpt={article.data.description}
+                image={article.data.ogImage || ''}
+                category={STAGE_LABELS[article.data.stage] || article.data.stage}
+                author={article.data.author?.name || brand.companyName}
+                date={new Date(article.data.pubDate).toLocaleDateString('en-US', {
+                  month: 'short', day: 'numeric', year: 'numeric',
+                })}
+                url={`/${article.data.pillar}/${article.data.cluster}/${slug}`}
+                variant="default"
+              />
+            );
+          })}
         </div>
-        <div class="mt-10 text-center">
+        <div class="mt-12 text-center">
           <Button variant="outline" size="lg" href="/sitemap">
-            View All Articles
+            View All Articles →
           </Button>
         </div>
       </Container>
     </section>
   )}
 
-  <section class="py-16 sm:py-20 bg-accent/5 dark:bg-accent/10 border-t border-b border-gray-200 dark:border-gray-800">
-    <Container class="max-w-2xl">
+  {editorsPicks.length > 0 && (
+    <section class="py-16 sm:py-20 bg-muted/5 dark:bg-surface-dark/20">
+      <Container>
+        <header class="text-center mb-12">
+          <span class="inline-block text-xs font-semibold uppercase tracking-widest text-accent mb-4">Curated by Our Team</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground-dark mb-4">
+            Editor's Picks
+          </h2>
+          <p class="text-lg text-muted dark:text-muted-dark max-w-2xl mx-auto">
+            Our team's top-rated research and analysis for metabolic health after 40.
+          </p>
+        </header>
+        <div class="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+          {editorsPicks.map((article: any) => {
+            const slug = article.id.replace('.mdx', '').split('/').pop();
+            return (
+              <div class="relative">
+                <div class="absolute -inset-0.5 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-sm opacity-60" aria-hidden="true" />
+                <div class="relative">
+                  <ArticleCard
+                    title={article.data.title}
+                    excerpt={article.data.description}
+                    image={article.data.ogImage || ''}
+                    category="Editor's Choice"
+                    author={article.data.author?.name || brand.companyName}
+                    date={new Date(article.data.pubDate).toLocaleDateString('en-US', {
+                      month: 'short', day: 'numeric', year: 'numeric',
+                    })}
+                    url={`/${article.data.pillar}/${article.data.cluster}/${slug}`}
+                    variant="featured"
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
+  )}
+
+  <section class="py-16 sm:py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5" aria-hidden="true" />
+    <Container class="relative max-w-2xl">
       <header class="text-center mb-8">
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 class="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground-dark mb-4">
           Weekly Wellness Insights
         </h2>
-        <p class="text-lg text-gray-500 dark:text-gray-400">
+        <p class="text-lg text-muted dark:text-muted-dark">
           Join 10,000+ readers. Evidence-based tips for metabolic health after 40. No spam, unsubscribe anytime.
         </p>
       </header>
-      <NewsletterBox />
+      <NewsletterSignup variant="banner" />
     </Container>
   </section>
 

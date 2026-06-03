@@ -1,15 +1,24 @@
 # Design System — AI Affiliate Factory
 
+> **Brand contract:** See [`packages/design-tokens-base/DESIGN.md`](./packages/design-tokens-base/DESIGN.md)
+> for the Publisher Elite brand identity — visual theme, palette rationale, typography rules,
+> voice, and agent prompt guide.
+>
+> This file is the **technical implementation reference**: architecture, tokens, component API,
+> conventions, and development workflow.
+
 ## Architecture
 
 ```
 Tokens (CSS custom properties)
-  └── Atoms (Button, Badge, ProgressBar)
-       └── Molecules (Card, Alert, Breadcrumb, Container, ProductGrid)
-            └── Organisms (Hero, FeaturesGrid, StatsGrid, CTASection, TableOfContents)
+  └── Atoms (Button, Badge, ProgressBar, AffiliateBadge)
+       └── Molecules (Card, Alert, Breadcrumb, Container, ProductGrid,
+       |             NativeAd, AuthorBio, ArticleCard, ComparisonTable)
+            └── Organisms (Hero, FeaturesGrid, StatsGrid, CTASection,
+            |             TableOfContents, TestimonialCarousel, NewsletterSignup)
                  └── Templates (PillarLayout, ArticleLayout)
                        └── Routes ([pillar]/[cluster]/[article], [pillar]/, /)
-                            └── Tenants (theme.css overrides)
+                             └── Tenants (theme.css overrides)
 ```
 
 Each layer is **brand-agnostic**. Tenants override only CSS variables — no component code duplication.
@@ -44,7 +53,6 @@ Each layer is **brand-agnostic**. Tenants override only CSS variables — no com
   --breakpoint-tablet: 640px;
   --breakpoint-desktop: 1024px;
   --breakpoint-wide: 1280px;
-
   /* color tokens… */
 }
 ```
@@ -65,43 +73,51 @@ Each layer is **brand-agnostic**. Tenants override only CSS variables — no com
 ### Color tokens (`@theme` in `global.css`)
 
 Defined via Tailwind v4 `@theme` directive. Generates utility classes automatically:
-`bg-primary`, `text-primary-dark`, `border-info/20`, `hover:bg-secondary`, etc.
+`bg-primary`, `text-primary-dark`, `border-border`, etc.
 
 | Token | Value | Usage |
 |---|---|---|
-| `--color-primary` | Indigo 500 | Buttons, links, accents |
-| `--color-primary-dark` | Indigo 600 | Hover states |
-| `--color-primary-light` | Indigo 300 | Dark mode variants |
-| `--color-secondary` | Lime 500 | Secondary actions |
-| `--color-secondary-dark` | Lime 600 | Hover states |
-| `--color-accent` | Amber 500 | Highlight / CTA |
-| `--color-accent-dark` | Amber 600 | Hover states |
-| `--color-success` | Green 500 | Positive feedback |
-| `--color-success-dark` | Green 600 | Alert text (light mode) |
-| `--color-warning` | Amber 500 | Warning feedback |
-| `--color-warning-dark` | Amber 600 | Alert text (light mode) |
-| `--color-error` | Red 500 | Error feedback |
-| `--color-error-dark` | Red 600 | Alert text (light mode) |
-| `--color-info` | Blue 500 | Informational feedback |
-| `--color-info-dark` | Blue 600 | Alert text (light mode) |
+| `--color-primary` | `#6366F1` (Indigo 500) | Buttons, links, CTAs |
+| `--color-primary-dark` | `#4F46E5` (Indigo 600) | Hover states |
+| `--color-primary-light` | `#A5B4FC` (Indigo 300) | Dark mode / light backgrounds |
+| `--color-secondary` | `#84CC16` (Lime 500) | Secondary actions, science badges |
+| `--color-secondary-dark` | `#65A30D` (Lime 600) | Hover states |
+| `--color-secondary-light` | `#BEF264` (Lime 300) | Light backgrounds |
+| `--color-accent` | `#F59E0B` (Amber 500) | Highlights, ratings, price emphasis |
+| `--color-accent-dark` | `#D97706` (Amber 600) | Hover states |
+| `--color-accent-light` | `#FDE68A` (Amber 200) | Light backgrounds |
+| `--color-muted` | `#6B7280` (Gray 500) | Secondary text, captions, metadata |
+| `--color-border` | `#E5E7EB` (Gray 200) | Dividers, card borders, inputs |
+| `--color-surface` | `#FFFFFF` | Cards, modals, elevated panels |
+| `--color-foreground` | `#111111` | Primary body text |
+| `--color-success` | `#22C55E` (Green 500) | Positive feedback |
+| `--color-success-dark` | `#16A34A` (Green 600) | Alert text (light mode) |
+| `--color-warning` | `#F59E0B` (Amber 500) | Warning feedback |
+| `--color-warning-dark` | `#D97706` (Amber 600) | Alert text (light mode) |
+| `--color-error` | `#EF4444` (Red 500) | Error feedback |
+| `--color-error-dark` | `#DC2626` (Red 600) | Alert text (light mode) |
+| `--color-info` | `#3B82F6` (Blue 500) | Informational feedback |
+| `--color-info-dark` | `#2563EB` (Blue 600) | Alert text (light mode) |
+| `--color-info-light` | `#93C5FD` (Blue 300) | Light backgrounds |
 
 ### Design tokens package (`packages/design-tokens-base/`)
 
+- `DESIGN.md` — Publisher Elite brand contract (for AI agents)
 - `css/tokens.css` — non-color tokens: typography, spacing, borders, shadows, glassmorphism
-- `json/tokens.json` — structured token data for tooling (Spacing, Border, Shadow)
+- `json/tokens.json` — structured token data for tooling
 
 ### Tenant overrides
 
 Each tenant creates a `theme.css` that imports `tokens.css` and overrides specific tokens:
 
 ```css
+/* apps/my-brand/src/styles/theme.css */
 @import "../../../../packages/design-tokens-base/css/tokens.css";
 
 :root {
-  --color-primary: #6366f1;        /* Indigo */
-  --color-secondary: #84cc16;      /* Lime */
-  --color-bg: #fafafa;
-  --color-bg-dark: #0a0a0f;
+  --color-primary: #dc2626;      /* Red brand */
+  --color-secondary: #2563eb;    /* Blue brand */
+  --color-bg: #fef2f2;
 }
 ```
 
@@ -109,7 +125,7 @@ Each tenant creates a `theme.css` that imports `tokens.css` and overrides specif
 
 ## Fluid Typography
 
-Defined via `@theme` in `global.css`. Generates Tailwind utilities: `text-display`, `text-h1`, `text-h2`, `text-h3`, `text-body-lg`, `text-body`.
+Defined via `@theme` in `global.css`. Generates Tailwind utilities: `text-display`, `text-h1`, `text-h2`, `text-h3`, `text-h4`, `text-body-lg`, `text-body`, `text-sm`, `text-xs`.
 
 ```css
 @theme {
@@ -117,8 +133,11 @@ Defined via `@theme` in `global.css`. Generates Tailwind utilities: `text-displa
   --font-size-h1: clamp(2.25rem, 5vw, 4rem);
   --font-size-h2: clamp(1.75rem, 4vw, 3rem);
   --font-size-h3: clamp(1.5rem, 3vw, 2.25rem);
+  --font-size-h4: clamp(1.25rem, 2.5vw, 1.5rem);
   --font-size-body-lg: clamp(1.125rem, 2vw, 1.25rem);
   --font-size-body: clamp(1rem, 1.5vw, 1.125rem);
+  --font-size-sm: 0.875rem;
+  --font-size-xs: 0.75rem;
 }
 ```
 
@@ -128,8 +147,19 @@ Defined via `@theme` in `global.css`. Generates Tailwind utilities: `text-displa
 | `text-h1` | 2.25rem (36px) | 5vw | 4rem (64px) | Page titles |
 | `text-h2` | 1.75rem (28px) | 4vw | 3rem (48px) | Section headings |
 | `text-h3` | 1.5rem (24px) | 3vw | 2.25rem (36px) | Subheadings |
+| `text-h4` | 1.25rem (20px) | 2.5vw | 1.5rem (24px) | Card titles |
 | `text-body-lg` | 1.125rem (18px) | 2vw | 1.25rem (20px) | Lead text |
 | `text-body` | 1rem (16px) | 1.5vw | 1.125rem (18px) | Body text |
+| `text-sm` | 0.875rem (14px) | — | — | Metadata, captions |
+| `text-xs` | 0.75rem (12px) | — | — | Badges, timestamps |
+
+### Font families
+
+| Role | Stack | Usage |
+|---|---|---|
+| Display / headings | `'Playfair Display', Georgia, serif` | H1–H2, pull quotes, hero headlines |
+| Body / UI | `'Inter', -apple-system, system-ui, sans-serif` | Articles, product copy, labels |
+| Mono | `'JetBrains Mono', ui-monospace, monospace` | Code, data, stats |
 
 ---
 
@@ -182,9 +212,22 @@ All components use **Svelte 5** (`$props()` runes, `{@render children()}` snippe
 **CVA** (class-variance-authority) for variant management, and the **`cn()` utility**
 (clsx + tailwind-merge) for class merging.
 
-### Utility
+### Import
 
-#### `cn()`
+```js
+import {
+  // Atoms
+  cn, Button, Badge, ProgressBar, AffiliateBadge,
+  // Molecules
+  Card, Alert, Breadcrumb, Container, ProductGrid,
+  NativeAd, AuthorBio, ArticleCard, ComparisonTable,
+  // Organisms
+  Hero, FeaturesGrid, StatsGrid, CTASection,
+  TableOfContents, TestimonialCarousel, NewsletterSignup,
+} from 'design-system-base';
+```
+
+### Utility: `cn()`
 
 ```js
 import { cn } from 'design-system-base';
@@ -192,6 +235,8 @@ import { cn } from 'design-system-base';
 cn('base-class', conditional && 'active', 'extra-class')
 // → "base-class active extra-class" (conflicts resolved via tailwind-merge)
 ```
+
+---
 
 ### Atoms
 
@@ -207,9 +252,7 @@ cn('base-class', conditional && 'active', 'extra-class')
 | `size` | string | `'md'` | `sm` (32px), `md` (44px), `lg` (52px) |
 | `disabled` | boolean | `false` | |
 | `href` | string | `''` | renders `<a>` when set, `<button>` otherwise |
-| `class` | string | `''` | merged via `cn()` — consumer overrides win |
-
-> **Note:** `size="sm"` (32px) should only be used where touch target is not required (e.g., desktop-only toolbars). For mobile, use `size="md"` (44px) minimum.
+| `class` | string | `''` | merged via `cn()` |
 
 #### Badge
 
@@ -239,6 +282,22 @@ cn('base-class', conditional && 'active', 'extra-class')
 | `showLabel` | boolean | `true` | |
 | `animated` | boolean | `false` | adds `animate-pulse` |
 | `class` | string | `''` | |
+
+#### AffiliateBadge
+
+```svelte
+<AffiliateBadge type="sponsored" size="sm" />
+```
+
+| Prop | Type | Default | Options |
+|---|---|---|---|
+| `type` | string | `'affiliate'` | `affiliate`, `sponsored`, `editorPick`, `new`, `sale`, `science` |
+| `size` | string | `'sm'` | `sm`, `md` |
+| `class` | string | `''` | |
+
+Shows an emoji + uppercase label. Types: 🔗 Affiliate Link, 📢 Sponsored, ⭐ Editor's Pick, ✨ New, 🏷️ Sale, 🔬 Science-Backed.
+
+---
 
 ### Molecules
 
@@ -293,7 +352,130 @@ cn('base-class', conditional && 'active', 'extra-class')
 |---|---|---|---|
 | `class` | string | `''` | merged via `cn()` |
 
-A simple centered wrapper: `mx-auto w-full max-w-7xl` with responsive horizontal padding (`px-4 tablet:px-6 desktop:px-8`). No nested Container inside Container.
+Simple centered wrapper: `mx-auto w-full max-w-6xl` with responsive horizontal padding.
+
+#### ProductGrid
+
+```svelte
+<ProductGrid products={[
+  { title: 'Java Burn', description: '...', image: '...', badge: 'Best Seller', price: '69', cta: { label: 'Buy Now', href: '...' } },
+]} />
+```
+
+| Prop | Type | Default | Options |
+|---|---|---|---|
+| `products` | array | `[]` | `{ title, description, image?, badge?, price?, compareAtPrice?, cta? }[]` |
+| `class` | string | `''` | |
+
+Grid of product cards (image, badge, title, description, pricing, CTA button). First product gets `elevated` card variant.
+
+#### NativeAd
+
+```svelte
+<NativeAd
+  title="Sponsored Product"
+  description="Short description"
+  image="/path/to/image.jpg"
+  badgeType="sponsored"
+  cta={{ label: "Learn More", href: "#" }}
+  variant="editorial"
+/>
+```
+
+| Prop | Type | Default | Options |
+|---|---|---|---|
+| `title` | string | `''` | |
+| `description` | string | `''` | |
+| `image` | string | `''` | 16:10 aspect ratio thumbnail |
+| `imageAlt` | string | `''` | falls back to title |
+| `badgeType` | string | `'sponsored'` | See AffiliateBadge types |
+| `cta` | object | `{ label: 'Learn More', href: '#' }` | |
+| `variant` | string | `'editorial'` | `editorial`, `subtle` |
+| `class` | string | `''` | |
+
+Visually matches editorial card design (same radius, typography, spacing). Only the badge differentiates it from native content.
+
+#### AuthorBio
+
+```svelte
+<AuthorBio
+  name="Dr. Sarah Chen"
+  avatar="/path/to/avatar.jpg"
+  role="Nutrition Scientist"
+  bio="10+ years researching metabolic health..."
+  socialLinks={[{ label: "@sarahchen", href: "https://twitter.com/sarahchen" }]}
+/>
+```
+
+| Prop | Type | Default | Options |
+|---|---|---|---|
+| `name` | string | `''` | |
+| `avatar` | string | `''` | shows initial fallback when empty |
+| `role` | string | `''` | |
+| `bio` | string | `''` | |
+| `socialLinks` | array | `[]` | `{ label: string, href: string }[]` |
+| `class` | string | `''` | |
+
+#### ArticleCard
+
+```svelte
+<ArticleCard
+  title="How Coffee Affects Your Metabolism"
+  description="New research shows...""
+  image="/path/to/image.jpg"
+  category="Metabolism"
+  author="Dr. Sarah Chen"
+  date="Jun 1, 2026"
+  readingTime="8"
+  href="/coffee-wellness/coffee-metabolism/article"
+  badgeType="science"
+/>
+```
+
+| Prop | Type | Default | Options |
+|---|---|---|---|
+| `title` | string | `''` | |
+| `description` | string | `''` | |
+| `image` | string | `''` | 16:9 aspect ratio |
+| `imageAlt` | string | `''` | |
+| `category` | string | `''` | |
+| `tags` | array | `[]` | |
+| `author` | string | `''` | |
+| `date` | string | `''` | |
+| `readingTime` | string | `''` | |
+| `href` | string | `''` | entire card acts as link |
+| `badgeType` | string or null | `null` | See AffiliateBadge types |
+| `variant` | string | `'default'` | `default`, `subtle` |
+| `class` | string | `''` | |
+
+Interactive card with hover lift, image zoom on hover, metadata row (author · date · reading time).
+
+#### ComparisonTable
+
+```svelte
+<ComparisonTable
+  title="Product Comparison"
+  products={[
+    { name: 'Product A', price: '$49', rating: '4.8', cta: { label: 'Buy', href: '#' } },
+    { name: 'Product B', price: '$39', rating: '4.5', cta: { label: 'Buy', href: '#' } },
+  ]}
+  features={[
+    { label: 'Price', key: 'price' },
+    { label: 'Rating', key: 'rating' },
+  ]}
+/>
+```
+
+| Prop | Type | Default | Options |
+|---|---|---|---|
+| `title` | string | `''` | |
+| `products` | array | `[]` | `{ name: string, cta?: { label, href }, [key]: any }[]` |
+| `features` | array | `[]` | `{ label: string, key: string }[]` |
+| `class` | string | `''` | |
+
+Booleans (`true`/`false`) render as ✓ / —. CTA row at bottom. Responsive horizontal scroll on mobile.
+
+---
 
 ### Organisms
 
@@ -306,6 +488,7 @@ A simple centered wrapper: `mx-auto w-full max-w-7xl` with responsive horizontal
   primaryCta={{ label: 'Start', href: '#' }}
   secondaryCta={{ label: 'Learn more', href: '#' }}
   variant="gradient"
+  backgroundImage="/path/to/bg.jpg"
 />
 ```
 
@@ -314,8 +497,9 @@ A simple centered wrapper: `mx-auto w-full max-w-7xl` with responsive horizontal
 | `title` | string | `''` | |
 | `subtitle` | string | `''` | |
 | `primaryCta` | object | `{ label: 'Start', href: '#' }` | |
-| `secondaryCta` | object | `null` | |
+| `secondaryCta` | object or null | `null` | |
 | `variant` | string | `'default'` | `default`, `gradient`, `glass` |
+| `backgroundImage` | string | `''` | shows overlay gradient when set |
 | `class` | string | `''` | |
 
 #### FeaturesGrid
@@ -350,7 +534,7 @@ A simple centered wrapper: `mx-auto w-full max-w-7xl` with responsive horizontal
 | Prop | Type | Default | Options |
 |---|---|---|---|
 | `stats` | array | `[]` | `{ value: string, label: string }[]` |
-| `columns` | object | `{ base: 2, md: 4 }` | responsive: `{ base, sm, md, lg, xl }` |
+| `columns` | object | `{ base: 2, md: 4 }` | responsive |
 | `variant` | string | `'default'` | `default`, `gradient`, `accent` |
 | `class` | string | `''` | |
 
@@ -373,7 +557,7 @@ A simple centered wrapper: `mx-auto w-full max-w-7xl` with responsive horizontal
 | `variant` | string | `'glass'` | `glass`, `gradient` |
 | `class` | string | `''` | |
 
-#### TableOfContents (TOC)
+#### TableOfContents
 
 ```svelte
 <TableOfContents headings={[
@@ -388,25 +572,54 @@ A simple centered wrapper: `mx-auto w-full max-w-7xl` with responsive horizontal
 | `title` | string | `'Table of Contents'` | |
 | `class` | string | `''` | |
 
-**Behaviour:**
-- **Mobile**: renders as collapsible accordion (starts open). Toggle button with chevron indicator.
-- **Tablet/Desktop**: sticky navigation. Highlights active section via `IntersectionObserver` (Svelte island, client:load).
-- **Smooth scroll**: target sections use `scroll-margin-top: 80px` to account for sticky header.
+Behaviour: mobile → collapsible accordion; tablet/desktop → sticky nav with scrollspy.
 
-#### ProductGrid
+#### TestimonialCarousel
 
 ```svelte
-<ProductGrid products={[
-  { title: 'Java Burn', description: '...', image: '...', badge: 'Best Seller', price: '69', cta: { label: 'Buy Now', href: '...' } },
-]} />
+<TestimonialCarousel
+  title="What Our Readers Say"
+  testimonials={[
+    { quote: "Life-changing information...", author: "John D.", role: "Verified Reader" },
+    { quote: "Finally, science-backed advice...", author: "Sarah M." },
+  ]}
+  autoplaySpeed={5000}
+/>
 ```
 
 | Prop | Type | Default | Options |
 |---|---|---|---|
-| `products` | array | `[]` | `{ title, description, image?, badge?, price?, compareAtPrice?, cta? }[]` |
+| `title` | string | `''` | |
+| `testimonials` | array | `[]` | `{ quote: string, author: string, role?: string }[]` |
+| `autoplaySpeed` | number | `5000` | ms; 0 to disable autoplay |
 | `class` | string | `''` | |
 
-Grid of product cards (image, badge, title, description, pricing, CTA button). First product gets `elevated` card variant.
+Autoplay pauses on hover. Dot navigation. Fade transition between slides.
+
+#### NewsletterSignup
+
+```svelte
+<NewsletterSignup
+  title="Stay Updated"
+  subtitle="Get the latest research..."
+  placeholder="your@email.com"
+  buttonLabel="Subscribe"
+  action="/api/subscribe"
+  variant="default"
+/>
+```
+
+| Prop | Type | Default | Options |
+|---|---|---|---|
+| `title` | string | `'Stay Updated'` | |
+| `subtitle` | string | `''` | |
+| `placeholder` | string | `'your@email.com'` | |
+| `buttonLabel` | string | `'Subscribe'` | |
+| `action` | string | `'#'` | form action URL |
+| `variant` | string | `'default'` | `default`, `gradient` |
+| `class` | string | `''` | |
+
+Client-side state: shows success message after submit. Accessible label via `sr-only`.
 
 ---
 
@@ -414,28 +627,13 @@ Grid of product cards (image, badge, title, description, pricing, CTA button). F
 
 ### Strategy: class toggle (native detection + persistence)
 
-A blocking `<script is:inline>` in `<head>` applies `.dark` to `<html>` before first paint:
-
-```html
-<script is:inline>
-  (function() {
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (stored === 'dark' || (!stored && prefersDark)) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  })();
-</script>
-```
+A blocking `<script is:inline>` in `<head>` applies `.dark` to `<html>` before first paint.
 
 ### Implementation rules
 
 - Components use `dark:` variants: `bg-white dark:bg-gray-800`
 - `.dark` class on `<html>` — set inline before paint to prevent flash
 - Persisted to `localStorage` for user preference across sessions
-- All interactive elements respect both the media query AND the class toggle
 
 ---
 
@@ -443,15 +641,16 @@ A blocking `<script is:inline>` in `<head>` applies `.dark` to `<html>` before f
 
 1. Create a new app directory under `apps/`
 2. Create `src/styles/theme.css` that imports `tokens.css` and overrides colors
-3. The `@theme` block in `global.css` sets defaults; `theme.css` overrides at runtime via CSS cascade
+3. Create `src/config/tenant.json` with brand identity, nav, footer, social links
+4. The `@theme` block in `global.css` sets defaults; `theme.css` overrides at runtime via CSS cascade
 
 ```css
 /* apps/my-brand/src/styles/theme.css */
 @import "../../../../packages/design-tokens-base/css/tokens.css";
 
 :root {
-  --color-primary: #dc2626;      /* Red brand */
-  --color-secondary: #2563eb;    /* Blue brand */
+  --color-primary: #dc2626;
+  --color-secondary: #2563eb;
   --color-bg: #fef2f2;
 }
 ```
@@ -463,7 +662,6 @@ A blocking `<script is:inline>` in `<head>` applies `.dark` to `<html>` before f
 All components accept a `class` prop merged via `cn()`:
 
 ```svelte
-<!-- Consumer can override ANY utility -->
 <Button class="bg-red-500 hover:bg-red-700 text-xs">Custom</Button>
 ```
 
@@ -505,18 +703,17 @@ All components accept a `class` prop merged via `cn()`:
 
 ### ✅ Implemented
 - Design tokens (CSS variables + `@theme`)
-- Responsive breakpoints: `tablet` (640px), `desktop` (1024px), `wide` (1280px)
-- Fluid typography with `clamp()` (display, h1–h3, body)
-- Dark mode class toggle with `localStorage` persistence + `prefers-color-scheme`
-- Atoms: Button (5 variants × 3 sizes, 44px touch target), Badge (6 variants), ProgressBar
-- Molecules: Card (5 variants), Alert (4 variants + icon/dismiss), Breadcrumb, Container, ProductGrid
-- Organisms: Hero (3 variants), FeaturesGrid (responsive columns), StatsGrid, CTASection, TableOfContents (scrollspy + accordion)
-- Templates: PillarLayout (article grid + stage badges), ArticleLayout (breadcrumb + TOC + CTA)
-- Content collections: `pillars` + `articles` with Zod schemas
-- Routes: `[pillar]/[cluster]/[article]`, `[pillar]/index`, `/` (TOFU landing)
-- 3 MDX articles: TOFU (Awareness), MOFU (Consideration), BOFU (Decision + affiliate disclaimer)
-- CVA + `cn()` utility
-- Brand-agnostic theming (per-tenant `theme.css` overrides)
+- Brand contract `DESIGN.md` (Open Design format, 9 sections)
+- Responsive breakpoints + fluid typography + dark mode
+- Atoms: Button (5×3), Badge (6 variants), ProgressBar, **AffiliateBadge** (6 types)
+- Molecules: Card (5), Alert (4), Breadcrumb, Container, ProductGrid,
+  **NativeAd**, **AuthorBio**, **ArticleCard**, **ComparisonTable**
+- Organisms: Hero (3), FeaturesGrid, StatsGrid, CTASection, TableOfContents,
+  **TestimonialCarousel**, **NewsletterSignup**
+- Templates: PillarLayout, ArticleLayout
+- Content collections with Zod schemas
+- Multi-tenant theming (`tenant.json` + `theme.css` overrides)
+- Semantic color roles: `--color-muted`, `--color-border`, `--color-surface`, `--color-foreground`
 
 ### 🚧 Pending
 - [ ] WCAG 2.1 AA audit (tool: axe DevTools)
