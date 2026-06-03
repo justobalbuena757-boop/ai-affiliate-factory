@@ -5,6 +5,12 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"]
 		},
+		"design-system-base#build": {
+			"outputs": []
+		},
+		"design-tokens-base#build": {
+			"outputs": []
+		},
 		"dev": {
 			"cache": false,
 			"persistent": true
