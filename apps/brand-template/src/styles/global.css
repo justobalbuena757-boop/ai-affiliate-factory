@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@source "../../../../packages/design-system-base/src";
+@source "../../../../packages/design-tokens-base/src";
 
 @font-face {
 	font-family: "Inter";
