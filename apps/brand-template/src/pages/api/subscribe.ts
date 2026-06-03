@@ -1,3 +1,5 @@
+export const prerender = false;
+
 export async function POST({ request }: { request: Request }) {
   try {
     const formData = await request.formData();

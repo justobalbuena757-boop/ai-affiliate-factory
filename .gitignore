@@ -1,0 +1,52 @@
+# --- Environment ---
+.env
+.env.local
+.env.*.local
+
+# --- Dependencies ---
+node_modules/
+.pnpm-store/
+
+# --- Build Output ---
+dist/
+apps/*/dist/
+packages/*/dist/
+
+# --- Astro Cache ---
+.astro/
+apps/*/.astro/
+packages/*/.astro/
+
+# --- Turbo Cache ---
+.turbo/
+apps/*/.turbo/
+packages/*/.turbo/
+
+# --- Wrangler / Cloudflare ---
+.wrangler/
+apps/*/.wrangler/
+packages/*/.wrangler/
+
+# --- Vite / esbuild Cache ---
+.vite/
+apps/*/.vite/
+packages/*/.vite/
+
+# --- TypeScript ---
+*.tsbuildinfo
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo

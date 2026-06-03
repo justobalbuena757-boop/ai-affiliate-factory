@@ -2,8 +2,9 @@
 import { cn } from 'design-system-base';
 import Layout from './Layout.astro';
 import { Container, Breadcrumb, CTASection, Card } from 'design-system-base';
-import AuthorBio from '../components/mdx/AuthorBio.svelte';
-import AffiliateDisclosure from '../components/mdx/AffiliateDisclosure.svelte';
+import AuthorBio from '../components/mdx/AuthorBio.astro';
+import AffiliateDisclosure from '../components/mdx/AffiliateDisclosure.astro';
+import tenant from '../config/tenant.json';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -33,16 +34,16 @@ const stageLabels: Record<string, string> = {
 const readingTime = Math.ceil(article.body?.split(/\s+/).length / 200) || 4;
 const hasToc = headings.filter(h => h.depth <= 3).length > 0;
 
-const siteUrl = (Astro.site?.toString() || 'https://metabolic40plus.com').replace(/\/$/, '');
+const brand = tenant.brand;
+const siteUrl = (Astro.site?.toString() || brand.url).replace(/\/$/, '');
 const articleUrl = `${siteUrl}/${pillarSlug}/${clusterSlug}/${articleSlug}`;
-const articleImage = data.ogImage || `${siteUrl}/og-default.jpg`;
+const articleImage = data.ogImage || `${siteUrl}${brand.defaultOgImage}`;
 
-// Use modifiedDate from frontmatter, fall back to pubDate, fall back to file modification time
 const dateModified = (data as any).modifiedDate
   ? new Date((data as any).modifiedDate)
   : data.pubDate;
 
-const authorName = data.author || 'AI Affiliate Factory';
+const authorName = data.author || brand.companyName;
 const authorUrl = `${siteUrl}/about`;
 
 const personJsonLd = {
@@ -53,7 +54,7 @@ const personJsonLd = {
   jobTitle: 'Editorial Team',
   worksFor: {
     '@type': 'Organization',
-    name: 'Metabolic 40+',
+    name: brand.name,
     url: siteUrl,
   },
   knowsAbout: [
@@ -65,25 +66,38 @@ const personJsonLd = {
   ],
 };
 
+const pillarTopics: Record<string, string> = {
+  'coffee-wellness': 'Coffee, Metabolism, Healthy Aging, Nutritional Supplements',
+  'sleep-recovery': 'Sleep Quality, Recovery, Hormonal Balance, Circadian Rhythm',
+};
+
 const articleJsonLd: any = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: data.title,
   description: data.description,
-  image: articleImage,
+  image: {
+    '@type': 'ImageObject',
+    url: articleImage,
+    width: articleImage.startsWith('http') ? 1200 : 1200,
+    height: 630,
+  },
   datePublished: data.pubDate.toISOString(),
+  dateCreated: data.pubDate.toISOString(),
   dateModified: dateModified.toISOString(),
   author: {
     '@type': 'Person',
+    '@id': `${siteUrl}/about#editorial-team`,
     name: authorName,
     url: authorUrl,
   },
   publisher: {
     '@type': 'Organization',
-    name: 'Metabolic 40+',
+    '@id': `${siteUrl}#organization`,
+    name: brand.name,
     logo: {
       '@type': 'ImageObject',
-      url: `${siteUrl}/favicon.svg`,
+      url: `${siteUrl}${brand.favicon}`,
       width: 64,
       height: 64,
     },
@@ -97,10 +111,21 @@ const articleJsonLd: any = {
   articleBody: data.description,
   inLanguage: 'en-US',
   wordCount: article.body?.split(/\s+/).length || 0,
+  about: {
+    '@type': 'Thing',
+    name: pillarSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+    description: pillarTopics[pillarSlug] || 'Metabolic Health, Wellness, Healthy Aging',
+  },
+  mentions: [
+    { '@type': 'Thing', name: 'Metabolic Health After 40' },
+    { '@type': 'Thing', name: 'Evidence-Based Wellness' },
+    { '@type': 'Thing', name: 'Healthy Aging' },
+  ],
 };
 
-// Add Review schema for BOFU (product review) articles
-if (data.stage === 'bofu') {
+const productCta = data.cta || { label: 'Shop Now', href: 'https://www.javaburn.net/' };
+
+if (data.stage === 'bofu' && productCta) {
   articleJsonLd.review = {
     '@type': 'Review',
     name: data.title,
@@ -112,56 +137,18 @@ if (data.stage === 'bofu') {
     },
     itemReviewed: {
       '@type': 'Product',
-      name: 'Java Burn',
-      description: 'Flavorless, instant-dissolve metabolic support powder designed to be added to morning coffee. Contains 7 science-backed ingredients for adults over 40.',
+      name: productCta.product || 'Java Burn',
+      description: productCta.description || 'Flavorless, instant-dissolve metabolic support powder designed to be added to morning coffee.',
       brand: {
         '@type': 'Brand',
-        name: 'Java Burn',
+        name: productCta.product || 'Java Burn',
       },
-      offers: {
-        '@type': 'AggregateOffer',
-        priceCurrency: 'USD',
-        lowPrice: '69',
-        highPrice: '147',
-        offerCount: 3,
-        offers: [
-          {
-            '@type': 'Offer',
-            name: '1 Month Supply',
-            price: '69.00',
-            priceCurrency: 'USD',
-            availability: 'https://schema.org/InStock',
-            url: 'https://www.javaburn.net/',
-          },
-          {
-            '@type': 'Offer',
-            name: '3 Month Supply',
-            price: '117.00',
-            priceCurrency: 'USD',
-            availability: 'https://schema.org/InStock',
-            url: 'https://www.javaburn.net/',
-          },
-          {
-            '@type': 'Offer',
-            name: '6 Month Supply',
-            price: '147.00',
-            priceCurrency: 'USD',
-            availability: 'https://schema.org/InStock',
-            url: 'https://www.javaburn.net/',
-          },
-        ],
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.6',
-        reviewCount: '1000',
-        bestRating: '5',
-        worstRating: '1',
-      },
+      ...(productCta.offers && { offers: productCta.offers }),
+      ...(productCta.aggregateRating && { aggregateRating: productCta.aggregateRating }),
     },
     reviewRating: {
       '@type': 'Rating',
-      ratingValue: '4.6',
+      ratingValue: productCta.ratingValue || '4.6',
       bestRating: '5',
       worstRating: '1',
     },
@@ -251,8 +238,7 @@ const breadcrumbJsonLd = {
 
         {(data.stage === 'mofu' || data.stage === 'bofu') && (
           <AffiliateDisclosure
-            client:load
-            product="Java Burn"
+            product={productCta.product || 'Java Burn'}
             network="official website"
           />
         )}
@@ -272,8 +258,7 @@ const breadcrumbJsonLd = {
         )}
 
         <AuthorBio
-          client:load
-          name={data.author || 'AI Affiliate Factory'}
+          name={data.author || brand.companyName}
           role="Editorial Team"
           bio="The AI Affiliate Factory editorial team combines nutritional science research, sleep science, and AI-powered content creation to deliver evidence-based health information specifically tailored for adults over 40."
           expertise={['Metabolic Health', 'Sleep Science', 'Healthy Aging']}
@@ -307,15 +292,15 @@ const breadcrumbJsonLd = {
             </nav>
 
             <div class="mt-6 p-5 bg-accent/5 dark:bg-accent/10 rounded-xl border border-accent/10 dark:border-accent/20">
-              <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-2">Try Java Burn</h3>
+              <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-2">{productCta.product || 'Try Java Burn'}</h3>
               <p class="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">
-                Science-backed metabolic support in your morning coffee.
+                {productCta.sidebarDescription || 'Science-backed metabolic support in your morning coffee.'}
               </p>
               <a
-                href="https://www.javaburn.net/"
+                href={productCta.href}
                 class="inline-block text-xs font-bold text-white bg-accent hover:bg-accent-dark px-4 py-2 rounded-lg transition-colors w-full text-center"
               >
-                Shop Now
+                {productCta.label}
               </a>
             </div>
           </div>
@@ -357,11 +342,9 @@ const breadcrumbJsonLd = {
   )}
 
   <CTASection
-    title="Ready to Transform Your Health?"
-    subtitle="Join thousands of people over 40 who have discovered the power of enhanced coffee for metabolism, sleep, and recovery."
-    cta={{ label: 'Visit Java Burn Official Site', href: 'https://www.javaburn.net/' }}
+    title={productCta.sectionTitle || 'Ready to Transform Your Health?'}
+    subtitle={productCta.sectionSubtitle || 'Join thousands of people over 40 who have discovered the power of enhanced coffee for metabolism, sleep, and recovery.'}
+    cta={{ label: productCta.ctaLabel || 'Visit Official Site', href: productCta.href }}
     variant="glass"
   />
 </Layout>
-
-

@@ -1,0 +1,56 @@
+{
+  "brand": {
+    "name": "Metabolic 40+",
+    "tagline": "Evidence-Based Wellness for Adults 40+",
+    "description": "Science-backed content about metabolic health, coffee, sleep, and healthy aging for adults over 40.",
+    "logo": "⚡",
+    "logoText": "Metabolic 40+",
+    "companyName": "AI Affiliate Factory",
+    "url": "https://metabolic40plus.com",
+    "defaultOgImage": "/images/hero-coffe.jpg",
+    "favicon": "/favicon.svg",
+    "appleTouchIcon": "/apple-touch-icon.png",
+    "manifest": "/site.webmanifest",
+    "locale": "en_US",
+    "themeColor": {
+      "light": "#6366f1",
+      "dark": "#0a0a0f"
+    }
+  },
+  "social": {
+    "twitter": "https://twitter.com/metabolic40plus",
+    "facebook": "https://facebook.com/metabolic40plus",
+    "linkedin": "https://linkedin.com/company/metabolic40plus"
+  },
+  "nav": {
+    "primary": [
+      { "label": "Shop Java Burn", "href": "https://www.javaburn.net/", "isExternal": true, "class": "text-sm font-semibold text-accent dark:text-accent hover:underline" }
+    ]
+  },
+  "footer": {
+    "copyright": "AI Affiliate Factory",
+    "columns": [
+      {
+        "title": null,
+        "links": [
+          { "label": "About Us", "href": "/about" },
+          { "label": "Research Methodology", "href": "/research-methodology" },
+          { "label": "AI Disclosure", "href": "/ai-disclosure" }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          { "label": "Editorial Policy", "href": "/editorial-policy" },
+          { "label": "Privacy Policy", "href": "/privacy-policy" },
+          { "label": "Affiliate Disclosure", "href": "/affiliate-disclosure" },
+          { "label": "Contact", "href": "/contact" }
+        ]
+      }
+    ]
+  },
+  "jsonLd": {
+    "websiteDescription": "Science-backed content about metabolic health, coffee, sleep, and healthy aging for adults over 40.",
+    "searchAction": true
+  }
+}

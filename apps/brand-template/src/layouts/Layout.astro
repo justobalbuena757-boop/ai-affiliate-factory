@@ -2,8 +2,20 @@
 import '../styles/global.css';
 import '../styles/theme.css';
 import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
 import SEO from '../components/SEO.astro';
+import ThemeScript from '../components/ThemeScript.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import Footer from '../components/Footer.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import tenant from '../config/tenant.json';
+
+interface NavLink {
+  label: string;
+  href: string;
+  isExternal?: boolean;
+  class?: string;
+}
 
 interface Props {
   title: string;
@@ -23,6 +35,7 @@ interface Props {
       sameAs: string[];
     };
   };
+  heroImage?: string;
 }
 
 const {
@@ -38,42 +51,42 @@ const {
   canonical,
   jsonLd,
   frontmatter = {},
+  heroImage,
 } = Astro.props;
 
 const pillars = await getCollection('pillars');
-const year = new Date().getFullYear();
-const siteUrl = (Astro.site?.toString() || 'https://metabolic40plus.com').replace(/\/$/, '');
+const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, '');
+const brand = tenant.brand;
+const nav = tenant.nav;
 
 const siteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Metabolic 40+',
-  description: 'Science-backed content about metabolic health, coffee, sleep, and healthy aging for adults over 40.',
+  name: brand.name,
+  description: brand.description,
   url: siteUrl,
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${siteUrl}/?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
+  ...(tenant.jsonLd?.searchAction && {
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${siteUrl}/?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  }),
 };
 
 const orgJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Metabolic 40+',
+  name: brand.name,
   url: siteUrl,
-  logo: `${siteUrl}/favicon.svg`,
-  sameAs: [
-    'https://twitter.com/metabolic40plus',
-    'https://facebook.com/metabolic40plus',
-    'https://linkedin.com/company/metabolic40plus',
-  ],
+  logo: `${siteUrl}${brand.favicon}`,
+  sameAs: Object.values(tenant.social || {}),
 };
 
 const authorJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: frontmatter.author?.name || 'AI Affiliate Factory',
+  name: frontmatter.author?.name || brand.companyName,
   sameAs: frontmatter.author?.sameAs || [],
 };
 
@@ -102,80 +115,53 @@ const mergedJsonLd = jsonLd
       canonical={canonical}
       jsonLd={mergedJsonLd}
     />
-    <script is:inline>
-      (function() {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'dark' || (!stored && prefersDark)) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      })();
-    </script>
-    <script defer>
-      document.addEventListener('DOMContentLoaded', function() {
-        const toggle = document.getElementById('theme-toggle');
-        if (toggle) {
-          toggle.addEventListener('click', function() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains('dark');
-            if (isDark) {
-              html.classList.remove('dark');
-              localStorage.setItem('theme', 'light');
-            } else {
-              html.classList.add('dark');
-              localStorage.setItem('theme', 'dark');
-            }
-          });
-        }
-      });
-    </script>
+    {heroImage && (
+      <link rel="preload" as="image" href={heroImage} />
+    )}
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" />
+    </noscript>
+    <ThemeScript />
   </head>
   <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen antialiased">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg outline-none">
       Skip to main content
     </a>
 
-    <header class="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg" style="padding-top:env(safe-area-inset-top,0px)">
+      <div class="max-w-6xl mx-auto px-4 tablet:px-6 md:px-8">
         <div class="flex items-center justify-between h-16">
           <a href="/" class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
-            <span class="text-xl">&#9886;</span>
-            <span>Metabolic 40+</span>
+            <Icon name="lucide:zap" class="w-6 h-6 text-primary" />
+            <span>{brand.logoText}</span>
           </a>
 
+          <MobileMenu pillars={pillars} />
+
           <nav class="hidden sm:flex items-center gap-6" aria-label="Main navigation">
-            {pillars.map((p: typeof pillars[number]) => (
+            {pillars.map((p: any) => (
               <a
                 href={`/${p.id.replace('.mdx', '')}`}
-                class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
+                class="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
               >
-                {p.data.icon && <span class="mr-1">{p.data.icon}</span>}
+                <Icon name={p.id === 'coffee-wellness' ? 'lucide:coffee' : 'lucide:moon'} class="w-4 h-4" />
                 {p.data.title.split('&')[0].trim()}
               </a>
             ))}
-            <a
-              href="https://www.javaburn.net/"
-              class="text-sm font-semibold text-accent dark:text-accent hover:underline"
-            >
-              Shop Java Burn
-            </a>
+            {(nav?.primary as NavLink[] || []).map((link) => (
+              <a
+                href={link.href}
+                class={link.class || "text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"}
+                {...(link.isExternal ? { target: "_blank", rel: "noopener sponsored" } : {})}
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
 
-          <button
-            id="theme-toggle"
-            class="flex items-center justify-center w-9 h-9 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Toggle dark mode"
-            type="button"
-          >
-            <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-            <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </button>
+          <ThemeToggle />
         </div>
       </div>
     </header>
@@ -184,55 +170,32 @@ const mergedJsonLd = jsonLd
       <slot />
     </main>
 
-    <footer class="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Metabolic 40+</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-              Science-backed content about metabolic health, coffee, sleep, and healthy aging for adults over 40.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Content Pillars</h3>
-            <ul class="space-y-2">
-              {pillars.map((p: typeof pillars[number]) => (
-                <li>
-                  <a
-                    href={`/${p.id.replace('.mdx', '')}`}
-                    class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
-                  >
-                    {p.data.icon && <span class="mr-1.5">{p.data.icon}</span>}
-                    {p.data.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Legal</h3>
-            <ul class="space-y-2">
-              <li><a href="/editorial-policy" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Editorial Policy</a></li>
-              <li><a href="/privacy-policy" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="/affiliate-disclosure" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Affiliate Disclosure</a></li>
-              <li><a href="/contact" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">About</h3>
-            <ul class="space-y-2">
-              <li><a href="/about" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="/research-methodology" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Research Methodology</a></li>
-              <li><a href="/ai-disclosure" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">AI Disclosure</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 text-center">
-          <p class="text-xs text-gray-400 dark:text-gray-500">
-            &copy; {year} AI Affiliate Factory. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
+    <Footer pillars={pillars} />
+
+    <script>
+      (()=>{
+        let u = localStorage.getItem('_vid');
+        if (!u) { u = crypto.randomUUID?.() || 'v' + Date.now() + Math.random().toString(36).slice(2); localStorage.setItem('_vid', u); }
+        const send = () => {
+          const d = { uuid: u, url: location.href, title: document.title, referrer: document.referrer, screen: `${screen.width}x${screen.height}`, tz: Intl.DateTimeFormat().resolvedOptions().timeZone };
+          (navigator.sendBeacon || ((url, body) => fetch(url, { method: 'POST', body, keepalive: true })))('/api/track', JSON.stringify(d));
+        };
+        const cb = () => {
+          send();
+          fetch('/api/visits?uuid=' + encodeURIComponent(u)).then(r => r.json()).then(d => {
+            if (!d.visits?.length) return;
+            const html = document.documentElement;
+            html.dataset.visited = 'true';
+            const count = d.visits.length;
+            if (count > 5) html.dataset.visitedCount = '5+'; else html.dataset.visitedCount = String(count);
+            const pages = d.visits.map((v: any) => v.url || '');
+            if (pages.some((p: string) => p.includes('/coffee-wellness'))) html.dataset.visitedCoffee = '';
+            if (pages.some((p: string) => p.includes('/sleep-recovery'))) html.dataset.visitedSleep = '';
+            if (pages.some((p: string) => p.includes('/quiz'))) html.dataset.visitedQuiz = '';
+          }).catch(() => {});
+        };
+        ('requestIdleCallback' in window ? requestIdleCallback : setTimeout)(cb, 100);
+      })();
+    </script>
   </body>
 </html>

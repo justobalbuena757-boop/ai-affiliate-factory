@@ -9,25 +9,11 @@
     secondaryCta = null,
     variant = 'default',
     backgroundImage = '',
-    overlay = true,
     class: className = '',
     ...rest
   } = $props();
 
   let variantState = $derived(variant);
-
-  const isBrowser = typeof window !== 'undefined';
-
-  $effect(() => {
-    if (backgroundImage && isBrowser) {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = backgroundImage;
-      document.head.appendChild(link);
-      return () => document.head.removeChild(link);
-    }
-  });
 </script>
 
 <section
@@ -52,23 +38,16 @@
       loading="eager"
       fetchpriority="high"
       decoding="sync"
-      class="absolute inset-0 -z-30 w-full h-full object-cover"
+      class="absolute inset-0 w-full h-full object-cover"
       aria-hidden="true"
     />
     <div
-      class="absolute inset-0 -z-20 bg-cover bg-center"
-      style="background-image: url({backgroundImage});"
+      class="absolute inset-0 bg-gradient-to-br from-gray-900/70 via-gray-900/50 to-gray-900/80"
       aria-hidden="true"
     ></div>
-    {#if overlay}
-      <div
-        class="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900/70 via-gray-900/50 to-gray-900/80"
-        aria-hidden="true"
-      ></div>
-    {/if}
   {/if}
   <div
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+    class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
   >
     <h1
       class={cn(

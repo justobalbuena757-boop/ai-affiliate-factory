@@ -1,7 +1,24 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: local('Inter');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: local('Playfair Display');
+}
+
 @theme {
   --breakpoint-tablet: 640px;
+  --breakpoint-md: 768px;
   --breakpoint-desktop: 1024px;
   --breakpoint-wide: 1280px;
 
@@ -63,3 +80,26 @@ html {
     scroll-behavior: auto;
   }
 }
+
+[data-visited] .return-visit-only { display: revert; }
+:not([data-visited]) .return-visit-only { display: none; }
+[data-visited] .first-visit-only { display: none; }
+:not([data-visited]) .first-visit-only { display: revert; }
+
+[data-visited-coffee] .visited-coffee-only { display: revert; }
+:not([data-visited-coffee]) .visited-coffee-only { display: none; }
+[data-visited-coffee] .not-visited-coffee-only { display: none; }
+:not([data-visited-coffee]) .not-visited-coffee-only { display: revert; }
+
+[data-visited-sleep] .visited-sleep-only { display: revert; }
+:not([data-visited-sleep]) .visited-sleep-only { display: none; }
+[data-visited-sleep] .not-visited-sleep-only { display: none; }
+:not([data-visited-sleep]) .not-visited-sleep-only { display: revert; }
+
+[data-visited-quiz] .visited-quiz-only { display: revert; }
+:not([data-visited-quiz]) .visited-quiz-only { display: none; }
+[data-visited-quiz] .not-visited-quiz-only { display: none; }
+:not([data-visited-quiz]) .not-visited-quiz-only { display: revert; }
+
+[data-visited-count="5+"] .loyal-visitor-only { display: revert; }
+:not([data-visited-count="5+"]) .loyal-visitor-only { display: none; }

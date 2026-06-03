@@ -30,7 +30,7 @@
 </script>
 
 <section class={cn('py-16 sm:py-24', className)} {...rest}>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     {#if title}
       <div class="text-center mb-12 lg:mb-16">
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{title}</h2>
@@ -41,17 +41,27 @@
     {/if}
     <div class="grid {gridClass} gap-6 lg:gap-8">
       {#each features as feature, i}
-        <Card variant="interactive">
-          <div class="flex flex-col items-start">
-            {#if feature.icon}
-              <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
-                {@html feature.icon}
-              </div>
-            {/if}
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
-            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{feature.description}</p>
-          </div>
-        </Card>
+        <a
+          href={feature.href}
+          class="block group focus:outline-none focus:ring-2 focus:ring-primary rounded-xl"
+        >
+          <Card variant="interactive">
+            <div class="flex flex-col items-start">
+              {#if feature.icon}
+                <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
+                  {@html feature.icon}
+                </div>
+              {/if}
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                {feature.title}
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{feature.description}</p>
+              <span class="mt-4 text-sm font-medium text-primary group-hover:text-primary-dark transition-colors">
+                Explore {feature.title} →
+              </span>
+            </div>
+          </Card>
+        </a>
       {/each}
     </div>
   </div>

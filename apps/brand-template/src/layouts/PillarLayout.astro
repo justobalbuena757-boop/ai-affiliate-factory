@@ -1,7 +1,9 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { cn } from 'design-system-base';
 import Layout from './Layout.astro';
-import { Container, Card, Button, Hero } from 'design-system-base';
+import { Container, Card, Hero } from 'design-system-base';
+import tenant from '../config/tenant.json';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 }
 
 const { pillar, articles } = Astro.props;
+const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, '');
 
 const clusters = [...new Set(articles.map((a) => a.data.cluster))];
 const sorted = articles.sort((a, b) => a.data.order - b.data.order);
@@ -24,19 +27,20 @@ const stageOrder = ['tofu', 'mofu', 'bofu'];
 ---
 
 <Layout
-  title={`${pillar.data.title} — Metabolic 40+`}
+  title={`${pillar.data.title} — ${tenant.brand.name}`}
   description={pillar.data.description}
   image={pillar.data.ogImage}
   type="website"
+  heroImage={pillar.data.ogImage}
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: pillar.data.title,
     description: pillar.data.description,
-    url: `${(Astro.site?.toString() || 'https://metabolic40plus.com').replace(/\/$/, '')}/${pillar.id.replace('.mdx', '')}`,
+    url: `${siteUrl}/${pillar.id.replace('.mdx', '')}`,
     isPartOf: {
       '@type': 'WebSite',
-      name: 'Metabolic 40+',
+      name: tenant.brand.name,
     },
   }}
 >
@@ -55,7 +59,8 @@ const stageOrder = ['tofu', 'mofu', 'bofu'];
         return (
           <section class="mb-20 last:mb-0">
             <header class="mb-10 text-center">
-              <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white capitalize">
+              <h2 class="inline-flex items-center gap-2 text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white capitalize">
+                <Icon name={pillar.id === 'coffee-wellness' ? 'lucide:coffee' : 'lucide:moon'} class="w-6 h-6 text-primary" />
                 {cluster.replace(/-/g, ' ')}
               </h2>
               <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">

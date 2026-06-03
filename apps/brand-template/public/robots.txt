@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://metabolic40plus.com/sitemap-index.xml
-
-Disallow: /admin/
-Disallow: /api/

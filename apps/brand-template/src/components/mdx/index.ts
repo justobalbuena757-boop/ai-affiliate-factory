@@ -17,5 +17,5 @@ export { default as Image } from './MdxImage.astro';
 export { default as InfoBox } from './InfoBox.svelte';
 export { default as ProductCta } from './ProductCta.svelte';
 export { default as StatCallout } from './StatCallout.svelte';
-export { default as AuthorBio } from './AuthorBio.svelte';
-export { default as AffiliateDisclosure } from './AffiliateDisclosure.svelte';
+export { default as AuthorBio } from './AuthorBio.astro';
+export { default as AffiliateDisclosure } from './AffiliateDisclosure.astro';

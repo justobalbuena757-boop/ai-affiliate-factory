@@ -1,124 +1,386 @@
 <script>
-  import { onMount } from 'svelte';
-
-  let step = 1;
-  let answers = { q1: '', q2: '', q3: '' };
-  let result = null;
+  let step = $state(1);
+  let answers = $state({ q1: '', q2: '', q3: '' });
+  let email = $state('');
+  let emailSubmitted = $state(false);
+  let emailError = $state('');
+  let submitting = $state(false);
+  let result = $state(null);
 
   const questions = [
     {
       id: 'q1',
-      title: 'How is your energy level in the afternoon?',
+      title: 'How is your afternoon energy?',
+      emoji: '⚡',
       options: [
-        { value: 'low', label: 'Very low / need caffeine' },
-        { value: 'medium', label: 'Moderate / okay' },
-        { value: 'high', label: 'Good / consistent' },
+        { value: 'low', label: 'Very low — need caffeine to function' },
+        { value: 'medium', label: 'Moderate — okay but fading by 3pm' },
+        { value: 'high', label: 'Good — consistent energy all day' },
       ],
     },
     {
       id: 'q2',
-      title: 'How would you describe your sleep quality?',
+      title: 'How is your sleep quality?',
+      emoji: '😴',
       options: [
-        { value: 'poor', label: 'Poor / wake up tired' },
-        { value: 'fair', label: 'Fair / okay most nights' },
-        { value: 'good', label: 'Good / restful' },
+        { value: 'poor', label: 'Poor — wake up tired, < 6 hours' },
+        { value: 'fair', label: 'Fair — 6-7 hours, wake up once' },
+        { value: 'good', label: 'Good — 7-8 hours, deep sleep' },
       ],
     },
     {
       id: 'q3',
-      title: 'What is your primary health goal?',
+      title: 'What is your primary health focus?',
+      emoji: '🎯',
       options: [
-        { value: 'energy', label: 'More energy' },
-        { value: 'weight', label: 'Weight management' },
-        { value: 'sleep', label: 'Better sleep' },
+        { value: 'energy', label: 'Boost daily energy & focus' },
+        { value: 'weight', label: 'Weight & metabolic health' },
+        { value: 'sleep', label: 'Improve sleep & recovery' },
       ],
     },
   ];
 
+  const resultTypes = {
+    metabolic_boost: {
+      type: 'Metabolic Optimization Candidate',
+      badge: 'High Priority',
+      badgeVariant: 'accent',
+      summary: 'Your answers indicate your metabolism could benefit from targeted nutritional support.',
+      description: 'Adults over 40 often experience a natural decline in metabolic rate. Our research suggests that combining morning coffee with targeted supplements like green tea extract, chromium, and L-theanine may help support healthy metabolism, sustained energy, and better sleep quality.',
+      recommendations: [
+        'Try adding a metabolism-supporting supplement to your morning coffee routine',
+        'Prioritize 7-8 hours of quality sleep for hormonal balance',
+        'Include protein at breakfast to stabilize blood sugar',
+      ],
+      cta: {
+        label: 'Learn About Metabolic Support',
+        href: '/coffee-wellness/coffee-metabolism/java-burn-review-2025',
+      },
+    },
+    balanced: {
+      type: 'Balanced Metabolizer',
+      badge: 'Great Foundation',
+      badgeVariant: 'success',
+      summary: 'You\'re on the right track! A few targeted optimizations can help you feel your best after 40.',
+      description: 'You have a solid foundation, but metabolic shifts after 40 mean even small adjustments can yield significant results. Fine-tuning your nutrition, sleep, and supplementation strategy can help you maintain energy, manage weight, and support healthy aging.',
+      recommendations: [
+        'Consider a morning coffee supplement for sustained energy',
+        'Optimize sleep hygiene for deeper recovery',
+        'Stay consistent with your current healthy habits',
+      ],
+      cta: {
+        label: 'Explore Optimization Tips',
+        href: '/coffee-wellness',
+      },
+    },
+  };
+
+  const selected = $derived(answers[questions[step - 1]?.id] || '');
+
+  function select(value) {
+    answers[questions[step - 1].id] = value;
+  }
+
   function next() {
-    if (step < 3) step++;
+    if (step < 3) {
+      step++;
+    } else {
+      step = 4;
+    }
   }
 
   function prev() {
     if (step > 1) step--;
   }
 
-  function select(value) {
-    answers[questions[step - 1].id] = value;
-    if (step < 3) next();
-  }
-
-  function getResult() {
-    const score = Object.values(answers).filter(v => v).length;
-    if (score === 3) {
-      result = {
-        title: 'Ready for a Metabolic Boost?',
-        description: 'Your answers suggest you could benefit from targeted metabolic support. Java Burn combines science-backed ingredients to enhance your morning routine.',
-        cta: 'Learn More About Java Burn',
-        href: 'https://www.javaburn.net/',
-      };
-    } else {
-      result = {
-        title: 'Start Your Journey',
-        description: 'Small changes can make a big difference. Consider exploring our articles for evidence-based tips.',
-        cta: 'Explore Articles',
-        href: '/coffee-wellness',
-      };
+  async function submitEmail() {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailError = 'Please enter a valid email address.';
+      return;
+    }
+    emailError = '';
+    submitting = true;
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('quiz', JSON.stringify(answers));
+      const res = await fetch('/api/subscribe', { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('Server error');
+      emailSubmitted = true;
+      computeResult();
+    } catch {
+      emailError = 'Something went wrong. Please try again.';
+    } finally {
+      submitting = false;
     }
   }
+
+  function computeResult() {
+    const lowEnergy = answers.q1 === 'low';
+    const poorSleep = answers.q2 === 'poor' || answers.q2 === 'fair';
+    const healthGoal = answers.q3;
+    const issueCount = [answers.q1 === 'low', answers.q2 === 'poor' || answers.q2 === 'fair'].filter(Boolean).length;
+    if (issueCount >= 1 || healthGoal === 'weight' || healthGoal === 'energy') {
+      result = resultTypes.metabolic_boost;
+    } else {
+      result = resultTypes.balanced;
+    }
+  }
+
+  function restart() {
+    step = 1;
+    answers = { q1: '', q2: '', q3: '' };
+    email = '';
+    emailSubmitted = false;
+    emailError = '';
+    submitting = false;
+    result = null;
+  }
+
+  function canAdvance() {
+    if (step <= 3) return !!answers[questions[step - 1].id];
+    return false;
+  }
+
+  const progress = $derived(step <= 3 ? Math.round(((step - 1) / 3) * 100) : step === 4 ? 85 : 100);
+
+  let advance = $derived(canAdvance());
 </script>
 
-<div class="max-w-lg mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 sm:p-8">
-  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Quick Metabolic Assessment</h3>
+<div class="max-w-xl mx-auto">
+  {#if step <= 3}
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <div class="p-6 sm:p-8">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+            Quick Metabolic Assessment
+          </h3>
+          <span class="text-xs font-medium text-gray-400 dark:text-gray-500 tabular-nums">
+            Step {step} of 3
+          </span>
+        </div>
 
-  {#if !result}
-    <div class="space-y-6">
-      <div class="flex items-center justify-between mb-4">
-        {#each [1, 2, 3] as s}
-          <div class="flex items-center">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium {s === step ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}">
-              {s}
-            </div>
-            {#if s < 3}
-              <div class="w-8 h-0.5 bg-gray-200 dark:bg-gray-700"></div>
-            {/if}
-          </div>
-        {/each}
-      </div>
+        <div class="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full mb-6 overflow-hidden">
+          <div
+            class="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500 ease-out"
+            style="width: {progress}%"
+          ></div>
+        </div>
 
-      <div>
-        <h4 class="font-semibold text-gray-900 dark:text-white mb-4">{questions[step - 1].title}</h4>
-        <div class="space-y-2">
-          {#each questions[step - 1].options as opt}
+        <div class="flex items-center justify-center gap-1 mb-8">
+          {#each [1, 2, 3] as s}
             <button
-              on:click={() => select(opt.value)}
-              class="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm"
+              onclick={() => { if (s <= step) step = s; }}
+              disabled={s > step}
+              class="flex items-center gap-1.5 {s > step ? 'cursor-not-allowed' : 'cursor-pointer'}"
             >
-              {opt.label}
+              <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 {s < step ? 'bg-primary text-white' : s === step ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'}">
+                {#if s < step}
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                  </svg>
+                {:else}
+                  {s}
+                {/if}
+              </div>
             </button>
+            {#if s < 3}
+              <div class="w-12 sm:w-16 h-0.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div class="h-full bg-primary transition-all duration-500" style="width: {s < step ? '100%' : '0%'}"></div>
+              </div>
+            {/if}
           {/each}
         </div>
-      </div>
 
-      {#if step > 1}
-        <button
-          on:click={prev}
-          class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-        >
-          Back
-        </button>
-      {/if}
+        <div class="space-y-6">
+          <div>
+            <div class="flex items-center gap-3 mb-5">
+              <span class="text-2xl sm:text-3xl">{questions[step - 1].emoji}</span>
+              <h4 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-snug">
+                {questions[step - 1].title}
+              </h4>
+            </div>
+            <div class="space-y-3">
+              {#each questions[step - 1].options as opt}
+                <button
+                  onclick={() => select(opt.value)}
+                  class="w-full text-left p-4 sm:p-5 rounded-xl border-2 transition-all duration-200 group {selected === opt.value ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-md shadow-primary/10' : 'border-gray-100 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/50'}"
+                >
+                  <span class="flex items-center gap-4">
+                    <span class="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-200 {selected === opt.value ? 'border-primary bg-primary' : 'border-gray-300 dark:border-gray-600 group-hover:border-gray-400 dark:group-hover:border-gray-500'}">
+                      {#if selected === opt.value}
+                        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                        </svg>
+                      {/if}
+                    </span>
+                    <span class="text-sm sm:text-base font-medium {selected === opt.value ? 'text-primary dark:text-primary-light' : 'text-gray-700 dark:text-gray-300'}">
+                      {opt.label}
+                    </span>
+                  </span>
+                </button>
+              {/each}
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
+            <button
+              onclick={prev}
+              disabled={step === 1}
+              class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+            <button
+              onclick={next}
+              disabled={!advance}
+              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 {advance ? 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/25' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'}"
+            >
+              {step < 3 ? 'Continue' : 'See My Results'}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {:else if step === 4}
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <div class="p-6 sm:p-10 text-center">
+        <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+
+        <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Your Results Are Ready!
+        </h3>
+        <p class="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-8">
+          Enter your email to receive your personalized metabolic assessment and evidence-based recommendations tailored for adults over 40.
+        </p>
+
+        <form onsubmit={(e) => { e.preventDefault(); submitEmail(); }} class="max-w-sm mx-auto space-y-3">
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <input
+              type="email"
+              bind:value={email}
+              placeholder="your@email.com"
+              required
+              class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 transition-all duration-200 {emailError ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-primary/20'} focus:outline-none focus:ring-4"
+            />
+          </div>
+          {#if emailError}
+            <p class="text-sm text-red-500 text-left">{emailError}</p>
+          {/if}
+          <button
+            type="submit"
+            disabled={submitting}
+            class="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark transition-all duration-200 shadow-lg shadow-primary/25 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {#if submitting}
+              <svg class="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              Processing...
+            {:else}
+              Get My Free Results
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            {/if}
+          </button>
+        </form>
+
+        <div class="mt-6 flex items-center justify-center gap-4 text-xs text-gray-400">
+          <span class="inline-flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            No spam, unsubscribe anytime
+          </span>
+          <span class="inline-flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            Your data is protected
+          </span>
+        </div>
+      </div>
     </div>
   {:else}
-    <div class="text-center space-y-4">
-      <h4 class="text-xl font-bold text-gray-900 dark:text-white">{result.title}</h4>
-      <p class="text-gray-600 dark:text-gray-400">{result.description}</p>
-      <a
-        href={result.href}
-        class="inline-block mt-4 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
-      >
-        {result.cta}
-      </a>
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <div class="p-6 sm:p-10">
+        <div class="text-center mb-8">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Your Metabolic Assessment
+          </h3>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {result.badgeVariant === 'accent' ? 'bg-accent/10 text-accent' : 'bg-success/10 text-success'}">
+            {result.badge}
+          </div>
+          <p class="mt-1 text-sm font-semibold text-primary">
+            {result.type}
+          </p>
+        </div>
+
+        <div class="max-w-lg mx-auto space-y-6">
+          <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            {result.description}
+          </p>
+
+          <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-5 space-y-3">
+            <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+              Recommended Next Steps
+            </h4>
+            <ul class="space-y-2.5">
+              {#each result.recommendations as rec, i}
+                <li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400">
+                  <span class="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                    {i + 1}
+                  </span>
+                  {rec}
+                </li>
+              {/each}
+            </ul>
+          </div>
+
+          <div class="space-y-3">
+            <a
+              href={result.cta.href}
+              class="flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark transition-all duration-200 shadow-lg shadow-primary/25"
+            >
+              {result.cta.label}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <button
+              onclick={restart}
+              class="flex items-center justify-center gap-1.5 w-full text-sm font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors py-2"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Retake Quiz
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   {/if}
 </div>
