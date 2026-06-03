@@ -1,47 +1,59 @@
 ---
-import tenant from '../config/tenant.json';
+import tenant from "../config/tenant.json";
 
 export interface Props {
-  title: string;
-  description: string;
-  canonical?: string;
-  image?: string;
-  type?: 'website' | 'article';
-  pubDate?: Date;
-  modifiedDate?: Date;
-  author?: string;
-  tags?: string[];
-  noindex?: boolean;
-  jsonLd?: Record<string, any> | Record<string, any>[];
+	title: string;
+	description: string;
+	canonical?: string;
+	image?: string;
+	type?: "website" | "article";
+	pubDate?: Date;
+	modifiedDate?: Date;
+	author?: string;
+	tags?: string[];
+	noindex?: boolean;
+	jsonLd?: Record<string, any> | Record<string, any>[];
 }
 
 const {
-  title,
-  description,
-  canonical,
-  image,
-  type = 'website',
-  pubDate,
-  modifiedDate,
-  author,
-  tags = [],
-  noindex = false,
-  jsonLd,
+	title,
+	description,
+	canonical,
+	image,
+	type = "website",
+	pubDate,
+	modifiedDate,
+	author,
+	tags = [],
+	noindex = false,
+	jsonLd,
 } = Astro.props;
 
 const brand = tenant.brand;
-const siteUrl = (Astro.site?.toString() || brand.url).replace(/\/$/, '');
-const canonicalUrl = canonical ? new URL(canonical, siteUrl).toString() : new URL(Astro.url.pathname, siteUrl).toString();
+const siteUrl = (Astro.site?.toString() || brand.url).replace(/\/$/, "");
+const canonicalUrl = canonical
+	? new URL(canonical, siteUrl).toString()
+	: new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = image
-  ? image.startsWith('http') ? image : new URL(image, siteUrl).toString()
-  : new URL(brand.defaultOgImage, siteUrl).toString();
+	? image.startsWith("http")
+		? image
+		: new URL(image, siteUrl).toString()
+	: new URL(brand.defaultOgImage, siteUrl).toString();
 
 const TITLE_MAX = 60;
 const DESCRIPTION_MAX = 155;
 
-const truncate = (text: string, max: number): { text: string; truncated: boolean; charCount: number } => {
-  if (text.length <= max) return { text, truncated: false, charCount: text.length };
-  return { text: text.slice(0, max - 1).trimEnd() + '…', truncated: true, charCount: text.length };
+const truncate = (
+	text: string,
+	max: number,
+): { text: string; truncated: boolean; charCount: number } => {
+	if (text.length <= max)
+		return { text, truncated: false, charCount: text.length };
+	return {
+		text: text.slice(0, max - 1).trimEnd() + "…",
+		truncated: true,
+		charCount: text.length,
+	};
 };
 
 const separator = ` | ${brand.name}`;
@@ -50,10 +62,14 @@ const titleResult = truncate(fullTitle, TITLE_MAX);
 const descResult = truncate(description, DESCRIPTION_MAX);
 
 if (titleResult.truncated) {
-  console.warn(`[SEO] Title exceeds ${TITLE_MAX} chars (${titleResult.charCount}): "${fullTitle}"`);
+	console.warn(
+		`[SEO] Title exceeds ${TITLE_MAX} chars (${titleResult.charCount}): "${fullTitle}"`,
+	);
 }
 if (descResult.truncated) {
-  console.warn(`[SEO] Description exceeds ${DESCRIPTION_MAX} chars (${descResult.charCount}): "${description}"`);
+	console.warn(
+		`[SEO] Description exceeds ${DESCRIPTION_MAX} chars (${descResult.charCount}): "${description}"`,
+	);
 }
 ---
 

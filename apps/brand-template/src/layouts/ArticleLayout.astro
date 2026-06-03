@@ -1,189 +1,205 @@
 ---
-import { cn } from 'design-system-base';
-import Layout from './Layout.astro';
-import { Container, Breadcrumb, CTASection, Card } from 'design-system-base';
-import AuthorBio from '../components/mdx/AuthorBio.astro';
-import AffiliateDisclosure from '../components/mdx/AffiliateDisclosure.astro';
-import tenant from '../config/tenant.json';
-import type { CollectionEntry } from 'astro:content';
+import { cn } from "design-system-base";
+import Layout from "./Layout.astro";
+import { Container, Breadcrumb, CTASection, Card } from "design-system-base";
+import AuthorBio from "../components/mdx/AuthorBio.astro";
+import AffiliateDisclosure from "../components/mdx/AffiliateDisclosure.astro";
+import tenant from "../config/tenant.json";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  article: CollectionEntry<'articles'>;
-  headings: { depth: number; slug: string; text: string }[];
-  relatedArticles?: CollectionEntry<'articles'>[];
+	article: CollectionEntry<"articles">;
+	headings: { depth: number; slug: string; text: string }[];
+	relatedArticles?: CollectionEntry<"articles">[];
 }
 
 const { article, headings, relatedArticles = [] } = Astro.props;
 const { data } = article;
 
-const articleSlug = article.id.replace('.mdx', '').split('/').pop();
+const articleSlug = article.id.replace(".mdx", "").split("/").pop();
 const pillarSlug = data.pillar;
 const clusterSlug = data.cluster;
 
 const stageColors: Record<string, string> = {
-  tofu: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  mofu: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  bofu: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+	tofu: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+	mofu: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+	bofu: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
 };
 const stageLabels: Record<string, string> = {
-  tofu: 'TOFU — Awareness',
-  mofu: 'MOFU — Consideration',
-  bofu: 'BOFU — Decision',
+	tofu: "TOFU — Awareness",
+	mofu: "MOFU — Consideration",
+	bofu: "BOFU — Decision",
 };
 
 const readingTime = Math.ceil(article.body?.split(/\s+/).length / 200) || 4;
-const hasToc = headings.filter(h => h.depth <= 3).length > 0;
+const hasToc = headings.filter((h) => h.depth <= 3).length > 0;
 
 const brand = tenant.brand;
-const siteUrl = (Astro.site?.toString() || brand.url).replace(/\/$/, '');
+const siteUrl = (Astro.site?.toString() || brand.url).replace(/\/$/, "");
 const articleUrl = `${siteUrl}/${pillarSlug}/${clusterSlug}/${articleSlug}`;
 const articleImage = data.ogImage || `${siteUrl}${brand.defaultOgImage}`;
 
 const dateModified = (data as any).modifiedDate
-  ? new Date((data as any).modifiedDate)
-  : data.pubDate;
+	? new Date((data as any).modifiedDate)
+	: data.pubDate;
 
 const authorName = data.author || brand.companyName;
 const authorUrl = `${siteUrl}/about`;
 
 const personJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: authorName,
-  url: authorUrl,
-  jobTitle: 'Editorial Team',
-  worksFor: {
-    '@type': 'Organization',
-    name: brand.name,
-    url: siteUrl,
-  },
-  knowsAbout: [
-    'Metabolic Health',
-    'Sleep Science',
-    'Healthy Aging',
-    'Nutritional Science',
-    'Exercise Physiology',
-  ],
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: authorName,
+	url: authorUrl,
+	jobTitle: "Editorial Team",
+	worksFor: {
+		"@type": "Organization",
+		name: brand.name,
+		url: siteUrl,
+	},
+	knowsAbout: [
+		"Metabolic Health",
+		"Sleep Science",
+		"Healthy Aging",
+		"Nutritional Science",
+		"Exercise Physiology",
+	],
 };
 
 const pillarTopics: Record<string, string> = {
-  'coffee-wellness': 'Coffee, Metabolism, Healthy Aging, Nutritional Supplements',
-  'sleep-recovery': 'Sleep Quality, Recovery, Hormonal Balance, Circadian Rhythm',
+	"coffee-wellness":
+		"Coffee, Metabolism, Healthy Aging, Nutritional Supplements",
+	"sleep-recovery":
+		"Sleep Quality, Recovery, Hormonal Balance, Circadian Rhythm",
 };
 
 const articleJsonLd: any = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: data.title,
-  description: data.description,
-  image: {
-    '@type': 'ImageObject',
-    url: articleImage,
-    width: articleImage.startsWith('http') ? 1200 : 1200,
-    height: 630,
-  },
-  datePublished: data.pubDate.toISOString(),
-  dateCreated: data.pubDate.toISOString(),
-  dateModified: dateModified.toISOString(),
-  author: {
-    '@type': 'Person',
-    '@id': `${siteUrl}/about#editorial-team`,
-    name: authorName,
-    url: authorUrl,
-  },
-  publisher: {
-    '@type': 'Organization',
-    '@id': `${siteUrl}#organization`,
-    name: brand.name,
-    logo: {
-      '@type': 'ImageObject',
-      url: `${siteUrl}${brand.favicon}`,
-      width: 64,
-      height: 64,
-    },
-  },
-  mainEntityOfPage: {
-    '@type': 'WebPage',
-    '@id': articleUrl,
-  },
-  keywords: data.tags.join(', '),
-  articleSection: pillarSlug.replace(/-/g, ' '),
-  articleBody: data.description,
-  inLanguage: 'en-US',
-  wordCount: article.body?.split(/\s+/).length || 0,
-  about: {
-    '@type': 'Thing',
-    name: pillarSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
-    description: pillarTopics[pillarSlug] || 'Metabolic Health, Wellness, Healthy Aging',
-  },
-  mentions: [
-    { '@type': 'Thing', name: 'Metabolic Health After 40' },
-    { '@type': 'Thing', name: 'Evidence-Based Wellness' },
-    { '@type': 'Thing', name: 'Healthy Aging' },
-  ],
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	headline: data.title,
+	description: data.description,
+	image: {
+		"@type": "ImageObject",
+		url: articleImage,
+		width: articleImage.startsWith("http") ? 1200 : 1200,
+		height: 630,
+	},
+	datePublished: data.pubDate.toISOString(),
+	dateCreated: data.pubDate.toISOString(),
+	dateModified: dateModified.toISOString(),
+	author: {
+		"@type": "Person",
+		"@id": `${siteUrl}/about#editorial-team`,
+		name: authorName,
+		url: authorUrl,
+	},
+	publisher: {
+		"@type": "Organization",
+		"@id": `${siteUrl}#organization`,
+		name: brand.name,
+		logo: {
+			"@type": "ImageObject",
+			url: `${siteUrl}${brand.favicon}`,
+			width: 64,
+			height: 64,
+		},
+	},
+	mainEntityOfPage: {
+		"@type": "WebPage",
+		"@id": articleUrl,
+	},
+	keywords: data.tags.join(", "),
+	articleSection: pillarSlug.replace(/-/g, " "),
+	articleBody: data.description,
+	inLanguage: "en-US",
+	wordCount: article.body?.split(/\s+/).length || 0,
+	about: {
+		"@type": "Thing",
+		name: pillarSlug
+			.replace(/-/g, " ")
+			.replace(/\b\w/g, (c: string) => c.toUpperCase()),
+		description:
+			pillarTopics[pillarSlug] || "Metabolic Health, Wellness, Healthy Aging",
+	},
+	mentions: [
+		{ "@type": "Thing", name: "Metabolic Health After 40" },
+		{ "@type": "Thing", name: "Evidence-Based Wellness" },
+		{ "@type": "Thing", name: "Healthy Aging" },
+	],
 };
 
-const productCta = data.cta || { label: 'Shop Now', href: 'https://www.javaburn.net/' };
+const productCta = data.cta || {
+	label: "Shop Now",
+	href: "https://www.javaburn.net/",
+};
 
-if (data.stage === 'bofu' && productCta) {
-  articleJsonLd.review = {
-    '@type': 'Review',
-    name: data.title,
-    reviewBody: data.description,
-    datePublished: data.pubDate.toISOString(),
-    author: {
-      '@type': 'Person',
-      name: authorName,
-    },
-    itemReviewed: {
-      '@type': 'Product',
-      name: productCta.product || 'Java Burn',
-      description: productCta.description || 'Flavorless, instant-dissolve metabolic support powder designed to be added to morning coffee.',
-      brand: {
-        '@type': 'Brand',
-        name: productCta.product || 'Java Burn',
-      },
-      ...(productCta.offers && { offers: productCta.offers }),
-      ...(productCta.aggregateRating && { aggregateRating: productCta.aggregateRating }),
-    },
-    reviewRating: {
-      '@type': 'Rating',
-      ratingValue: productCta.ratingValue || '4.6',
-      bestRating: '5',
-      worstRating: '1',
-    },
-  };
+if (data.stage === "bofu" && productCta) {
+	articleJsonLd.review = {
+		"@type": "Review",
+		name: data.title,
+		reviewBody: data.description,
+		datePublished: data.pubDate.toISOString(),
+		author: {
+			"@type": "Person",
+			name: authorName,
+		},
+		itemReviewed: {
+			"@type": "Product",
+			name: productCta.product || "Java Burn",
+			description:
+				productCta.description ||
+				"Flavorless, instant-dissolve metabolic support powder designed to be added to morning coffee.",
+			brand: {
+				"@type": "Brand",
+				name: productCta.product || "Java Burn",
+			},
+			...(productCta.offers && { offers: productCta.offers }),
+			...(productCta.aggregateRating && {
+				aggregateRating: productCta.aggregateRating,
+			}),
+		},
+		reviewRating: {
+			"@type": "Rating",
+			ratingValue: productCta.ratingValue || "4.6",
+			bestRating: "5",
+			worstRating: "1",
+		},
+	};
 }
 
 const breadcrumbJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: siteUrl,
-    },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      name: pillarSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
-      item: `${siteUrl}/${pillarSlug}`,
-    },
-    {
-      '@type': 'ListItem',
-      position: 3,
-      name: clusterSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
-      item: `${siteUrl}/${pillarSlug}/${clusterSlug}`,
-    },
-    {
-      '@type': 'ListItem',
-      position: 4,
-      name: data.title,
-      item: articleUrl,
-    },
-  ],
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	itemListElement: [
+		{
+			"@type": "ListItem",
+			position: 1,
+			name: "Home",
+			item: siteUrl,
+		},
+		{
+			"@type": "ListItem",
+			position: 2,
+			name: pillarSlug
+				.replace(/-/g, " ")
+				.replace(/\b\w/g, (c: string) => c.toUpperCase()),
+			item: `${siteUrl}/${pillarSlug}`,
+		},
+		{
+			"@type": "ListItem",
+			position: 3,
+			name: clusterSlug
+				.replace(/-/g, " ")
+				.replace(/\b\w/g, (c: string) => c.toUpperCase()),
+			item: `${siteUrl}/${pillarSlug}/${clusterSlug}`,
+		},
+		{
+			"@type": "ListItem",
+			position: 4,
+			name: data.title,
+			item: articleUrl,
+		},
+	],
 };
 ---
 

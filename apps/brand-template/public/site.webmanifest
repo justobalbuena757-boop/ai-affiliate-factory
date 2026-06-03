@@ -1,17 +1,17 @@
 {
-  "name": "Metabolic 40+",
-  "short_name": "Metabolic 40+",
-  "description": "Science-backed content about metabolic health, coffee, sleep, and healthy aging for adults over 40.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#fafafa",
-  "theme_color": "#6366f1",
-  "icons": [
-    {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+	"name": "Metabolic 40+",
+	"short_name": "Metabolic 40+",
+	"description": "Science-backed content about metabolic health, coffee, sleep, and healthy aging for adults over 40.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#fafafa",
+	"theme_color": "#6366f1",
+	"icons": [
+		{
+			"src": "/favicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	]
 }

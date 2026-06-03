@@ -1,33 +1,33 @@
 ---
 interface Props {
-  href?: string;
+	href?: string;
 }
 
-const { href = '#' } = Astro.props;
+const { href = "#" } = Astro.props;
 
-const isExternal = href.startsWith('http') || href.startsWith('//');
-const isMail = href.startsWith('mailto:') || href.startsWith('tel:');
+const isExternal = href.startsWith("http") || href.startsWith("//");
+const isMail = href.startsWith("mailto:") || href.startsWith("tel:");
 
 // Affiliate detection: known affiliate networks and product domains
 const affiliateDomains = [
-  'javaburn.net',
-  'clickbank.net',
-  'hop.clickbank.net',
-  'jvzproduct.com',
-  'shareasale.com',
-  'amazon.com',
+	"javaburn.net",
+	"clickbank.net",
+	"hop.clickbank.net",
+	"jvzproduct.com",
+	"shareasale.com",
+	"amazon.com",
 ];
-const isAffiliate = isExternal && affiliateDomains.some(domain =>
-  href.toLowerCase().includes(domain)
-);
+const isAffiliate =
+	isExternal &&
+	affiliateDomains.some((domain) => href.toLowerCase().includes(domain));
 
 const rel = isAffiliate
-  ? 'noopener noreferrer nofollow sponsored'
-  : isExternal
-    ? 'noopener noreferrer'
-    : undefined;
+	? "noopener noreferrer nofollow sponsored"
+	: isExternal
+		? "noopener noreferrer"
+		: undefined;
 
-const target = isExternal ? '_blank' : undefined;
+const target = isExternal ? "_blank" : undefined;
 ---
 
 <a

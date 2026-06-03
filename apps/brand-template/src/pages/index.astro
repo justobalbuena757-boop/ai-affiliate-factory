@@ -1,42 +1,55 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { Container, Card, Button, Hero, Badge, CTASection, FeaturesGrid } from 'design-system-base';
-import NewsletterBox from '../components/NewsletterBox.astro';
-import tenant from '../config/tenant.json';
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import Layout from "../layouts/Layout.astro";
+import {
+	Container,
+	Card,
+	Button,
+	Hero,
+	Badge,
+	CTASection,
+	FeaturesGrid,
+} from "design-system-base";
+import NewsletterBox from "../components/NewsletterBox.astro";
+import tenant from "../config/tenant.json";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 const brand = tenant.brand;
-const pillars = await getCollection('pillars');
-const allArticles = await getCollection('articles');
+const pillars = await getCollection("pillars");
+const allArticles = await getCollection("articles");
 const published = allArticles
-  .filter((p: CollectionEntry<'articles'>) => !p.data.draft)
-  .sort((a: CollectionEntry<'articles'>, b: CollectionEntry<'articles'>) => b.data.pubDate - a.data.pubDate);
+	.filter((p: CollectionEntry<"articles">) => !p.data.draft)
+	.sort(
+		(a: CollectionEntry<"articles">, b: CollectionEntry<"articles">) =>
+			b.data.pubDate - a.data.pubDate,
+	);
 
 const featuredArticles = published.slice(0, 3);
-const editorsPicks = published.filter((a: CollectionEntry<'articles'>) => a.data.stage === 'bofu').slice(0, 2);
+const editorsPicks = published
+	.filter((a: CollectionEntry<"articles">) => a.data.stage === "bofu")
+	.slice(0, 2);
 
 const trustStats = [
-  { value: '10K+', label: 'Monthly Readers' },
-  { value: '50+', label: 'Research Articles' },
-  { value: '100+', label: 'Clinical Studies' },
-  { value: '4.8★', label: 'Reader Rating' },
+	{ value: "10K+", label: "Monthly Readers" },
+	{ value: "50+", label: "Research Articles" },
+	{ value: "100+", label: "Clinical Studies" },
+	{ value: "4.8★", label: "Reader Rating" },
 ];
 
-import { iconSvg } from '../lib/icons';
+import { iconSvg } from "../lib/icons";
 
 const researchBadges = [
-  { label: 'Expert Reviewed', icon: '✓' },
-  { label: 'Evidence‑Based', icon: '✓' },
-  { label: 'Updated Weekly', icon: '✓' },
-  { label: 'Transparent AI', icon: '✓' },
+	{ label: "Expert Reviewed", icon: "✓" },
+	{ label: "Evidence‑Based", icon: "✓" },
+	{ label: "Updated Weekly", icon: "✓" },
+	{ label: "Transparent AI", icon: "✓" },
 ];
 
-const pillarFeatures = pillars.map((p: CollectionEntry<'pillars'>) => ({
-  icon: p.id === 'coffee-wellness' ? iconSvg.coffee : iconSvg.bed,
-  title: p.data.title,
-  description: p.data.description,
-  href: `/${p.id}`,
+const pillarFeatures = pillars.map((p: CollectionEntry<"pillars">) => ({
+	icon: p.id === "coffee-wellness" ? iconSvg.coffee : iconSvg.bed,
+	title: p.data.title,
+	description: p.data.description,
+	href: `/${p.id}`,
 }));
 ---
 

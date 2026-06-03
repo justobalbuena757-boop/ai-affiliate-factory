@@ -1,34 +1,34 @@
 <script>
-  import { cn } from '../../lib/cn.js';
+import { cn } from "../../lib/cn.js";
 
-  let {
-    headings = [],
-    title = 'Table of Contents',
-    class: className = '',
-    ...rest
-  } = $props();
+let {
+	headings = [],
+	title = "Table of Contents",
+	class: className = "",
+	...rest
+} = $props();
 
-  let activeSlug = $state('');
-  let isOpen = $state(true);
+let activeSlug = $state("");
+let isOpen = $state(true);
 
-  $effect(() => {
-    if (typeof window === 'undefined') return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            activeSlug = entry.target.id;
-          }
-        }
-      },
-      { rootMargin: '-80px 0px -60% 0px', threshold: 0 },
-    );
-    for (const h of headings) {
-      const el = document.getElementById(h.slug);
-      if (el) observer.observe(el);
-    }
-    return () => observer.disconnect();
-  });
+$effect(() => {
+	if (typeof window === "undefined") return;
+	const observer = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				if (entry.isIntersecting) {
+					activeSlug = entry.target.id;
+				}
+			}
+		},
+		{ rootMargin: "-80px 0px -60% 0px", threshold: 0 },
+	);
+	for (const h of headings) {
+		const el = document.getElementById(h.slug);
+		if (el) observer.observe(el);
+	}
+	return () => observer.disconnect();
+});
 </script>
 
 <nav class={cn('text-sm', className)} {...rest}>

@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { Button } from 'design-system-base';
-  import { cn } from '../../lib/cn.js';
+import { Button } from "design-system-base";
+import { cn } from "../../lib/cn.js";
 
-  let {
-    title = '',
-    subtitle = '',
-    primaryCta = { label: 'Comenzar', href: '#' },
-    secondaryCta = null,
-    variant = 'default',
-    backgroundImage = '',
-    class: className = '',
-    ...rest
-  } = $props();
+let {
+	title = "",
+	subtitle = "",
+	primaryCta = { label: "Comenzar", href: "#" },
+	secondaryCta = null,
+	variant = "default",
+	backgroundImage = "",
+	class: className = "",
+	...rest
+} = $props();
 
-  let variantState = $derived(variant);
+let variantState = $derived(variant);
 </script>
 
 <section

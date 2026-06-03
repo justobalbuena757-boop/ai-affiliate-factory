@@ -1,36 +1,52 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { Container } from 'design-system-base';
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import Layout from "../layouts/Layout.astro";
+import { Container } from "design-system-base";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
-type Pillar = CollectionEntry<'pillars'>;
-type Article = CollectionEntry<'articles'>;
+type Pillar = CollectionEntry<"pillars">;
+type Article = CollectionEntry<"articles">;
 
-const pillars = await getCollection('pillars');
-const articles = await getCollection('articles');
+const pillars = await getCollection("pillars");
+const articles = await getCollection("articles");
 
 const staticPages = [
-  { href: '/', label: 'Home', description: 'Welcome and overview of all content pillars' },
-  { href: '/about/', label: 'About', description: 'Editorial team, mission, and standards' },
-  { href: '/disclosure/', label: 'Affiliate Disclosure', description: 'Our affiliate disclosure policy' },
-  { href: '/sitemap/', label: 'Sitemap', description: 'Complete HTML sitemap of all pages' },
+	{
+		href: "/",
+		label: "Home",
+		description: "Welcome and overview of all content pillars",
+	},
+	{
+		href: "/about/",
+		label: "About",
+		description: "Editorial team, mission, and standards",
+	},
+	{
+		href: "/disclosure/",
+		label: "Affiliate Disclosure",
+		description: "Our affiliate disclosure policy",
+	},
+	{
+		href: "/sitemap/",
+		label: "Sitemap",
+		description: "Complete HTML sitemap of all pages",
+	},
 ];
 
 const articlesByPillar = pillars.map((p: Pillar) => {
-  const pillarSlug = p.id.replace('.mdx', '');
-  return {
-    pillar: p,
-    articles: articles
-      .filter((a: Article) => a.data.pillar === pillarSlug)
-      .sort((a: Article, b: Article) => a.data.order - b.data.order),
-  };
+	const pillarSlug = p.id.replace(".mdx", "");
+	return {
+		pillar: p,
+		articles: articles
+			.filter((a: Article) => a.data.pillar === pillarSlug)
+			.sort((a: Article, b: Article) => a.data.order - b.data.order),
+	};
 });
 
 const totalArticles = articles.length;
 const totalPages = staticPages.length + pillars.length + totalArticles;
-const siteUrl = Astro.site?.toString() || 'https://metabolic40plus.com';
-const normalizedSiteUrl = siteUrl.replace(/\/$/, '');
+const siteUrl = Astro.site?.toString() || "https://metabolic40plus.com";
+const normalizedSiteUrl = siteUrl.replace(/\/$/, "");
 ---
 
 <Layout

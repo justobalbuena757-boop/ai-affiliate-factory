@@ -1,37 +1,41 @@
-import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
-type Article = CollectionEntry<'articles'>;
+type Article = CollectionEntry<"articles">;
 
 export const GET: APIRoute = async ({ site }) => {
-  const articles = await getCollection('articles');
-  const siteUrl = (site?.toString() || 'https://metabolic40plus.com').replace(/\/$/, '');
+	const articles = await getCollection("articles");
+	const siteUrl = (site?.toString() || "https://metabolic40plus.com").replace(
+		/\/$/,
+		"",
+	);
 
-  const sorted = articles.sort(
-    (a: Article, b: Article) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
-  );
+	const sorted = articles.sort(
+		(a: Article, b: Article) =>
+			b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+	);
 
-  const items = sorted
-    .map((article: Article) => {
-      const articleSlug = article.id.replace('.mdx', '').split('/').pop();
-      const url = `${siteUrl}/${article.data.pillar}/${article.data.cluster}/${articleSlug}/`;
-      const pubDate = article.data.pubDate.toUTCString();
+	const items = sorted
+		.map((article: Article) => {
+			const articleSlug = article.id.replace(".mdx", "").split("/").pop();
+			const url = `${siteUrl}/${article.data.pillar}/${article.data.cluster}/${articleSlug}/`;
+			const pubDate = article.data.pubDate.toUTCString();
 
-      return `    <item>
+			return `    <item>
       <title><![CDATA[${article.data.title}]]></title>
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <pubDate>${pubDate}</pubDate>
-      <author>noreply@metabolic40plus.com (${article.data.author || 'AI Affiliate Factory'})</author>
+      <author>noreply@metabolic40plus.com (${article.data.author || "AI Affiliate Factory"})</author>
       <category>${article.data.stage.toUpperCase()}</category>
       <description><![CDATA[${article.data.description}]]></description>
-      ${article.data.tags.map((tag: string) => `<category>${tag}</category>`).join('\n      ')}
+      ${article.data.tags.map((tag: string) => `<category>${tag}</category>`).join("\n      ")}
     </item>`;
-    })
-    .join('\n');
+		})
+		.join("\n");
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+	const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
      xmlns:atom="http://www.w3.org/2005/Atom"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
@@ -51,10 +55,10 @@ ${items}
   </channel>
 </rss>`;
 
-  return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
-    },
-  });
+	return new Response(xml, {
+		headers: {
+			"Content-Type": "application/xml; charset=utf-8",
+			"Cache-Control": "public, max-age=3600",
+		},
+	});
 };

@@ -1,12 +1,7 @@
 <script>
-  import { cn } from '../../lib/cn.js';
+import { cn } from "../../lib/cn.js";
 
-  let {
-    items = [],
-    separator = '/',
-    class: className = '',
-    ...rest
-  } = $props();
+let { items = [], separator = "/", class: className = "", ...rest } = $props();
 </script>
 
 <nav class={cn('flex items-center text-sm', className)} aria-label="Breadcrumb" {...rest}>

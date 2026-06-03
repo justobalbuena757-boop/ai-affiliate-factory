@@ -1,15 +1,11 @@
 <script>
-  import { cn } from '../../lib/cn.js';
-  import Card from './Card.svelte';
-  import Button from '../atoms/Button.svelte';
+import { cn } from "../../lib/cn.js";
+import Card from "./Card.svelte";
+import Button from "../atoms/Button.svelte";
 
-  let {
-    products = [],
-    class: className = '',
-    ...rest
-  } = $props();
+let { products = [], class: className = "", ...rest } = $props();
 
-  const gridCols = 'grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3';
+const gridCols = "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3";
 </script>
 
 <section class={cn('py-12', className)} {...rest}>

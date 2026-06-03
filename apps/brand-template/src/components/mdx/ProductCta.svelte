@@ -1,14 +1,14 @@
 <script>
-  import { cn } from 'design-system-base';
+import { cn } from "design-system-base";
 
-  let {
-    title = 'Try Java Burn Today',
-    description = 'Join thousands of people over 40 who have transformed their morning coffee into a metabolic powerhouse.',
-    price = '$69',
-    href = 'https://www.javaburn.net/',
-    image = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80',
-    ...rest
-  } = $props();
+let {
+	title = "Try Java Burn Today",
+	description = "Join thousands of people over 40 who have transformed their morning coffee into a metabolic powerhouse.",
+	price = "$69",
+	href = "https://www.javaburn.net/",
+	image = "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80",
+	...rest
+} = $props();
 </script>
 
 <div class="my-8 rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 dark:from-primary/10 dark:to-secondary/10 border border-primary/10 dark:border-primary/20 overflow-hidden" {...rest}>

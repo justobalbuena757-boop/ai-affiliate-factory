@@ -1,37 +1,42 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../../../layouts/Layout.astro';
-import { Container, Card, Breadcrumb } from 'design-system-base';
-import type { CollectionEntry } from 'astro:content';
-import tenant from '../../../config/tenant.json';
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import { Container, Card, Breadcrumb } from "design-system-base";
+import type { CollectionEntry } from "astro:content";
+import tenant from "../../../config/tenant.json";
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles');
-  const clusters = new Set<string>();
-  articles.forEach(a => clusters.add(`${a.data.pillar}/${a.data.cluster}`));
-  return Array.from(clusters).map(pair => {
-    const [pillar, cluster] = pair.split('/');
-    return { params: { pillar, cluster } };
-  });
+	const articles = await getCollection("articles");
+	const clusters = new Set<string>();
+	articles.forEach((a) => clusters.add(`${a.data.pillar}/${a.data.cluster}`));
+	return Array.from(clusters).map((pair) => {
+		const [pillar, cluster] = pair.split("/");
+		return { params: { pillar, cluster } };
+	});
 }
 
 const { pillar, cluster } = Astro.params;
 
-const articles = await getCollection('articles', ({ data }) =>
-  data.pillar === pillar && data.cluster === cluster,
+const articles = await getCollection(
+	"articles",
+	({ data }) => data.pillar === pillar && data.cluster === cluster,
 );
 
-const pillarEntry = await getCollection('pillars');
-const pillarData = pillarEntry.find(p => p.id.replace('.mdx', '') === pillar);
+const pillarEntry = await getCollection("pillars");
+const pillarData = pillarEntry.find((p) => p.id.replace(".mdx", "") === pillar);
 
 const stageColors: Record<string, string> = {
-  tofu: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  mofu: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  bofu: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-blue-400',
+	tofu: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+	mofu: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+	bofu: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-blue-400",
 };
 
-const stageLabels: Record<string, string> = { tofu: 'TOFU', mofu: 'MOFU', bofu: 'BOFU' };
-const stageOrder = ['tofu', 'mofu', 'bofu'];
+const stageLabels: Record<string, string> = {
+	tofu: "TOFU",
+	mofu: "MOFU",
+	bofu: "BOFU",
+};
+const stageOrder = ["tofu", "mofu", "bofu"];
 
 const sorted = articles.sort((a, b) => a.data.order - b.data.order);
 ---

@@ -1,15 +1,15 @@
 <script>
-  import { cn } from '../../lib/cn.js';
-  import Button from '../atoms/Button.svelte';
+import { cn } from "../../lib/cn.js";
+import Button from "../atoms/Button.svelte";
 
-  let {
-    title = '',
-    subtitle = '',
-    cta = { label: 'Empezar', href: '#' },
-    variant = 'glass',
-    class: className = '',
-    ...rest
-  } = $props();
+let {
+	title = "",
+	subtitle = "",
+	cta = { label: "Empezar", href: "#" },
+	variant = "glass",
+	class: className = "",
+	...rest
+} = $props();
 </script>
 
 <section

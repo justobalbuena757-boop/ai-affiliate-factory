@@ -1,29 +1,33 @@
 ---
-import { Icon } from 'astro-icon/components';
-import { cn } from 'design-system-base';
-import Layout from './Layout.astro';
-import { Container, Card, Hero } from 'design-system-base';
-import tenant from '../config/tenant.json';
-import type { CollectionEntry } from 'astro:content';
+import { Icon } from "astro-icon/components";
+import { cn } from "design-system-base";
+import Layout from "./Layout.astro";
+import { Container, Card, Hero } from "design-system-base";
+import tenant from "../config/tenant.json";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  pillar: CollectionEntry<'pillars'>;
-  articles: CollectionEntry<'articles'>[];
+	pillar: CollectionEntry<"pillars">;
+	articles: CollectionEntry<"articles">[];
 }
 
 const { pillar, articles } = Astro.props;
-const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, '');
+const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, "");
 
 const clusters = [...new Set(articles.map((a) => a.data.cluster))];
 const sorted = articles.sort((a, b) => a.data.order - b.data.order);
 
 const stageColors: Record<string, string> = {
-  tofu: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  mofu: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  bofu: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+	tofu: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+	mofu: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+	bofu: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
 };
-const stageLabels: Record<string, string> = { tofu: 'TOFU', mofu: 'MOFU', bofu: 'BOFU' };
-const stageOrder = ['tofu', 'mofu', 'bofu'];
+const stageLabels: Record<string, string> = {
+	tofu: "TOFU",
+	mofu: "MOFU",
+	bofu: "BOFU",
+};
+const stageOrder = ["tofu", "mofu", "bofu"];
 ---
 
 <Layout

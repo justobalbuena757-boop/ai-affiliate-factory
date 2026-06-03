@@ -1,24 +1,28 @@
 {
-  "name": "ai-affiliate-factory",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "turbo dev --filter=brand-template",
-    "build": "turbo build --filter=brand-template",
-    "check": "turbo check --filter=brand-template",
-    "clean": "turbo clean --filter=brand-template",
-    "test": "echo \"See apps/brand-template for tests\" && exit 0"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@11.3.0",
-  "engines": {
-    "node": "^22.0.0",
-    "pnpm": "^11.3.0"
-  },
-  "type": "module",
-  "devDependencies": {
-    "turbo": "^2.5.0"
-  }
+	"name": "ai-affiliate-factory",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "turbo dev --filter=brand-template",
+		"build": "turbo build --filter=brand-template",
+		"check": "turbo check --filter=brand-template",
+		"clean": "turbo clean --filter=brand-template",
+		"test": "echo \"See apps/brand-template for tests\" && exit 0",
+		"format": "biome format --write",
+		"lint": "biome check",
+		"lint:fix": "biome check --apply"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@11.3.0",
+	"engines": {
+		"node": "^22.0.0",
+		"pnpm": "^11.3.0"
+	},
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.16",
+		"turbo": "^2.5.0"
+	}
 }

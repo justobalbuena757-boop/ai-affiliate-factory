@@ -1,20 +1,20 @@
 ---
-import { Icon } from 'astro-icon/components';
-import tenant from '../config/tenant.json';
-import type { CollectionEntry } from 'astro:content';
+import { Icon } from "astro-icon/components";
+import tenant from "../config/tenant.json";
+import type { CollectionEntry } from "astro:content";
 
 interface FooterLink {
-  label: string;
-  href: string;
+	label: string;
+	href: string;
 }
 
 interface FooterColumn {
-  title: string | null;
-  links: FooterLink[];
+	title: string | null;
+	links: FooterLink[];
 }
 
 interface Props {
-  pillars?: CollectionEntry<'pillars'>[];
+	pillars?: CollectionEntry<"pillars">[];
 }
 
 const { pillars = [] } = Astro.props;

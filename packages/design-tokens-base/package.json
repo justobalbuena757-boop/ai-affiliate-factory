@@ -1,18 +1,18 @@
 {
-  "name": "design-tokens-base",
-  "version": "1.0.0",
-  "description": "Design tokens base para AI Affiliate Factory",
-  "main": "index.js",
-  "exports": {
-    ".": {
-      "default": "./css/tokens.css"
-    }
-  },
-  "scripts": {
-    "build": "echo \"Build tokens\""
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module"
+	"name": "design-tokens-base",
+	"version": "1.0.0",
+	"description": "Design tokens base para AI Affiliate Factory",
+	"main": "index.js",
+	"exports": {
+		".": {
+			"default": "./css/tokens.css"
+		}
+	},
+	"scripts": {
+		"build": "echo \"Design tokens are static — no build step required\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module"
 }

@@ -1,32 +1,32 @@
 <script>
-  import { cn } from '../../lib/cn.js';
-  import Card from '../molecules/Card.svelte';
+import { cn } from "../../lib/cn.js";
+import Card from "../molecules/Card.svelte";
 
-  let {
-    title = '',
-    subtitle = '',
-    features = [],
-    columns = '3',
-    class: className = '',
-    ...rest
-  } = $props();
+let {
+	title = "",
+	subtitle = "",
+	features = [],
+	columns = "3",
+	class: className = "",
+	...rest
+} = $props();
 
-  function resolveGrid(c) {
-    if (typeof c === 'object' && c !== null) {
-      const base = c.base || 1;
-      const md = c.md || base;
-      const lg = c.lg || md;
-      return `grid-cols-${base} tablet:grid-cols-${md} desktop:grid-cols-${lg}`;
-    }
-    const map = {
-      2: 'tablet:grid-cols-2',
-      3: 'tablet:grid-cols-2 desktop:grid-cols-3',
-      4: 'tablet:grid-cols-2 desktop:grid-cols-4',
-    };
-    return `grid-cols-1 ${map[c] || 'tablet:grid-cols-2 desktop:grid-cols-3'}`;
-  }
+function resolveGrid(c) {
+	if (typeof c === "object" && c !== null) {
+		const base = c.base || 1;
+		const md = c.md || base;
+		const lg = c.lg || md;
+		return `grid-cols-${base} tablet:grid-cols-${md} desktop:grid-cols-${lg}`;
+	}
+	const map = {
+		2: "tablet:grid-cols-2",
+		3: "tablet:grid-cols-2 desktop:grid-cols-3",
+		4: "tablet:grid-cols-2 desktop:grid-cols-4",
+	};
+	return `grid-cols-1 ${map[c] || "tablet:grid-cols-2 desktop:grid-cols-3"}`;
+}
 
-  let gridClass = $derived(resolveGrid(columns));
+let gridClass = $derived(resolveGrid(columns));
 </script>
 
 <section class={cn('py-16 sm:py-24', className)} {...rest}>

@@ -1,150 +1,162 @@
 <script>
-  let step = $state(1);
-  let answers = $state({ q1: '', q2: '', q3: '' });
-  let email = $state('');
-  let emailSubmitted = $state(false);
-  let emailError = $state('');
-  let submitting = $state(false);
-  let result = $state(null);
+let step = $state(1);
+let answers = $state({ q1: "", q2: "", q3: "" });
+let email = $state("");
+let emailSubmitted = $state(false);
+let emailError = $state("");
+let submitting = $state(false);
+let result = $state(null);
 
-  const questions = [
-    {
-      id: 'q1',
-      title: 'How is your afternoon energy?',
-      emoji: '⚡',
-      options: [
-        { value: 'low', label: 'Very low — need caffeine to function' },
-        { value: 'medium', label: 'Moderate — okay but fading by 3pm' },
-        { value: 'high', label: 'Good — consistent energy all day' },
-      ],
-    },
-    {
-      id: 'q2',
-      title: 'How is your sleep quality?',
-      emoji: '😴',
-      options: [
-        { value: 'poor', label: 'Poor — wake up tired, < 6 hours' },
-        { value: 'fair', label: 'Fair — 6-7 hours, wake up once' },
-        { value: 'good', label: 'Good — 7-8 hours, deep sleep' },
-      ],
-    },
-    {
-      id: 'q3',
-      title: 'What is your primary health focus?',
-      emoji: '🎯',
-      options: [
-        { value: 'energy', label: 'Boost daily energy & focus' },
-        { value: 'weight', label: 'Weight & metabolic health' },
-        { value: 'sleep', label: 'Improve sleep & recovery' },
-      ],
-    },
-  ];
+const questions = [
+	{
+		id: "q1",
+		title: "How is your afternoon energy?",
+		emoji: "⚡",
+		options: [
+			{ value: "low", label: "Very low — need caffeine to function" },
+			{ value: "medium", label: "Moderate — okay but fading by 3pm" },
+			{ value: "high", label: "Good — consistent energy all day" },
+		],
+	},
+	{
+		id: "q2",
+		title: "How is your sleep quality?",
+		emoji: "😴",
+		options: [
+			{ value: "poor", label: "Poor — wake up tired, < 6 hours" },
+			{ value: "fair", label: "Fair — 6-7 hours, wake up once" },
+			{ value: "good", label: "Good — 7-8 hours, deep sleep" },
+		],
+	},
+	{
+		id: "q3",
+		title: "What is your primary health focus?",
+		emoji: "🎯",
+		options: [
+			{ value: "energy", label: "Boost daily energy & focus" },
+			{ value: "weight", label: "Weight & metabolic health" },
+			{ value: "sleep", label: "Improve sleep & recovery" },
+		],
+	},
+];
 
-  const resultTypes = {
-    metabolic_boost: {
-      type: 'Metabolic Optimization Candidate',
-      badge: 'High Priority',
-      badgeVariant: 'accent',
-      summary: 'Your answers indicate your metabolism could benefit from targeted nutritional support.',
-      description: 'Adults over 40 often experience a natural decline in metabolic rate. Our research suggests that combining morning coffee with targeted supplements like green tea extract, chromium, and L-theanine may help support healthy metabolism, sustained energy, and better sleep quality.',
-      recommendations: [
-        'Try adding a metabolism-supporting supplement to your morning coffee routine',
-        'Prioritize 7-8 hours of quality sleep for hormonal balance',
-        'Include protein at breakfast to stabilize blood sugar',
-      ],
-      cta: {
-        label: 'Learn About Metabolic Support',
-        href: '/coffee-wellness/coffee-metabolism/java-burn-review-2025',
-      },
-    },
-    balanced: {
-      type: 'Balanced Metabolizer',
-      badge: 'Great Foundation',
-      badgeVariant: 'success',
-      summary: 'You\'re on the right track! A few targeted optimizations can help you feel your best after 40.',
-      description: 'You have a solid foundation, but metabolic shifts after 40 mean even small adjustments can yield significant results. Fine-tuning your nutrition, sleep, and supplementation strategy can help you maintain energy, manage weight, and support healthy aging.',
-      recommendations: [
-        'Consider a morning coffee supplement for sustained energy',
-        'Optimize sleep hygiene for deeper recovery',
-        'Stay consistent with your current healthy habits',
-      ],
-      cta: {
-        label: 'Explore Optimization Tips',
-        href: '/coffee-wellness',
-      },
-    },
-  };
+const resultTypes = {
+	metabolic_boost: {
+		type: "Metabolic Optimization Candidate",
+		badge: "High Priority",
+		badgeVariant: "accent",
+		summary:
+			"Your answers indicate your metabolism could benefit from targeted nutritional support.",
+		description:
+			"Adults over 40 often experience a natural decline in metabolic rate. Our research suggests that combining morning coffee with targeted supplements like green tea extract, chromium, and L-theanine may help support healthy metabolism, sustained energy, and better sleep quality.",
+		recommendations: [
+			"Try adding a metabolism-supporting supplement to your morning coffee routine",
+			"Prioritize 7-8 hours of quality sleep for hormonal balance",
+			"Include protein at breakfast to stabilize blood sugar",
+		],
+		cta: {
+			label: "Learn About Metabolic Support",
+			href: "/coffee-wellness/coffee-metabolism/java-burn-review-2025",
+		},
+	},
+	balanced: {
+		type: "Balanced Metabolizer",
+		badge: "Great Foundation",
+		badgeVariant: "success",
+		summary:
+			"You're on the right track! A few targeted optimizations can help you feel your best after 40.",
+		description:
+			"You have a solid foundation, but metabolic shifts after 40 mean even small adjustments can yield significant results. Fine-tuning your nutrition, sleep, and supplementation strategy can help you maintain energy, manage weight, and support healthy aging.",
+		recommendations: [
+			"Consider a morning coffee supplement for sustained energy",
+			"Optimize sleep hygiene for deeper recovery",
+			"Stay consistent with your current healthy habits",
+		],
+		cta: {
+			label: "Explore Optimization Tips",
+			href: "/coffee-wellness",
+		},
+	},
+};
 
-  const selected = $derived(answers[questions[step - 1]?.id] || '');
+const selected = $derived(answers[questions[step - 1]?.id] || "");
 
-  function select(value) {
-    answers[questions[step - 1].id] = value;
-  }
+function select(value) {
+	answers[questions[step - 1].id] = value;
+}
 
-  function next() {
-    if (step < 3) {
-      step++;
-    } else {
-      step = 4;
-    }
-  }
+function next() {
+	if (step < 3) {
+		step++;
+	} else {
+		step = 4;
+	}
+}
 
-  function prev() {
-    if (step > 1) step--;
-  }
+function prev() {
+	if (step > 1) step--;
+}
 
-  async function submitEmail() {
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      emailError = 'Please enter a valid email address.';
-      return;
-    }
-    emailError = '';
-    submitting = true;
-    try {
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('quiz', JSON.stringify(answers));
-      const res = await fetch('/api/subscribe', { method: 'POST', body: formData });
-      if (!res.ok) throw new Error('Server error');
-      emailSubmitted = true;
-      computeResult();
-    } catch {
-      emailError = 'Something went wrong. Please try again.';
-    } finally {
-      submitting = false;
-    }
-  }
+async function submitEmail() {
+	if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+		emailError = "Please enter a valid email address.";
+		return;
+	}
+	emailError = "";
+	submitting = true;
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
+		formData.append("quiz", JSON.stringify(answers));
+		const res = await fetch("/api/subscribe", {
+			method: "POST",
+			body: formData,
+		});
+		if (!res.ok) throw new Error("Server error");
+		emailSubmitted = true;
+		computeResult();
+	} catch {
+		emailError = "Something went wrong. Please try again.";
+	} finally {
+		submitting = false;
+	}
+}
 
-  function computeResult() {
-    const lowEnergy = answers.q1 === 'low';
-    const poorSleep = answers.q2 === 'poor' || answers.q2 === 'fair';
-    const healthGoal = answers.q3;
-    const issueCount = [answers.q1 === 'low', answers.q2 === 'poor' || answers.q2 === 'fair'].filter(Boolean).length;
-    if (issueCount >= 1 || healthGoal === 'weight' || healthGoal === 'energy') {
-      result = resultTypes.metabolic_boost;
-    } else {
-      result = resultTypes.balanced;
-    }
-  }
+function computeResult() {
+	const lowEnergy = answers.q1 === "low";
+	const poorSleep = answers.q2 === "poor" || answers.q2 === "fair";
+	const healthGoal = answers.q3;
+	const issueCount = [
+		answers.q1 === "low",
+		answers.q2 === "poor" || answers.q2 === "fair",
+	].filter(Boolean).length;
+	if (issueCount >= 1 || healthGoal === "weight" || healthGoal === "energy") {
+		result = resultTypes.metabolic_boost;
+	} else {
+		result = resultTypes.balanced;
+	}
+}
 
-  function restart() {
-    step = 1;
-    answers = { q1: '', q2: '', q3: '' };
-    email = '';
-    emailSubmitted = false;
-    emailError = '';
-    submitting = false;
-    result = null;
-  }
+function restart() {
+	step = 1;
+	answers = { q1: "", q2: "", q3: "" };
+	email = "";
+	emailSubmitted = false;
+	emailError = "";
+	submitting = false;
+	result = null;
+}
 
-  function canAdvance() {
-    if (step <= 3) return !!answers[questions[step - 1].id];
-    return false;
-  }
+function canAdvance() {
+	if (step <= 3) return !!answers[questions[step - 1].id];
+	return false;
+}
 
-  const progress = $derived(step <= 3 ? Math.round(((step - 1) / 3) * 100) : step === 4 ? 85 : 100);
+const progress = $derived(
+	step <= 3 ? Math.round(((step - 1) / 3) * 100) : step === 4 ? 85 : 100,
+);
 
-  let advance = $derived(canAdvance());
+let advance = $derived(canAdvance());
 </script>
 
 <div class="max-w-xl mx-auto">

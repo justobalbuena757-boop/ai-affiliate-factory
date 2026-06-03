@@ -1,37 +1,37 @@
 <script>
-  import { cn } from '../../lib/cn.js';
-  import { onMount } from 'svelte';
+import { cn } from "../../lib/cn.js";
+import { onMount } from "svelte";
 
-  let {
-    stats = [],
-    columns = '4',
-    variant = 'default',
-    class: className = '',
-    ...rest
-  } = $props();
+let {
+	stats = [],
+	columns = "4",
+	variant = "default",
+	class: className = "",
+	...rest
+} = $props();
 
-  let isLoading = $state(true);
+let isLoading = $state(true);
 
-  onMount(() => {
-    isLoading = false;
-  });
+onMount(() => {
+	isLoading = false;
+});
 
-  function resolveGrid(c) {
-    if (typeof c === 'object' && c !== null) {
-      const base = c.base || 1;
-      const md = c.md || base;
-      const lg = c.lg || md;
-      return `grid-cols-${base} tablet:grid-cols-${md} desktop:grid-cols-${lg}`;
-    }
-    const map = {
-      2: 'grid-cols-2',
-      3: 'tablet:grid-cols-3',
-      4: 'grid-cols-2 tablet:grid-cols-4',
-    };
-    return `${map[c] || 'grid-cols-2 tablet:grid-cols-4'}`;
-  }
+function resolveGrid(c) {
+	if (typeof c === "object" && c !== null) {
+		const base = c.base || 1;
+		const md = c.md || base;
+		const lg = c.lg || md;
+		return `grid-cols-${base} tablet:grid-cols-${md} desktop:grid-cols-${lg}`;
+	}
+	const map = {
+		2: "grid-cols-2",
+		3: "tablet:grid-cols-3",
+		4: "grid-cols-2 tablet:grid-cols-4",
+	};
+	return `${map[c] || "grid-cols-2 tablet:grid-cols-4"}`;
+}
 
-  let gridClass = $derived(resolveGrid(columns));
+let gridClass = $derived(resolveGrid(columns));
 </script>
 
 <section

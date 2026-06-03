@@ -1,13 +1,13 @@
 ---
-import { Icon } from 'astro-icon/components';
-import Layout from '../layouts/Layout.astro';
-import { Container, Button } from 'design-system-base';
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import tenant from '../config/tenant.json';
+import { Icon } from "astro-icon/components";
+import Layout from "../layouts/Layout.astro";
+import { Container, Button } from "design-system-base";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import tenant from "../config/tenant.json";
 
-const pillars = await getCollection('pillars');
-const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, '');
+const pillars = await getCollection("pillars");
+const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, "");
 ---
 
 <Layout

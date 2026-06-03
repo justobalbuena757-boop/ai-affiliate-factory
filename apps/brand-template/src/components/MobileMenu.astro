@@ -1,6 +1,8 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-const { pillars = [] } = Astro.props as { pillars?: CollectionEntry<'pillars'>[] };
+import type { CollectionEntry } from "astro:content";
+const { pillars = [] } = Astro.props as {
+	pillars?: CollectionEntry<"pillars">[];
+};
 ---
 
 <button

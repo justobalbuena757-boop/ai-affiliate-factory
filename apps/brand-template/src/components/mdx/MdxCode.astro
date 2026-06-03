@@ -1,11 +1,11 @@
 ---
 interface Props {
-  className?: string;
+	className?: string;
 }
 
 const { className } = Astro.props;
-const isBlock = className?.startsWith('language-');
-const lang = className?.replace('language-', '') || '';
+const isBlock = className?.startsWith("language-");
+const lang = className?.replace("language-", "") || "";
 ---
 
 {isBlock ? (

@@ -1,100 +1,100 @@
 ---
-import '../styles/global.css';
-import '../styles/theme.css';
-import { getCollection } from 'astro:content';
-import { Icon } from 'astro-icon/components';
-import SEO from '../components/SEO.astro';
-import ThemeScript from '../components/ThemeScript.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
-import Footer from '../components/Footer.astro';
-import MobileMenu from '../components/MobileMenu.astro';
-import tenant from '../config/tenant.json';
+import "../styles/global.css";
+import "../styles/theme.css";
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import SEO from "../components/SEO.astro";
+import ThemeScript from "../components/ThemeScript.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import Footer from "../components/Footer.astro";
+import MobileMenu from "../components/MobileMenu.astro";
+import tenant from "../config/tenant.json";
 
 interface NavLink {
-  label: string;
-  href: string;
-  isExternal?: boolean;
-  class?: string;
+	label: string;
+	href: string;
+	isExternal?: boolean;
+	class?: string;
 }
 
 interface Props {
-  title: string;
-  description: string;
-  image?: string;
-  type?: 'website' | 'article';
-  pubDate?: Date;
-  modifiedDate?: Date;
-  author?: string;
-  tags?: string[];
-  noindex?: boolean;
-  canonical?: string;
-  jsonLd?: Record<string, any> | Record<string, any>[];
-  frontmatter?: {
-    author?: {
-      name: string;
-      sameAs: string[];
-    };
-  };
-  heroImage?: string;
+	title: string;
+	description: string;
+	image?: string;
+	type?: "website" | "article";
+	pubDate?: Date;
+	modifiedDate?: Date;
+	author?: string;
+	tags?: string[];
+	noindex?: boolean;
+	canonical?: string;
+	jsonLd?: Record<string, any> | Record<string, any>[];
+	frontmatter?: {
+		author?: {
+			name: string;
+			sameAs: string[];
+		};
+	};
+	heroImage?: string;
 }
 
 const {
-  title,
-  description,
-  image,
-  type,
-  pubDate,
-  modifiedDate,
-  author,
-  tags,
-  noindex,
-  canonical,
-  jsonLd,
-  frontmatter = {},
-  heroImage,
+	title,
+	description,
+	image,
+	type,
+	pubDate,
+	modifiedDate,
+	author,
+	tags,
+	noindex,
+	canonical,
+	jsonLd,
+	frontmatter = {},
+	heroImage,
 } = Astro.props;
 
-const pillars = await getCollection('pillars');
-const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, '');
+const pillars = await getCollection("pillars");
+const siteUrl = (Astro.site?.toString() || tenant.brand.url).replace(/\/$/, "");
 const brand = tenant.brand;
 const nav = tenant.nav;
 
 const siteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: brand.name,
-  description: brand.description,
-  url: siteUrl,
-  ...(tenant.jsonLd?.searchAction && {
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${siteUrl}/?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
-  }),
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	name: brand.name,
+	description: brand.description,
+	url: siteUrl,
+	...(tenant.jsonLd?.searchAction && {
+		potentialAction: {
+			"@type": "SearchAction",
+			target: `${siteUrl}/?q={search_term_string}`,
+			"query-input": "required name=search_term_string",
+		},
+	}),
 };
 
 const orgJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: brand.name,
-  url: siteUrl,
-  logo: `${siteUrl}${brand.favicon}`,
-  sameAs: Object.values(tenant.social || {}),
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	name: brand.name,
+	url: siteUrl,
+	logo: `${siteUrl}${brand.favicon}`,
+	sameAs: Object.values(tenant.social || {}),
 };
 
 const authorJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: frontmatter.author?.name || brand.companyName,
-  sameAs: frontmatter.author?.sameAs || [],
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: frontmatter.author?.name || brand.companyName,
+	sameAs: frontmatter.author?.sameAs || [],
 };
 
 const mergedJsonLd = jsonLd
-  ? Array.isArray(jsonLd)
-    ? [siteJsonLd, orgJsonLd, authorJsonLd, ...jsonLd]
-    : [siteJsonLd, orgJsonLd, authorJsonLd, jsonLd]
-  : [siteJsonLd, orgJsonLd, authorJsonLd];
+	? Array.isArray(jsonLd)
+		? [siteJsonLd, orgJsonLd, authorJsonLd, ...jsonLd]
+		: [siteJsonLd, orgJsonLd, authorJsonLd, jsonLd]
+	: [siteJsonLd, orgJsonLd, authorJsonLd];
 ---
 
 <!DOCTYPE html>

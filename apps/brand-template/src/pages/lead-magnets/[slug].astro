@@ -1,21 +1,21 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import { Container } from 'design-system-base';
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "design-system-base";
 
 export async function getStaticPaths() {
-  const leadMagnets = await getCollection('leadMagnets');
-  return leadMagnets.map(entry => ({
-    params: { slug: entry.id.replace('.mdx', '') },
-    props: { entry },
-  }));
+	const leadMagnets = await getCollection("leadMagnets");
+	return leadMagnets.map((entry) => ({
+		params: { slug: entry.id.replace(".mdx", "") },
+		props: { entry },
+	}));
 }
 
 const { slug } = Astro.params;
 const { entry } = Astro.props;
 
 if (!entry) {
-  return Astro.redirect('/404');
+	return Astro.redirect("/404");
 }
 ---
 

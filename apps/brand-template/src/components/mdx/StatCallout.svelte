@@ -1,13 +1,13 @@
 <script>
-  import { cn } from 'design-system-base';
+import { cn } from "design-system-base";
 
-  let {
-    value = '99%',
-    label = 'Success Rate',
-    variant = 'default',
-    children,
-    ...rest
-  } = $props();
+let {
+	value = "99%",
+	label = "Success Rate",
+	variant = "default",
+	children,
+	...rest
+} = $props();
 </script>
 
 <div

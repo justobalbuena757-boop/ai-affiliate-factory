@@ -1,24 +1,24 @@
 ---
 interface Props {
-  name?: string;
-  role?: string;
-  bio?: string;
-  avatar?: string;
-  expertise?: string[];
-  socials?: { href: string; label: string }[];
-  publishDate?: string;
-  lastUpdated?: string;
+	name?: string;
+	role?: string;
+	bio?: string;
+	avatar?: string;
+	expertise?: string[];
+	socials?: { href: string; label: string }[];
+	publishDate?: string;
+	lastUpdated?: string;
 }
 
 const {
-  name = 'AI Affiliate Factory',
-  role = 'Content Team',
-  bio = 'The AI Affiliate Factory team combines nutrition science, fitness research, and AI-powered content creation to deliver evidence-based health information to adults over 40.',
-  avatar = 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=120&q=80&auto=format&fit=crop&fm=webp',
-  expertise = ['Metabolic Health', 'Healthy Aging', 'Sleep Science'],
-  socials = [],
-  publishDate = '',
-  lastUpdated = '',
+	name = "AI Affiliate Factory",
+	role = "Content Team",
+	bio = "The AI Affiliate Factory team combines nutrition science, fitness research, and AI-powered content creation to deliver evidence-based health information to adults over 40.",
+	avatar = "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=120&q=80&auto=format&fit=crop&fm=webp",
+	expertise = ["Metabolic Health", "Healthy Aging", "Sleep Science"],
+	socials = [],
+	publishDate = "",
+	lastUpdated = "",
 } = Astro.props;
 ---
 
