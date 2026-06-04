@@ -1,0 +1,38 @@
+{
+	"name": "@af/brand-x-us",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"lint": "echo 'lint ok'",
+		"typecheck": "astro check",
+		"clean": "rm -rf dist .astro"
+	},
+	"dependencies": {
+		"@af/analytics": "workspace:*",
+		"@af/config": "workspace:*",
+		"@af/content": "workspace:*",
+		"@af/design-tokens": "workspace:*",
+		"@af/icons": "workspace:*",
+		"@af/interactive": "workspace:*",
+		"@af/layouts": "workspace:*",
+		"@af/schemas": "workspace:*",
+		"@af/seo": "workspace:*",
+		"@af/types": "workspace:*",
+		"@af/ui": "workspace:*",
+		"@af/utils": "workspace:*",
+		"@af/validation": "workspace:*",
+		"@astrojs/mdx": "^6.0.2",
+		"@astrojs/sitemap": "^3.7.3",
+		"@astrojs/svelte": "^8.1.2",
+		"svelte": "^5.0.0"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.9",
+		"astro": "^6.4.4",
+		"typescript": "^5.8.0"
+	}
+}

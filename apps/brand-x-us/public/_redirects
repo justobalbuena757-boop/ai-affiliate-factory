@@ -1,0 +1,5 @@
+# Quiz flow
+/quiz-start  /quiz/metabolism-quiz  301
+
+# Canonical www → non-www
+# www.evergreenvitalitylabs.com/*  https://evergreenvitalitylabs.com/:splat  301

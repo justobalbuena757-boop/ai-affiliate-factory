@@ -1,0 +1,18 @@
+{
+  "name": "@af/layouts",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'layouts build ok'",
+    "lint": "echo 'lint ok'",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

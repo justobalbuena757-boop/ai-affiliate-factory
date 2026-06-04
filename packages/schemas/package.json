@@ -1,0 +1,21 @@
+{
+  "name": "@af/schemas",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'schemas build ok'",
+    "lint": "echo 'lint ok'",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  },
+  "dependencies": {
+    "zod": "^4.0.0"
+  }
+}

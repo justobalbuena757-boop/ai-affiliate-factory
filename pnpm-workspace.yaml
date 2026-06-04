@@ -1,10 +1,8 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - 'tooling/*'
-  - 'python-packages/*'
-allowBuilds:
-  core-js: true
-  esbuild: true
-  sharp: true
-  workerd: true
+  - "apps/*"
+  - "packages/*"
+  - "workflows/*"
+  - "services/*"
+  - "tools/*"
+  - "infrastructure/*"
+  - "configs/*"

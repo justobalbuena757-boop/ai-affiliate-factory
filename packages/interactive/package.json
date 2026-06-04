@@ -1,0 +1,22 @@
+{
+  "name": "@af/interactive",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'interactive build ok'",
+    "lint": "echo 'lint ok'",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "svelte": "^5.0.0"
+  }
+}

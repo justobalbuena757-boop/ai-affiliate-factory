@@ -1,23 +1,27 @@
 {
-	"$schema": "https://turbo.build/schema.json",
-	"tasks": {
-		"build": {
-			"dependsOn": ["^build"],
-			"outputs": ["dist/**"]
-		},
-		"design-system-base#build": {
-			"outputs": []
-		},
-		"design-tokens-base#build": {
-			"outputs": []
-		},
-		"dev": {
-			"cache": false,
-			"persistent": true
-		},
-		"check": {
-			"dependsOn": ["^build"],
-			"outputs": []
-		}
-	}
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env", "**/.env.*"],
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".astro/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    },
+    "//#format": {
+      "cache": false
+    }
+  }
 }

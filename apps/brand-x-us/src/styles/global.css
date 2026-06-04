@@ -1,0 +1,123 @@
+@import "./tokens.css";
+
+@layer reset, base, components, utilities;
+
+@layer reset {
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	html {
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		scroll-behavior: smooth;
+	}
+
+	body {
+		min-height: 100vh;
+	}
+
+	img,
+	picture,
+	video,
+	canvas,
+	svg {
+		display: block;
+		max-width: 100%;
+	}
+
+	input,
+	button,
+	textarea,
+	select {
+		font: inherit;
+	}
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		overflow-wrap: break-word;
+	}
+
+	ul,
+	ol {
+		list-style: none;
+	}
+
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
+}
+
+@layer base {
+	body {
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+		line-height: var(--leading-relaxed);
+		color: var(--color-text-primary);
+		background-color: var(--color-surface-primary);
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-sans);
+		font-weight: 700;
+		line-height: var(--leading-tight);
+		color: var(--color-text-primary);
+	}
+
+	h1 {
+		font-size: var(--text-headline);
+	}
+	h2 {
+		font-size: var(--text-title);
+	}
+
+	a {
+		color: var(--color-cta-primary);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		transition: color var(--duration-fast) var(--ease-standard);
+	}
+
+	a:hover {
+		color: var(--color-cta-primary-hover);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-cta-primary);
+		outline-offset: 2px;
+		border-radius: var(--radius-xs);
+	}
+
+	:target {
+		scroll-margin-top: var(--space-11);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms;
+			animation-iteration-count: 1;
+			transition-duration: 0.01ms;
+			scroll-behavior: auto;
+		}
+	}
+}

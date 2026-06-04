@@ -1,30 +1,34 @@
 {
 	"name": "ai-affiliate-factory",
-	"version": "1.0.0",
 	"private": true,
-	"scripts": {
-		"dev": "turbo dev --filter=brand-template",
-		"build": "turbo build --filter=brand-template",
-		"check": "turbo check --filter=brand-template",
-		"clean": "turbo clean --filter=brand-template",
-		"preview": "npx serve -l 4321 apps/brand-template/dist/client",
-		"preview:api": "npx wrangler pages dev apps/brand-template/dist/client --port 8787",
-		"test": "echo \"See apps/brand-template for tests\" && exit 0",
-		"format": "biome format --write",
-		"lint": "biome check",
-		"lint:fix": "biome check --apply"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"packageManager": "pnpm@11.3.0",
+	"description": "AI-Native Semantic Publishing Operating System",
+	"version": "2026.1.0",
+	"type": "module",
+	"packageManager": "pnpm@10.8.0",
 	"engines": {
 		"node": "^22.0.0",
-		"pnpm": "^11.3.0"
+		"pnpm": "^10.0.0"
 	},
-	"type": "module",
+	"scripts": {
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"format": "biome format --write . && prettier --write \"**/*.astro\"",
+		"format:check": "biome format . && prettier --check \"**/*.astro\"",
+		"typecheck": "turbo typecheck",
+		"clean": "turbo clean",
+		"apps:dev": "turbo dev --filter=@af/brand-x-us",
+		"apps:build": "turbo build --filter=@af/brand-x-us"
+	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.16",
-		"turbo": "^2.5.0"
+		"autoprefixer": "^10.5.0",
+		"cssnano": "^8.0.1",
+		"postcss": "^8.5.15",
+		"prettier": "^3.5.0",
+		"prettier-plugin-astro": "^0.14.0",
+		"turbo": "^2.5.0",
+		"typescript": "^5.8.0"
 	}
 }

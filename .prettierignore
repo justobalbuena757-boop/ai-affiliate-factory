@@ -1,0 +1,8 @@
+node_modules
+dist
+.astro
+.turbo
+coverage
+*.lock
+pnpm-lock.yaml
+uv.lock

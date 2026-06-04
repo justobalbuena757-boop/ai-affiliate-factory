@@ -6,36 +6,56 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"maxSize": 50000
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true
-		}
+		"useEditorconfig": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 100,
+		"lineEnding": "lf",
+		"attributePosition": "auto"
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
+			"jsxQuoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"semicolons": "always",
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"quoteStyle": "double",
+			"bracketSpacing": true
 		}
 	},
 	"css": {
-		"parser": {
-			"tailwindDirectives": true
+		"formatter": {
+			"enabled": true
 		},
+		"parser": {
+			"cssModules": false
+		}
+	},
+	"json": {
 		"formatter": {
 			"enabled": true
 		}
 	},
-	"assist": {
+	"linter": {
 		"enabled": true,
-		"actions": {
-			"source": {
-				"organizeImports": "on"
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "warn"
+			},
+			"complexity": {
+				"noUselessConstructor": "error"
+			},
+			"style": {
+				"noNonNullAssertion": "warn"
 			}
 		}
 	}

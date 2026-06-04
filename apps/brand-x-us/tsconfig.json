@@ -1,0 +1,35 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"jsx": "preserve",
+		"paths": {
+			"@af/design-tokens": ["../../packages/design-tokens/src"],
+			"@af/design-tokens/*": ["../../packages/design-tokens/src/*"],
+			"@af/ui": ["../../packages/ui/src"],
+			"@af/ui/*": ["../../packages/ui/src/*"],
+			"@af/layouts": ["../../packages/layouts/src"],
+			"@af/layouts/*": ["../../packages/layouts/src/*"],
+			"@af/content": ["../../packages/content/src"],
+			"@af/content/*": ["../../packages/content/src/*"],
+			"@af/interactive": ["../../packages/interactive/src"],
+			"@af/interactive/*": ["../../packages/interactive/src/*"],
+			"@af/seo": ["../../packages/seo/src"],
+			"@af/seo/*": ["../../packages/seo/src/*"],
+			"@af/analytics": ["../../packages/analytics/src"],
+			"@af/analytics/*": ["../../packages/analytics/src/*"],
+			"@af/schemas": ["../../packages/schemas/src"],
+			"@af/schemas/*": ["../../packages/schemas/src/*"],
+			"@af/config": ["../../packages/config/src"],
+			"@af/config/*": ["../../packages/config/src/*"],
+			"@af/utils": ["../../packages/utils/src"],
+			"@af/utils/*": ["../../packages/utils/src/*"],
+			"@af/types": ["../../packages/types/src"],
+			"@af/types/*": ["../../packages/types/src/*"],
+			"@af/icons": ["../../packages/icons/src"],
+			"@af/icons/*": ["../../packages/icons/src/*"],
+			"@af/validation": ["../../packages/validation/src"],
+			"@af/validation/*": ["../../packages/validation/src/*"]
+		}
+	},
+	"include": ["src", "../../packages"]
+}
