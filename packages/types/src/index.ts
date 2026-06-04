@@ -41,6 +41,14 @@ export interface SeoMeta {
 
 export type ContentStage = 'tofu' | 'mofu' | 'bofu';
 
+export interface AuthorMeta {
+  name: string;
+  avatarUrl?: string;
+  role?: string;
+  bio?: string;
+  href?: string;
+}
+
 export interface ArticleMeta {
   title: string;
   description: string;
@@ -49,6 +57,11 @@ export interface ArticleMeta {
   stage: ContentStage;
   publishedAt: Date;
   updatedAt?: Date;
+  readTime: string;
+  image?: string;
+  tags?: string[];
+  category?: string;
+  author?: AuthorMeta;
 }
 
 export interface PillarMeta {
@@ -56,4 +69,17 @@ export interface PillarMeta {
   description: string;
   slug: string;
   order: number;
+  icon?: string;
+  image?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+export interface LeadMagnetMeta {
+  title: string;
+  description: string;
+  slug: string;
+  image?: string;
+  fileUrl?: string;
+  ctaLabel?: string;
 }

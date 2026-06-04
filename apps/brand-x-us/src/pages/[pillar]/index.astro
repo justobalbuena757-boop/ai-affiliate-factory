@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { PillarLayout } from '@af/layouts';
+import type { ArticleCardProps } from '@af/ui';
+
+type PillarEntry = CollectionEntry<'pillars'>;
+type ArticleEntry = CollectionEntry<'articles'>;
+
+export async function getStaticPaths() {
+  const pillars = await getCollection('pillars');
+  return pillars.map((entry: PillarEntry) => ({
+    params: { pillar: entry.id },
+    props: { pillar: entry },
+  }));
+}
+
+const { pillar } = Astro.props as { pillar: PillarEntry };
+
+const articles = await getCollection('articles');
+const pillarArticles = articles.filter((a: ArticleEntry) => a.data.pillarId === pillar.id);
+
+const articleCards: ArticleCardProps[] = pillarArticles
+  .sort((a: ArticleEntry, b: ArticleEntry) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .map((a: ArticleEntry) => ({
+    title: a.data.title,
+    description: a.data.description,
+    href: `/${a.data.pillarId}/${slugify(a.data.cluster)}/${a.id}`,
+    stage: a.data.stage,
+    readTime: a.data.readTime,
+    publishedAt: new Date(a.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+  }));
+
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+---
+
+<PillarLayout
+  title={pillar.data.title}
+  description={pillar.data.description}
+  icon={pillar.data.icon}
+  image={pillar.data.image}
+  category={pillar.data.title}
+  articles={articleCards}
+  cta={pillar.data.ctaLabel && pillar.data.ctaHref ? { label: pillar.data.ctaLabel, href: pillar.data.ctaHref } : undefined}
+/>

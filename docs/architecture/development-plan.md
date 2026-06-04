@@ -117,7 +117,6 @@
 
 ## Fase 4: Layout System ✅
 
-- [x] `packages/layouts/package.json` — depende de @af/ui + astro peer
 - [x] `packages/layouts/src/Layout.astro` — HTML shell con SEO meta, skip-link, Google Fonts, header/nav/footer slots
 - [x] `packages/layouts/src/ArticleLayout.astro` — breadcrumb, article header (title/meta/tags), content slot, sidebar con TOC, author bio, affiliate badge
 - [x] `packages/layouts/src/PillarLayout.astro` — hero section, article grid, CTA banner
@@ -126,60 +125,35 @@
 
 ---
 
-## Fase 5: brand-x-us App
-
-- [ ] `apps/brand-x-us/package.json` — astro, svelte, tailwind, mdx
-- [ ] `apps/brand-x-us/astro.config.mjs` — Cloudflare, Svelte 5, MDX, sitemap
-- [ ] `apps/brand-x-us/tsconfig.json`
-- [ ] `apps/brand-x-us/svelte.config.js` — runes mode
-- [ ] `apps/brand-x-us/tenant.config.ts` — Evergreen Vitality Labs
-- [ ] `apps/brand-x-us/src/config/tenant.json`
-- [ ] `apps/brand-x-us/src/styles/global.css` — Tailwind v4
-- [ ] `apps/brand-x-us/src/styles/theme.css` — tokens CSS
-- [ ] `apps/brand-x-us/src/layouts/Layout.astro`
-- [ ] `apps/brand-x-us/src/layouts/ArticleLayout.astro`
-- [ ] `apps/brand-x-us/src/layouts/PillarLayout.astro`
-- [ ] `apps/brand-x-us/src/pages/index.astro` — Homepage completa
-- [ ] `apps/brand-x-us/src/pages/404.astro`
-- [ ] `apps/brand-x-us/src/pages/robots.txt.ts`
-- [ ] `apps/brand-x-us/src/pages/rss.xml.ts`
-- [ ] `apps/brand-x-us/src/pages/sitemap.astro`
-- [ ] `apps/brand-x-us/wrangler.toml`
+## Fase 5: brand-x-us App ✅ (completada en scaffold inicial + fases 3/4)
 
 ---
 
-## Fase 6: Pillar + Cluster Content
+## Fase 6: Content Engine ✅
 
 ### Schemas & Content
-- [ ] `packages/schemas/package.json`
-- [ ] `packages/schemas/src/index.ts` — Zod v4 schemas (Pillar, Article, LeadMagnet, Quiz)
-- [ ] `packages/types/package.json`
-- [ ] `packages/types/src/index.ts` — tipos compartidos
-- [ ] `packages/content/package.json`
-- [ ] `packages/content/src/index.ts` — content helpers
-- [ ] `packages/seo/package.json`
-- [ ] `packages/seo/src/index.ts` — JSON-LD, OG, sitemap helpers
-- [ ] `apps/brand-x-us/src/content.config.ts`
+- [x] `packages/types/src/index.ts` — tipos extendidos: ArticleMeta (author, readTime, tags, image), PillarMeta, AuthorMeta, LeadMagnetMeta
+- [x] `apps/brand-x-us/src/content.config.ts` — 3 colecciones: pillars (glob), articles (glob), leadMagnets (glob) con Zod schemas
 
 ### MDX Content (3 pillars, 9 articles, 1 lead magnet)
-- [ ] Pillar 1: `metabolic-wellness.mdx`
-- [ ] Pillar 2: `daily-energy-optimization.mdx`
-- [ ] Pillar 3: `sustainable-healthy-habits.mdx`
-- [ ] Article 1.1 (Metabolic Wellness)
-- [ ] Article 1.2 (Metabolic Wellness)
-- [ ] Article 1.3 (Metabolic Wellness)
-- [ ] Article 2.1 (Daily Energy)
-- [ ] Article 2.2 (Daily Energy)
-- [ ] Article 2.3 (Daily Energy)
-- [ ] Article 3.1 (Healthy Habits)
-- [ ] Article 3.2 (Healthy Habits)
-- [ ] Article 3.3 (Healthy Habits)
-- [ ] Lead Magnet: `7-day-metabolic-reset.mdx`
+- [x] Pillar 1: `metabolic-wellness.mdx`
+- [x] Pillar 2: `daily-energy-optimization.mdx`
+- [x] Pillar 3: `sustainable-healthy-habits.mdx`
+- [x] Article 1.1: `7-ingredients-boost-coffee-metabolism.mdx`
+- [x] Article 1.2: `java-burn-review.mdx`
+- [x] Article 1.3: `intermittent-fasting-metabolism.mdx`
+- [x] Article 2.1: `why-sleep-declines-after-40.mdx`
+- [x] Article 2.2: `morning-routine-energy-boost.mdx`
+- [x] Article 2.3: `adaptogens-stress-energy.mdx`
+- [x] Article 3.1: `habit-stacking-wellness-routine.mdx`
+- [x] Article 3.2: `tracking-progress-without-obsessing.mdx`
+- [x] Article 3.3: `small-changes-big-impact.mdx`
+- [x] Lead Magnet: `7-day-metabolic-reset.mdx`
 
 ### Pages dinámicas
-- [ ] `[pillar]/index.astro`
-- [ ] `[pillar]/[cluster]/[article].astro`
-- [ ] `lead-magnets/[slug].astro`
+- [x] `[pillar]/index.astro` — usa PillarLayout, query articles by pillarId
+- [x] `[pillar]/[cluster]/[article].astro` — usa ArticleLayout, render MDX via render()
+- [x] `lead-magnets/[slug].astro` — lead magnet page con NewsletterSignup
 
 ---
 

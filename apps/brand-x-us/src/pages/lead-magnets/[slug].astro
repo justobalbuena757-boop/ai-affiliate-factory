@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { Container, Text, Section, NewsletterSignup, Card } from '@af/ui';
+
+type LeadMagnetEntry = CollectionEntry<'leadMagnets'>;
+
+export async function getStaticPaths() {
+  const magnets = await getCollection('leadMagnets');
+  return magnets.map((entry: LeadMagnetEntry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: LeadMagnetEntry };
+---
+
+<Layout
+  title={`${entry.data.title} — Evergreen Vitality Labs`}
+  description={entry.data.description}
+>
+  <Section spacing="xl">
+    <Container size="narrow">
+      <Card variant="elevated" padding="lg">
+        <div slot="content">
+          <Text as="h1" variant="headline" weight="bold" class="text-center mb-[var(--space-4)]">
+            {entry.data.title}
+          </Text>
+          <Text variant="body" color="secondary" class="text-center mb-[var(--space-8)]">
+            {entry.data.description}
+          </Text>
+          <div class="mb-[var(--space-8)]">
+            <slot />
+          </div>
+          <NewsletterSignup
+            title="Get Your Free Guide"
+            description="Enter your email below to receive the 7-Day Metabolic Reset guide delivered straight to your inbox."
+            buttonLabel={entry.data.ctaLabel || 'Send Me the Free Guide'}
+            successMessage="Check your inbox! Your 7-Day Metabolic Reset guide is on its way."
+          />
+        </div>
+      </Card>
+    </Container>
+  </Section>
+</Layout>
