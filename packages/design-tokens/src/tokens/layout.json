@@ -1,0 +1,13 @@
+{
+  "container": {
+    "max": "75rem",
+    "padding": "1.25rem"
+  },
+  "prose": {
+    "max": "45rem"
+  },
+  "sidebar": {
+    "max": "20rem"
+  },
+  "gap": "1.5rem"
+}

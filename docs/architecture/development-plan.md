@@ -47,27 +47,30 @@
 - [x] `apps/brand-x-us/src/pages/rss.xml.ts`
 - [x] `apps/brand-x-us/src/pages/sitemap.astro`
 - [x] `apps/brand-x-us/public/favicon.svg`, `_headers`, `_redirects`
-- [ ] `astro check` — 0 errors, 0 warnings ✅
-- [ ] Git commit: `feat: bootstrap fundación monorepo + brand-x-us skeleton`
+- [x] `astro check` — 0 errors, 0 warnings ✅
+- [x] Migración: Tailwind → Native CSS + PostCSS + Autoprefixer + cssnano ✅
+- [x] Migración: Biome lint/format + Prettier solo para .astro ✅
+- [x] Git commit + push: `feat: bootstrap inicial AI Affiliate Factory` ✅
 
 ---
 
-## Fase 2: Design Tokens
+## Fase 2: Design Tokens ✅
 
-- [ ] `packages/design-tokens/package.json`
-- [ ] `packages/design-tokens/src/tokens/color.json`
-- [ ] `packages/design-tokens/src/tokens/spacing.json`
-- [ ] `packages/design-tokens/src/tokens/typography.json`
-- [ ] `packages/design-tokens/src/tokens/motion.json`
-- [ ] `packages/design-tokens/src/tokens/radius.json`
-- [ ] `packages/design-tokens/src/tokens/shadows.json`
-- [ ] `packages/design-tokens/src/tokens/z-index.json`
-- [ ] `packages/design-tokens/src/tokens/layout.json`
-- [ ] `packages/design-tokens/src/tokens/container.json`
-- [ ] `packages/design-tokens/src/tokens/breakpoints.json`
-- [ ] `packages/design-tokens/src/css/` — generador de CSS custom properties
-- [ ] `packages/design-tokens/src/types/` — tipos TypeScript
-- [ ] Build script + verificar export
+- [x] `packages/design-tokens/package.json`
+- [x] `packages/types/src/index.ts` — TenantConfig, SeoMeta, ContentStage, ArticleMeta, PillarMeta
+- [x] `packages/design-tokens/src/tokens/color.json` — primitivas + semánticas (Green Wellness)
+- [x] `packages/design-tokens/src/tokens/spacing.json` — scale 0-14
+- [x] `packages/design-tokens/src/tokens/typography.json` — font families + scale + leading
+- [x] `packages/design-tokens/src/tokens/motion.json` — duration + easing
+- [x] `packages/design-tokens/src/tokens/radius.json` — xs-full
+- [x] `packages/design-tokens/src/tokens/shadows.json` — xs-xl
+- [x] `packages/design-tokens/src/tokens/z-index.json` — base-toast
+- [x] `packages/design-tokens/src/tokens/layout.json` — container, prose, sidebar, gap
+- [x] `packages/design-tokens/src/tokens/container.json`
+- [x] `packages/design-tokens/src/tokens/breakpoints.json` — xs-2xl
+- [x] `packages/design-tokens/src/tokens/color.json` ya implementado en CSS vía `tokens.css`
+- [x] `packages/design-tokens/src/types/index.ts` — tipos TypeScript para tokens
+- [x] `packages/design-tokens/src/index.ts` — re-export
 
 ---
 
