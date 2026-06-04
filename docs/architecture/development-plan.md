@@ -115,13 +115,14 @@
 
 ---
 
-## Fase 4: Layout System
+## Fase 4: Layout System ✅
 
-- [ ] `packages/layouts/package.json`
-- [ ] `packages/layouts/src/Layout.astro` (o Svelte)
-- [ ] `packages/layouts/src/ArticleLayout.astro`
-- [ ] `packages/layouts/src/PillarLayout.astro`
-- [ ] `packages/layouts/src/index.ts`
+- [x] `packages/layouts/package.json` — depende de @af/ui + astro peer
+- [x] `packages/layouts/src/Layout.astro` — HTML shell con SEO meta, skip-link, Google Fonts, header/nav/footer slots
+- [x] `packages/layouts/src/ArticleLayout.astro` — breadcrumb, article header (title/meta/tags), content slot, sidebar con TOC, author bio, affiliate badge
+- [x] `packages/layouts/src/PillarLayout.astro` — hero section, article grid, CTA banner
+- [x] `packages/layouts/src/index.ts` — exports todos los layouts + types
+- [x] `apps/brand-x-us/src/layouts/Layout.astro` — wrapper de `@af/layouts` con defaults brand-x-us
 
 ---
 

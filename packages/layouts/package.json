@@ -12,7 +12,14 @@
     ".": "./src/index.ts",
     "./*": "./src/*"
   },
+  "peerDependencies": {
+    "astro": "^6.0.0"
+  },
+  "dependencies": {
+    "@af/ui": "workspace:*"
+  },
   "devDependencies": {
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "astro": "^6.4.4"
   }
 }

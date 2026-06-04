@@ -1,0 +1,95 @@
+---
+export type LayoutProps = {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  lang?: string;
+  headerLogoText?: string;
+  headerLogoHref?: string;
+  footerText?: string;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
+  class?: string;
+};
+
+const {
+  title,
+  description,
+  canonical,
+  image,
+  lang = 'en-US',
+  headerLogoText = 'Evergreen Vitality Labs',
+  headerLogoHref = '/',
+  footerText,
+  hideHeader = false,
+  hideFooter = false,
+  class: className,
+} = Astro.props as LayoutProps;
+
+const defaultFooterText = `&copy; ${new Date().getFullYear()} ${headerLogoText}. All rights reserved.`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {image && <meta property="og:image" content={image} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {image && <meta name="twitter:image" content={image} />}
+
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+    <title>{title}</title>
+  </head>
+  <body class={['font-sans bg-[var(--color-surface-primary)] text-[var(--color-text-primary)] antialiased', className].filter(Boolean).join(' ')}>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-[var(--space-2)] focus:left-[var(--space-2)] focus:z-[var(--z-toast)] focus:px-[var(--space-4)] focus:py-[var(--space-2)] focus:bg-[var(--color-cta-primary)] focus:text-[var(--color-text-inverse)] focus:rounded-[var(--radius-md)]">
+      Skip to main content
+    </a>
+
+    {!hideHeader && (
+      <header class="border-b border-[var(--color-border-subtle)] bg-[var(--color-surface-primary)]">
+        <nav aria-label="Main navigation">
+          <slot name="nav">
+            <div class="mx-auto max-w-[var(--layout-container-max)] px-[var(--space-6)] flex items-center justify-between h-16">
+              <a href={headerLogoHref} class="font-semibold text-[var(--color-text-primary)] text-[var(--text-title)] no-underline hover:text-[var(--color-cta-primary)] transition-colors">
+                {headerLogoText}
+              </a>
+            </div>
+          </slot>
+        </nav>
+      </header>
+    )}
+
+    <main id="main-content" class="min-h-[70vh]">
+      <slot />
+    </main>
+
+    {!hideFooter && (
+      <footer class="border-t border-[var(--color-border-subtle)] bg-[var(--color-surface-secondary)]">
+        <slot name="footer">
+          <div class="mx-auto max-w-[var(--layout-container-max)] px-[var(--space-6)] py-[var(--space-8)] text-center text-[var(--text-caption)] text-[var(--color-text-muted)]">
+            <p set:html={footerText || defaultFooterText} />
+          </div>
+        </slot>
+      </footer>
+    )}
+  </body>
+</html>
