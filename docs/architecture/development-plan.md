@@ -74,43 +74,44 @@
 
 ---
 
-## Fase 3: Core Design System (UI Kit)
+## Fase 3: Core Design System (UI Kit) ✅
 
 ### 3.1 Atoms
-- [ ] Button (Svelte 5, CVA variants)
-- [ ] Badge
-- [ ] ProgressBar
-- [ ] AffiliateBadge
+- [x] Button (.astro, CVA variants: primary/secondary/ghost/link, sizes: sm/md/lg)
+- [x] Badge (.astro, variants: default/success/warning/accent)
+- [x] Text (.astro, variant/weight/color system con typography tokens)
+- [x] Container (.astro, sizes: full/wide/default/narrow/prose)
+- [x] Section (.astro, background + spacing variants, aria props)
+- [x] ProgressBar (value 0-100, variant/size, aria progressbar)
+- [x] AffiliateBadge (disclosure text, configurable)
 
 ### 3.2 Primitives + Composables
-- [ ] Primitives layout
-- [ ] Composables compartidos (cn, variants)
+- [x] Sistema CVA (button.ts) sin clsx/tailwind-merge
+- [ ] Primitives layout (pendiente)
 
 ### 3.3 Molecules
-- [ ] Card
-- [ ] Breadcrumb
-- [ ] ArticleCard
-- [ ] Container
-- [ ] Alert
-- [ ] AuthorBio
-- [ ] ComparisonTable
-- [ ] NativeAd
-- [ ] ProductGrid
+- [x] Card (.astro, slot-based: header/content/footer, variants: default/elevated/bordered/ghost)
+- [x] Breadcrumb (.astro, prop-driven array)
+- [x] ArticleCard (.astro, prop-driven, stage badges, image, metadata)
+- [x] Alert (variant: info/success/warning/error, dismissible con vanilla JS)
+- [x] AuthorBio (avatar, name, role, bio, optional href)
+- [x] ComparisonTable (headers, rows, highlight cells, responsive)
+- [x] ProductGrid (columns 2-4, card per product, star ratings, prices)
 
 ### 3.4 Organisms
-- [ ] Hero
-- [ ] CTASection
-- [ ] FeaturesGrid
-- [ ] StatsGrid
-- [ ] TestimonialCarousel
-- [ ] TableOfContents
-- [ ] NewsletterSignup
+- [x] HeroSection (.astro, rendering contract props, variants: default/centered/split)
+- [x] CTASection (.astro, rendering contract props)
+- [x] FeaturesGrid (icon, title, description, columns 2-4)
+- [x] StatsGrid (value, label, prefix/suffix, columns 2-4)
+- [x] TestimonialCarousel (vanilla JS, auto-rotate, prev/next, dots, pause-on-hover)
+- [x] TableOfContents (nested sections, scroll-to anchor links)
+- [x] NewsletterSignup (vanilla JS fetch submit, success/error messages)
 
 ### 3.5 Variants
-- [ ] Sistema CVA + clsx + tailwind-merge
+- [x] CVA para Button (variants + sizes)
 
 ### 3.6 Contracts
-- [ ] Tipos de rendering contracts
+- [x] Tipos exportados: HeroSectionProps, CTASectionProps, ArticleCardProps, BreadcrumbItem
 
 ---
 

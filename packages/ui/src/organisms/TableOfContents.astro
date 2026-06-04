@@ -1,0 +1,51 @@
+---
+export type TocSection = {
+  id: string;
+  title: string;
+  children?: TocSection[];
+};
+
+export type TableOfContentsProps = {
+  title?: string;
+  sections: TocSection[];
+  class?: string;
+};
+
+const {
+  title = 'On This Page',
+  sections,
+  class: className,
+} = Astro.props as TableOfContentsProps;
+
+const classes = ['rounded-[var(--radius-md)] border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)] p-[var(--space-5)]', className].filter(Boolean).join(' ');
+---
+
+<nav class={classes} aria-label={title}>
+  <p class="font-semibold text-[var(--color-text-primary)] text-[var(--text-body)] leading-[var(--leading-snug)] mb-[var(--space-3)]">{title}</p>
+  <ul class="space-y-[var(--space-2)]">
+    {sections.map((section) => (
+      <li>
+        <a
+          href={`#${section.id}`}
+          class="text-[var(--text-body)] text-[var(--color-text-secondary)] hover:text-[var(--color-cta-primary)] leading-[var(--leading-relaxed)] no-underline transition-colors duration-[var(--motion-duration-fast)]"
+        >
+          {section.title}
+        </a>
+        {section.children && section.children.length > 0 && (
+          <ul class="ml-[var(--space-4)] mt-[var(--space-1)] space-y-[var(--space-1)]">
+            {section.children.map((child) => (
+              <li>
+                <a
+                  href={`#${child.id}`}
+                  class="text-[var(--text-caption)] text-[var(--color-text-muted)] hover:text-[var(--color-cta-primary)] leading-[var(--leading-normal)] no-underline transition-colors duration-[var(--motion-duration-fast)]"
+                >
+                  {child.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+</nav>

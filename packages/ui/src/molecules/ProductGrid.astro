@@ -1,0 +1,80 @@
+---
+export type ProductGridItem = {
+  title: string;
+  description: string;
+  href: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  rating?: number;
+  price?: string;
+  ctaLabel?: string;
+};
+
+export type ProductGridProps = {
+  products: ProductGridItem[];
+  columns?: 2 | 3 | 4;
+  class?: string;
+};
+
+const {
+  products,
+  columns = 3,
+  class: className,
+} = Astro.props as ProductGridProps;
+
+const gridCols: Record<number, string> = {
+  2: 'grid-cols-1 sm:grid-cols-2',
+  3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+};
+
+const classes = ['grid gap-[var(--space-6)]', gridCols[columns], className].filter(Boolean).join(' ');
+---
+
+<div class={classes}>
+  {products.map((product) => (
+    <article class="group rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)] overflow-hidden transition-shadow duration-[var(--motion-duration-normal)] hover:shadow-[var(--shadow-md)]">
+      {product.imageUrl && (
+        <a href={product.href} aria-label={product.title} tabindex={-1}>
+          <img
+            src={product.imageUrl}
+            alt={product.imageAlt || product.title}
+            class="w-full aspect-[4/3] object-cover"
+            loading="lazy"
+          />
+        </a>
+      )}
+      <div class="p-[var(--space-5)]">
+        <a href={product.href}>
+          <h3 class="font-semibold text-[var(--color-text-primary)] text-[var(--text-title)] leading-[var(--leading-snug)] mb-[var(--space-2)] group-hover:text-[var(--color-cta-primary)] transition-colors">
+            {product.title}
+          </h3>
+        </a>
+        <p class="text-[var(--text-body)] text-[var(--color-text-secondary)] leading-[var(--leading-relaxed)] mb-[var(--space-4)]">{product.description}</p>
+        {product.rating !== undefined && (
+          <div class="flex items-center gap-[var(--space-1)] mb-[var(--space-2)]" aria-label={`Rating: ${product.rating} out of 5`}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <svg
+                class={star <= Math.round(product.rating!) ? 'text-[var(--color-accent)]' : 'text-[var(--color-border-subtle)]'}
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M8 1.5l1.76 3.57 3.94.57-2.85 2.78.67 3.93L8 10.16l-3.52 1.85.67-3.93L2.3 5.64l3.94-.57L8 1.5z" />
+              </svg>
+            ))}
+            {product.price && <span class="ml-auto text-[var(--color-text-primary)] font-semibold text-[var(--text-title)]">{product.price}</span>}
+          </div>
+        )}
+        <a
+          href={product.href}
+          class="inline-block mt-[var(--space-3)] text-[var(--text-body)] font-medium text-[var(--color-cta-primary)] hover:text-[var(--color-cta-primary-darker)] transition-colors"
+        >
+          {product.ctaLabel || 'Learn More'} &rarr;
+        </a>
+      </div>
+    </article>
+  ))}
+</div>

@@ -1,0 +1,97 @@
+---
+export type NewsletterSignupProps = {
+  title?: string;
+  description?: string;
+  placeholder?: string;
+  buttonLabel?: string;
+  successMessage?: string;
+  action?: string;
+  class?: string;
+};
+
+const {
+  title = 'Stay Updated',
+  description = 'Get the latest wellness insights delivered to your inbox.',
+  placeholder = 'Enter your email',
+  buttonLabel = 'Subscribe',
+  successMessage = 'Thanks for subscribing! Check your inbox.',
+  action,
+  class: className,
+} = Astro.props as NewsletterSignupProps;
+
+const formId = `nl-${Date.now().toString(36)}`;
+const classes = ['rounded-[var(--radius-lg)] bg-[var(--color-surface-secondary)] p-[var(--space-8)]', className].filter(Boolean).join(' ');
+---
+
+<div class={classes}>
+  <h3 class="font-semibold text-[var(--color-text-primary)] text-[var(--text-title)] leading-[var(--leading-snug)] mb-[var(--space-2)]">{title}</h3>
+  {description && <p class="text-[var(--text-body)] text-[var(--color-text-secondary)] leading-[var(--leading-relaxed)] mb-[var(--space-5)]">{description}</p>}
+  <form
+    id={formId}
+    method="post"
+    action={action}
+    class="flex flex-col sm:flex-row gap-[var(--space-3)]"
+    data-newsletter-form={formId}
+    data-success-message={successMessage}
+    novalidate
+  >
+    <label for={`${formId}-email`} class="sr-only">{placeholder}</label>
+    <input
+      id={`${formId}-email`}
+      name="email"
+      type="email"
+      required
+      placeholder={placeholder}
+      class="flex-1 min-w-0 px-[var(--space-4)] py-[var(--space-3)] rounded-[var(--radius-md)] border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)] text-[var(--text-body)] leading-[var(--leading-normal)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cta-primary)] focus:border-transparent"
+    />
+    <button
+      type="submit"
+      class="px-[var(--space-6)] py-[var(--space-3)] rounded-[var(--radius-md)] bg-[var(--color-cta-primary)] text-[var(--color-text-inverse)] font-medium text-[var(--text-body)] leading-[var(--leading-normal)] border-0 cursor-pointer hover:bg-[var(--color-cta-primary-darker)] transition-colors duration-[var(--motion-duration-fast)] whitespace-nowrap"
+    >
+      {buttonLabel}
+    </button>
+  </form>
+  <p class="mt-[var(--space-3)] text-[var(--text-caption)] text-[var(--color-text-muted)] leading-[var(--leading-normal)]" data-newsletter-message aria-live="polite" />
+</div>
+
+<script>
+  (() => {
+    const forms = document.querySelectorAll('[data-newsletter-form]');
+    forms.forEach((form) => {
+      const formEl = form as HTMLFormElement;
+      const messageEl = formEl.parentElement?.querySelector('[data-newsletter-message]');
+
+      formEl.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = (formEl.querySelector('[type="email"]') as HTMLInputElement).value;
+        if (!email) return;
+
+        const submitBtn = formEl.querySelector('[type="submit"]') as HTMLButtonElement;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        try {
+          const res = await fetch(formEl.action || '/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, source: 'newsletter' }),
+          });
+
+          if (!res.ok) throw new Error('Network error');
+
+          if (messageEl) messageEl.textContent = formEl.getAttribute('data-success-message') || 'Thanks for subscribing!';
+          formEl.reset();
+        } catch {
+          if (messageEl) {
+            messageEl.textContent = 'Something went wrong. Please try again.';
+            (messageEl as HTMLElement).style.color = 'var(--color-accent)';
+          }
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  })();
+</script>

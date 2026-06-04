@@ -1,0 +1,62 @@
+---
+export type ComparisonTableCell = string | { text: string; highlight?: boolean };
+
+export type ComparisonTableProps = {
+  headers: string[];
+  rows: ComparisonTableCell[][];
+  caption?: string;
+  class?: string;
+};
+
+const {
+  headers,
+  rows,
+  caption,
+  class: className,
+} = Astro.props as ComparisonTableProps;
+
+const classes = ['w-full border-collapse text-[var(--text-body)] leading-[var(--leading-relaxed)]', className].filter(Boolean).join(' ');
+---
+
+<div class="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)]">
+  <table class={classes}>
+    {caption && <caption class="sr-only">{caption}</caption>}
+    <thead>
+      <tr class="bg-[var(--color-surface-secondary)]">
+        {headers.map((header) => (
+          <th
+            class="px-[var(--space-4)] py-[var(--space-3)] text-left font-semibold text-[var(--color-text-primary)] whitespace-nowrap"
+            scope="col"
+          >
+            {header}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row, rowIndex) => (
+        <tr
+          class={[
+            'border-t border-[var(--color-border-subtle)]',
+            rowIndex % 2 === 1 ? 'bg-[var(--color-surface-secondary)]' : '',
+          ].filter(Boolean).join(' ')}
+        >
+          {row.map((cell) => {
+            const value = typeof cell === 'string' ? cell : cell.text;
+            const highlight = typeof cell === 'string' ? false : (cell.highlight ?? false);
+            return (
+              <td
+                class={[
+                  'px-[var(--space-4)] py-[var(--space-3)]',
+                  highlight ? 'bg-[var(--color-cta-primary-lighter)] font-semibold text-[var(--color-cta-primary-darker)]' : 'text-[var(--color-text-secondary)]',
+                ].filter(Boolean).join(' ')}
+              >
+                {value}
+              </td>
+            );
+          })}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

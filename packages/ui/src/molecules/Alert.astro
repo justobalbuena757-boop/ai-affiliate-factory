@@ -1,0 +1,51 @@
+---
+type AlertVariant = 'info' | 'success' | 'warning' | 'error';
+
+export type AlertProps = {
+  variant?: AlertVariant;
+  title?: string;
+  dismissible?: boolean;
+  class?: string;
+};
+
+const {
+  variant = 'info' as AlertVariant,
+  title,
+  dismissible = false,
+  class: className,
+} = Astro.props as AlertProps;
+
+const variantMap: Record<AlertVariant, string> = {
+  info: 'bg-[var(--color-surface-secondary)] border-[var(--color-cta-primary-light)] text-[var(--color-text-primary)]',
+  success: 'bg-[var(--color-cta-primary-lighter)] border-[var(--color-cta-primary)] text-[var(--color-cta-primary-darker)]',
+  warning: 'bg-[var(--color-accent-lighter)] border-[var(--color-accent)] text-[var(--color-accent-darker)]',
+  error: 'bg-[var(--color-surface-tertiary)] border-[var(--color-accent)] text-[var(--color-accent)]',
+};
+
+const classes = ['relative rounded-[var(--radius-md)] border p-[var(--space-4)] text-[var(--text-body)] leading-[var(--leading-relaxed)]', variantMap[variant], className].filter(Boolean).join(' ');
+---
+
+<div class={classes} role="alert">
+  {title && <p class="font-semibold mb-[var(--space-1)]">{title}</p>}
+  <div><slot /></div>
+  {dismissible && (
+    <button
+      class="absolute top-[var(--space-2)] right-[var(--space-2)] text-current opacity-60 hover:opacity-100"
+      aria-label="Dismiss"
+      data-dismiss
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+  )}
+</div>
+
+<script>
+  document.querySelectorAll('[data-dismiss]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const alert = btn.closest('[role="alert"]');
+      if (alert) alert.remove();
+    });
+  });
+</script>

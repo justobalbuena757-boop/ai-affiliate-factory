@@ -1,0 +1,189 @@
+---
+export type TestimonialItem = {
+  quote: string;
+  author: string;
+  role?: string;
+  avatarUrl?: string;
+};
+
+export type TestimonialCarouselProps = {
+  testimonials: TestimonialItem[];
+  autoRotate?: boolean;
+  interval?: number;
+  class?: string;
+};
+
+const {
+  testimonials,
+  autoRotate = true,
+  interval = 5000,
+  class: className,
+} = Astro.props as TestimonialCarouselProps;
+
+const classes = ['relative', className].filter(Boolean).join(' ');
+const uid = `tc-${Date.now().toString(36)}`;
+---
+
+<div class={classes} data-carousel={uid} data-auto-rotate={autoRotate ? 'true' : 'false'} data-interval={String(interval)}>
+  <div class="overflow-hidden rounded-[var(--radius-lg)] bg-[var(--color-surface-elevated)] p-[var(--space-8)] shadow-[var(--shadow-md)]">
+    <div class="relative" data-carousel-track>
+      {testimonials.map((testimonial, index) => (
+        <div
+          class={[
+            index === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0 pointer-events-none',
+            'transition-opacity duration-[var(--motion-duration-normal)] ease-[var(--motion-easing-emphasized)]',
+          ].filter(Boolean).join(' ')}
+          data-carousel-slide={index}
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`Testimonial ${index + 1} of ${testimonials.length}`}
+        >
+          <blockquote class="text-[var(--text-title)] text-[var(--color-text-primary)] leading-[var(--leading-relaxed)] italic">
+            &ldquo;{testimonial.quote}&rdquo;
+          </blockquote>
+          <footer class="mt-[var(--space-6)] flex items-center gap-[var(--space-3)]">
+            {testimonial.avatarUrl && (
+              <img
+                src={testimonial.avatarUrl}
+                alt={testimonial.author}
+                class="w-10 h-10 rounded-[var(--radius-full)] object-cover"
+                loading="lazy"
+              />
+            )}
+            <div>
+              <cite class="not-italic font-semibold text-[var(--color-text-primary)]">{testimonial.author}</cite>
+              {testimonial.role && (
+                <p class="text-[var(--text-caption)] text-[var(--color-text-muted)]">{testimonial.role}</p>
+              )}
+            </div>
+          </footer>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {testimonials.length > 1 && (
+    <div class="flex items-center justify-center gap-[var(--space-3)] mt-[var(--space-6)]" role="tablist" aria-label="Testimonial navigation">
+      {testimonials.map((_, index) => (
+        <button
+          class={[
+            'w-[var(--space-3)] h-[var(--space-3)] rounded-[var(--radius-full)] border-0 cursor-pointer transition-all duration-[var(--motion-duration-fast)]',
+            index === 0 ? 'bg-[var(--color-cta-primary)] scale-110' : 'bg-[var(--color-surface-tertiary)] hover:bg-[var(--color-border-subtle)]',
+          ].filter(Boolean).join(' ')}
+          data-carousel-dot={index}
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          aria-label={`Go to testimonial ${index + 1}`}
+        />
+      ))}
+    </div>
+  )}
+
+  {testimonials.length > 1 && (
+    <div class="flex items-center justify-center gap-[var(--space-4)] mt-[var(--space-4)]">
+      <button
+        class="w-10 h-10 rounded-[var(--radius-full)] bg-[var(--color-surface-secondary)] hover:bg-[var(--color-surface-tertiary)] border border-[var(--color-border-subtle)] cursor-pointer flex items-center justify-center text-[var(--color-text-primary)] transition-colors"
+        data-carousel-prev
+        aria-label="Previous testimonial"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button
+        class="w-10 h-10 rounded-[var(--radius-full)] bg-[var(--color-surface-secondary)] hover:bg-[var(--color-surface-tertiary)] border border-[var(--color-border-subtle)] cursor-pointer flex items-center justify-center text-[var(--color-text-primary)] transition-colors"
+        data-carousel-next
+        aria-label="Next testimonial"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  )}
+</div>
+
+<script>
+  (() => {
+    const carousels = document.querySelectorAll('[data-carousel]');
+    carousels.forEach((carousel) => {
+      const slides = carousel.querySelectorAll('[data-carousel-slide]');
+      const dots = carousel.querySelectorAll('[data-carousel-dot]');
+      const prev = carousel.querySelector('[data-carousel-prev]');
+      const next = carousel.querySelector('[data-carousel-next]');
+      const autoRotate = carousel.getAttribute('data-auto-rotate') === 'true';
+      const interval = parseInt(carousel.getAttribute('data-interval') || '5000', 10);
+
+      if (slides.length < 2) return;
+
+      let current = 0;
+      let timer: ReturnType<typeof setInterval> | null = null;
+
+      function goTo(index: number) {
+        slides.forEach((slide, i) => {
+          if (i === index) {
+            (slide as HTMLElement).style.opacity = '1';
+            (slide as HTMLElement).style.position = 'relative';
+            (slide as HTMLElement).style.pointerEvents = 'auto';
+          } else {
+            (slide as HTMLElement).style.opacity = '0';
+            (slide as HTMLElement).style.position = 'absolute';
+            (slide as HTMLElement).style.pointerEvents = 'none';
+          }
+        });
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            (dot as HTMLElement).style.backgroundColor = 'var(--color-cta-primary)';
+            dot.setAttribute('aria-selected', 'true');
+          } else {
+            (dot as HTMLElement).style.backgroundColor = '';
+            dot.setAttribute('aria-selected', 'false');
+          }
+        });
+        current = index;
+      }
+
+      function nextSlide() {
+        goTo((current + 1) % slides.length);
+      }
+
+      function prevSlide() {
+        goTo((current - 1 + slides.length) % slides.length);
+      }
+
+      function startAutoRotate() {
+        if (autoRotate && slides.length > 1) {
+          timer = setInterval(nextSlide, interval);
+        }
+      }
+
+      function stopAutoRotate() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      if (next) next.addEventListener('click', () => { stopAutoRotate(); nextSlide(); startAutoRotate(); });
+      if (prev) prev.addEventListener('click', () => { stopAutoRotate(); prevSlide(); startAutoRotate(); });
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const idx = parseInt(dot.getAttribute('data-carousel-dot') || '0', 10);
+          stopAutoRotate();
+          goTo(idx);
+          startAutoRotate();
+        });
+      });
+
+      carousel.addEventListener('mouseenter', stopAutoRotate);
+      carousel.addEventListener('mouseleave', startAutoRotate);
+      carousel.addEventListener('focusin', stopAutoRotate);
+      carousel.addEventListener('focusout', (e: Event) => {
+        const fe = e as FocusEvent;
+        if (!carousel.contains(fe.relatedTarget as Node)) startAutoRotate();
+      });
+
+      startAutoRotate();
+    });
+  })();
+</script>

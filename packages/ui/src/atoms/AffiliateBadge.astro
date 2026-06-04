@@ -1,0 +1,15 @@
+---
+export type AffiliateBadgeProps = {
+  text?: string;
+  class?: string;
+};
+
+const {
+  text = 'This post contains affiliate links. We may earn a commission if you make a purchase.',
+  class: className,
+} = Astro.props as AffiliateBadgeProps;
+---
+
+<aside class={['text-[var(--text-micro)] text-[var(--color-text-muted)] leading-[var(--leading-normal)]', className].filter(Boolean).join(' ')}>
+  {text}
+</aside>

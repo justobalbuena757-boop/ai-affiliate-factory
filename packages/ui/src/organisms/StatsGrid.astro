@@ -1,0 +1,48 @@
+---
+export type StatItem = {
+  value: string;
+  label: string;
+  prefix?: string;
+  suffix?: string;
+};
+
+export type StatsGridProps = {
+  title?: string;
+  stats: StatItem[];
+  columns?: 2 | 3 | 4;
+  class?: string;
+};
+
+const {
+  title,
+  stats,
+  columns = 4,
+  class: className,
+} = Astro.props as StatsGridProps;
+
+const gridCols: Record<number, string> = {
+  2: 'grid-cols-1 sm:grid-cols-2',
+  3: 'grid-cols-1 sm:grid-cols-3',
+  4: 'grid-cols-2 sm:grid-cols-4',
+};
+
+const classes = ['grid gap-[var(--space-8)]', gridCols[columns], className].filter(Boolean).join(' ');
+---
+
+<div>
+  {title && (
+    <h2 class="text-center text-[var(--text-headline)] font-bold text-[var(--color-text-primary)] leading-[var(--leading-tight)] mb-[var(--space-10)]">
+      {title}
+    </h2>
+  )}
+  <div class={classes}>
+    {stats.map((stat) => (
+      <div class="text-center">
+        <p class="text-[var(--text-display)] font-bold text-[var(--color-cta-primary)] leading-[var(--leading-tight)]">
+          {stat.prefix}{stat.value}{stat.suffix}
+        </p>
+        <p class="mt-[var(--space-2)] text-[var(--text-body)] text-[var(--color-text-secondary)] leading-[var(--leading-relaxed)]">{stat.label}</p>
+      </div>
+    ))}
+  </div>
+</div>
