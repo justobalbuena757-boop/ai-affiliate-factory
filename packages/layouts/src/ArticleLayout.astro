@@ -3,6 +3,7 @@ import Layout from './Layout.astro';
 import { Container, Text, Badge, Breadcrumb, AuthorBio, AffiliateBadge, TableOfContents } from '@af/ui';
 import type { BreadcrumbItem } from '@af/ui';
 import type { TocSection } from '@af/ui';
+import { articleSchema, breadcrumbSchema, organizationSchema } from '@af/seo';
 
 export type ArticleMeta = {
   title: string;
@@ -41,21 +42,41 @@ const {
   sidebar = true,
 } = Astro.props as ArticleLayoutProps;
 
+const siteUrl = 'https://evergreenvitalitylabs.com';
+const canonicalUrl = article.canonical || `${siteUrl}/`;
+
 const breadcrumbItems: BreadcrumbItem[] = article.breadcrumb || [
   { label: 'Home', href: '/' },
   ...(article.category ? [{ label: article.category, href: `/${article.category.toLowerCase().replace(/\s+/g, '-')}` }] : []),
   { label: article.title, href: '' },
+];
+
+const jsonLd = [
+  organizationSchema({ name: 'Evergreen Vitality Labs', url: siteUrl }),
+  breadcrumbSchema(breadcrumbItems),
+  articleSchema({
+    headline: article.title,
+    description: article.description,
+    url: canonicalUrl,
+    image: article.image ? `${siteUrl}${article.image}` : undefined,
+    datePublished: article.publishedAt,
+    dateModified: article.updatedAt || article.publishedAt,
+    author: { name: article.author?.name || 'Evergreen Vitality Labs' },
+    publisher: { name: 'Evergreen Vitality Labs' },
+  }),
 ];
 ---
 
 <Layout
   title={`${article.title} — Evergreen Vitality Labs`}
   description={article.description}
-  canonical={article.canonical}
-  image={article.image}
+  canonical={canonicalUrl}
+  image={article.image ? `${siteUrl}${article.image}` : undefined}
   headerLogoText={headerLogoText}
   headerLogoHref={headerLogoHref}
   footerText={footerText}
+  jsonLd={jsonLd}
+  lang="en-US"
 >
   <article class="py-[var(--space-10)]">
     <Container size="default">

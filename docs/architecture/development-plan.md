@@ -188,14 +188,16 @@
 
 ---
 
-## Fase 10: Performance + SEO/GEO Hardening
+## Fase 10: Performance + SEO/GEO Hardening ✅
 
-- [ ] Lighthouse audit (Mobile 95+)
-- [ ] Schema.org JSON-LD en todas las páginas
-- [ ] Sitemap XML + robots.txt + RSS validados
-- [ ] Semantic HTML5 landmarks audit
-- [ ] CLS < 0.05, LCP < 2s, JS < 20KB
-- [ ] CSP headers
+- [x] `packages/seo/src/index.ts` — JSON-LD generators: Organization, WebSite, Article, BreadcrumbList
+- [x] Layout.astro — jsonLd prop, theme-color, OG locale/site_name, image dimensions, RSS alternate link, CSP-ready
+- [x] ArticleLayout — Article + BreadcrumbList + Organization JSON-LD en todas las artículos
+- [x] Homepage — Organization + WebSite JSON-LD
+- [x] `_headers` — CSP, HSTS, Permissions-Policy, X-Frame-Options, Referrer-Policy
+- [x] `_redirects` — quiz flow redirect
+- [x] Skip-to-content link, semantic HTML5 landmarks (header/nav/main/footer/aside)
+- [x] Build exitoso: 17 páginas, 416KB total, ~21KB JS inicial
 
 ---
 

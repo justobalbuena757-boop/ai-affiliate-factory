@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { PillarLayout } from '@af/layouts';
 import type { ArticleCardProps } from '@af/ui';
+import { slugify } from '../../utils/slugify';
 
 type PillarEntry = CollectionEntry<'pillars'>;
 type ArticleEntry = CollectionEntry<'articles'>;
@@ -31,9 +32,6 @@ const articleCards: ArticleCardProps[] = pillarArticles
     publishedAt: new Date(a.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
   }));
 
-function slugify(text: string): string {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
 ---
 
 <PillarLayout

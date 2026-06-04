@@ -2,9 +2,9 @@
 import Layout from '@af/layouts/Layout.astro';
 import type { LayoutProps } from '@af/layouts';
 
-type Props = LayoutProps;
+interface Props extends LayoutProps {}
 
-const { title, description, canonical, image } = Astro.props as Props;
+const { title, description, canonical, image, jsonLd, lang } = Astro.props as Props;
 ---
 
 <Layout
@@ -12,6 +12,8 @@ const { title, description, canonical, image } = Astro.props as Props;
   description={description}
   {canonical}
   {image}
+  {jsonLd}
+  {lang}
   headerLogoText="Evergreen Vitality Labs"
   headerLogoHref="/"
 >
