@@ -1,0 +1,35 @@
+---
+type BadgeVariant = 'default' | 'success' | 'warning' | 'accent';
+type BadgeSize = 'sm' | 'md';
+
+type Props = {
+  variant?: BadgeVariant;
+  size?: BadgeSize;
+  class?: string;
+};
+
+const { variant = 'default' as BadgeVariant, size = 'sm' as BadgeSize, class: className } = Astro.props as Props;
+
+const colorMap: Record<BadgeVariant, string> = {
+  default: 'bg-[var(--color-surface-secondary)] text-[var(--color-text-secondary)]',
+  success: 'bg-[var(--color-cta-primary-lighter)] text-[var(--color-cta-primary)]',
+  warning: 'bg-[var(--color-accent-lighter)] text-[var(--color-accent)]',
+  accent: 'bg-[var(--color-cta-primary-light)] text-[var(--color-cta-primary)]',
+};
+
+const sizeMap: Record<BadgeSize, string> = {
+  sm: 'text-[var(--text-label)] px-[var(--space-3)] py-[var(--space-1)]',
+  md: 'text-[var(--text-caption)] px-[var(--space-4)] py-[var(--space-2)]',
+};
+
+const classes = [
+  'inline-flex items-center font-medium rounded-[var(--radius-sm)]',
+  colorMap[variant],
+  sizeMap[size],
+  className,
+].filter(Boolean).join(' ');
+---
+
+<span class={classes}>
+  <slot />
+</span>

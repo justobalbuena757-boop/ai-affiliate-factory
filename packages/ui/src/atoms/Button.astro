@@ -1,0 +1,42 @@
+---
+import { buttonVariants } from '../variants/button';
+
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link';
+type ButtonSize = 'sm' | 'md' | 'lg';
+
+type Props = {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  ariaLabel?: string;
+  class?: string;
+  id?: string;
+};
+
+const {
+  variant = 'primary' as ButtonVariant,
+  size = 'md' as ButtonSize,
+  href,
+  type = 'button',
+  disabled = false,
+  ariaLabel,
+  class: className,
+  id,
+} = Astro.props as Props;
+
+const classes = buttonVariants({ variant, size, className });
+---
+
+{
+  href ? (
+    <a href={href} id={id} class={classes} aria-label={ariaLabel}>
+      <slot />
+    </a>
+  ) : (
+    <button id={id} type={type} class={classes} {disabled} aria-label={ariaLabel}>
+      <slot />
+    </button>
+  )
+}

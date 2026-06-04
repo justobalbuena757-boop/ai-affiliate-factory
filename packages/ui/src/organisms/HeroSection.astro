@@ -1,0 +1,76 @@
+---
+import Container from '../atoms/Container.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+
+export type HeroSectionProps = {
+  title: string;
+  subtitle?: string;
+  description?: string;
+  cta?: {
+    label: string;
+    href: string;
+    variant?: 'primary' | 'secondary';
+  };
+  secondaryCta?: {
+    label: string;
+    href: string;
+    variant?: 'primary' | 'secondary';
+  };
+  variant?: 'default' | 'centered' | 'split';
+};
+
+type Props = {
+  hero: HeroSectionProps;
+  class?: string;
+};
+
+const { hero, class: className } = Astro.props as Props;
+---
+
+<section
+  class={['py-[var(--space-14)] bg-[var(--color-surface-primary)]', className].filter(Boolean).join(' ')}
+  aria-labelledby="hero-title"
+>
+  <Container size={hero.variant === 'centered' ? 'narrow' : 'default'}>
+    <div class={[
+      hero.variant === 'centered' ? 'text-center' : '',
+      hero.variant === 'split' ? 'grid grid-cols-1 lg:grid-cols-2 gap-[var(--space-10)] items-center' : '',
+    ].filter(Boolean).join(' ')}>
+      <div>
+        <Text as="h1" id="hero-title" variant="display" weight="bold" color="primary">
+          {hero.title}
+        </Text>
+        {hero.subtitle && (
+          <Text as="p" variant="headline" weight="medium" color="secondary" class="mt-[var(--space-4)]">
+            {hero.subtitle}
+          </Text>
+        )}
+        {hero.description && (
+          <Text as="p" variant="body" color="tertiary" class="mt-[var(--space-6)] max-w-prose">
+            {hero.description}
+          </Text>
+        )}
+        {(hero.cta || hero.secondaryCta) && (
+          <div class="flex flex-wrap gap-[var(--space-4)] mt-[var(--space-8)]">
+            {hero.cta && (
+              <Button href={hero.cta.href} variant={hero.cta.variant ?? 'primary'} size="lg">
+                {hero.cta.label}
+              </Button>
+            )}
+            {hero.secondaryCta && (
+              <Button href={hero.secondaryCta.href} variant={hero.secondaryCta.variant ?? 'secondary'} size="lg">
+                {hero.secondaryCta.label}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      {Astro.slots.has('media') && (
+        <div class="mt-[var(--space-8)] lg:mt-0">
+          <slot name="media" />
+        </div>
+      )}
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,36 @@
+---
+export type BreadcrumbItem = {
+  label: string;
+  href?: string;
+};
+
+type Props = {
+  items: BreadcrumbItem[];
+  ariaLabel?: string;
+  class?: string;
+};
+
+const { items, ariaLabel = 'Breadcrumb', class: className } = Astro.props as Props;
+---
+
+<nav aria-label={ariaLabel} class={className}>
+  <ol class="flex flex-wrap items-center gap-[var(--space-2)] text-[var(--text-caption)] text-[var(--color-text-tertiary)]">
+    {items.map((item, i) => (
+      <li class="flex items-center gap-[var(--space-2)]">
+        {i > 0 && <span aria-hidden="true">/</span>}
+        {item.href ? (
+          <a
+            href={item.href}
+            class="text-[var(--color-text-tertiary)] hover:text-[var(--color-cta-primary)] no-underline transition-colors duration-fast"
+          >
+            {item.label}
+          </a>
+        ) : (
+          <span aria-current="page" class="text-[var(--color-text-primary)] font-medium">
+            {item.label}
+          </span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

@@ -1,0 +1,62 @@
+---
+import Card from './Card.astro';
+import Badge from '../atoms/Badge.astro';
+import Text from '../atoms/Text.astro';
+
+export type ArticleCardProps = {
+  title: string;
+  description: string;
+  href: string;
+  stage?: 'tofu' | 'mofu' | 'bofu';
+  image?: { src: string; alt: string };
+  publishedAt?: string;
+  readTime?: string;
+};
+
+type Props = {
+  article: ArticleCardProps;
+  class?: string;
+};
+
+const { article, class: className } = Astro.props as Props;
+
+const stageLabels: Record<string, string> = {
+  tofu: 'Awareness',
+  mofu: 'Consideration',
+  bofu: 'Decision',
+};
+---
+
+<Card as="article" variant="bordered" padding="md" class={className}>
+  {article.image && (
+    <img
+      slot="header"
+      src={article.image.src}
+      alt={article.image.alt}
+      loading="lazy"
+      decoding="async"
+      class="w-full aspect-[16/9] object-cover rounded-[var(--radius-md)]"
+    />
+  )}
+  <div slot="content">
+    {article.stage && (
+      <Badge variant={article.stage === 'tofu' ? 'default' : article.stage === 'mofu' ? 'accent' : 'success'} size="sm">
+        {stageLabels[article.stage] ?? article.stage}
+      </Badge>
+    )}
+    <a href={article.href} class="group no-underline">
+      <Text as="h3" variant="title" weight="semibold" class="mt-[var(--space-3)] group-hover:text-[var(--color-cta-primary)] transition-colors duration-fast">
+        {article.title}
+      </Text>
+    </a>
+    <Text variant="body" color="secondary" class="mt-[var(--space-2)] [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden">
+      {article.description}
+    </Text>
+  </div>
+  {(article.publishedAt || article.readTime) && (
+    <div slot="footer" class="flex items-center gap-[var(--space-4)] text-[var(--text-caption)] text-[var(--color-text-tertiary)]">
+      {article.publishedAt && <time datetime={article.publishedAt}>{article.publishedAt}</time>}
+      {article.readTime && <span>{article.readTime} min read</span>}
+    </div>
+  )}
+</Card>

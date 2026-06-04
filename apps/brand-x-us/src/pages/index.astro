@@ -1,36 +1,105 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+import { HeroSection, CTASection, Section, Container, Text, Card, ArticleCard } from '@af/ui';
+
+const featuredArticles = [
+  {
+    title: '7 Ingredients That Boost Your Coffee\'s Metabolic Power',
+    description: 'Discover how to transform your morning coffee into a metabolism-boosting ritual with these science-backed ingredients.',
+    href: '/metabolic-wellness/coffee-metabolism/7-ingredients-boost-coffee-metabolism',
+    stage: 'tofu' as const,
+    readTime: '8',
+    publishedAt: 'Jun 3, 2026',
+  },
+  {
+    title: 'Why Sleep Quality Declines After 40 — And What to Do',
+    description: 'Learn the science behind age-related sleep changes and evidence-based strategies to restore deep, restorative sleep.',
+    href: '/sleep-recovery/sleep-metabolism/why-sleep-declines-after-40',
+    stage: 'tofu' as const,
+    readTime: '10',
+    publishedAt: 'May 28, 2026',
+  },
+  {
+    title: 'Java Burn Review: Does This Coffee Additive Really Work?',
+    description: 'An evidence-based review of the popular metabolism-boosting coffee additive, examining ingredients, research, and real results.',
+    href: '/metabolic-wellness/coffee-metabolism/java-burn-review',
+    stage: 'bofu' as const,
+    readTime: '12',
+    publishedAt: 'May 20, 2026',
+  },
+];
 ---
 
 <Layout
   title="Evergreen Vitality Labs — Science-Backed Wellness for Life"
   description="Evidence-based metabolic health, weight wellness, and daily energy optimization for adults 40+."
 >
-  <section aria-labelledby="hero-title">
-    <h1 id="hero-title">Thrive at Every Stage</h1>
-    <p>Science-backed metabolic wellness for your best years ahead.</p>
-  </section>
+  <HeroSection
+    hero={{
+      title: 'Thrive at Every Stage',
+      subtitle: 'Science-Backed Wellness for Your Best Years Ahead',
+      description: 'Evidence-based strategies for metabolic health, energy optimization, and sustainable wellness — designed for adults 40+.',
+      variant: 'centered',
+      cta: { label: 'Discover Your Metabolic Score', href: '/quiz/metabolism-quiz' },
+      secondaryCta: { label: 'Explore Our Pillars', href: '#pillars' },
+    }}
+  />
 
-  <section aria-labelledby="pillars-title">
-    <h2 id="pillars-title">Our Wellness Pillars</h2>
-    <div>
-      <article>
-        <h3>Metabolic Wellness</h3>
-        <p>Support your metabolism with evidence-based strategies.</p>
-      </article>
-      <article>
-        <h3>Daily Energy Optimization</h3>
-        <p>Sustainable energy throughout your day, naturally.</p>
-      </article>
-      <article>
-        <h3>Sustainable Healthy Habits</h3>
-        <p>Build routines that last a lifetime.</p>
-      </article>
-    </div>
-  </section>
+  <Section background="surface-secondary" ariaLabelledby="pillars-title">
+    <Container size="default">
+      <Text as="h2" id="pillars-title" variant="headline" weight="bold" class="text-center mb-[var(--space-10)]">
+        Our Wellness Pillars
+      </Text>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-6)]">
+        <Card variant="bordered" padding="lg">
+          <div slot="content">
+            <Text as="h3" variant="title" weight="semibold">Metabolic Wellness</Text>
+            <Text variant="body" color="secondary" class="mt-[var(--space-3)]">
+              Support your metabolism with evidence-based nutritional strategies and lifestyle protocols designed for long-term vitality.
+            </Text>
+          </div>
+        </Card>
+        <Card variant="bordered" padding="lg">
+          <div slot="content">
+            <Text as="h3" variant="title" weight="semibold">Daily Energy Optimization</Text>
+            <Text variant="body" color="secondary" class="mt-[var(--space-3)]">
+              Sustain steady, natural energy throughout your day with science-backed approaches to nutrition, sleep, and activity.
+            </Text>
+          </div>
+        </Card>
+        <Card variant="bordered" padding="lg">
+          <div slot="content">
+            <Text as="h3" variant="title" weight="semibold">Sustainable Healthy Habits</Text>
+            <Text variant="body" color="secondary" class="mt-[var(--space-3)]">
+              Build routines that last — small, evidence-based changes that compound into lasting wellness transformations.
+            </Text>
+          </div>
+        </Card>
+      </div>
+    </Container>
+  </Section>
 
-  <section aria-labelledby="quiz-cta">
-    <h2 id="quiz-cta">Discover Your Metabolic Score</h2>
-    <p>Take our 2-minute quiz and get personalized insights.</p>
-  </section>
+  <Section ariaLabelledby="articles-title">
+    <Container size="default">
+      <Text as="h2" id="articles-title" variant="headline" weight="bold" class="mb-[var(--space-8)]">
+        Featured Articles
+      </Text>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-6)]">
+        {featuredArticles.map((article) => (
+          <ArticleCard {article} />
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <CTASection
+    cta={{
+      title: 'Discover Your Metabolic Score',
+      description: 'Take our 2-minute quiz and get personalized insights about your metabolic health.',
+      cta: { label: 'Start the Quiz', href: '/quiz/metabolism-quiz' },
+      variant: 'centered',
+      background: 'accent',
+    }}
+  />
 </Layout>

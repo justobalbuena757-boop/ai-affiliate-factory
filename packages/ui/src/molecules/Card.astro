@@ -1,0 +1,51 @@
+---
+type CardVariant = 'default' | 'elevated' | 'bordered' | 'ghost';
+type CardPadding = 'sm' | 'md' | 'lg';
+type CardTag = 'article' | 'div' | 'li';
+
+type Props = {
+  variant?: CardVariant;
+  padding?: CardPadding;
+  as?: CardTag;
+  class?: string;
+};
+
+const { variant = 'default' as CardVariant, padding = 'md' as CardPadding, as: Tag = 'article' as CardTag, class: className } = Astro.props as Props;
+
+const variantMap: Record<CardVariant, string> = {
+  default: 'bg-[var(--color-surface-elevated)]',
+  elevated: 'bg-[var(--color-surface-elevated)] shadow-[var(--shadow-md)]',
+  bordered: 'bg-[var(--color-surface-elevated)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)]',
+  ghost: 'bg-transparent',
+};
+
+const paddingMap: Record<CardPadding, string> = {
+  sm: 'p-[var(--space-5)]',
+  md: 'p-[var(--space-7)]',
+  lg: 'p-[var(--space-9)]',
+};
+
+const classes = [
+  'rounded-[var(--radius-lg)]',
+  variantMap[variant],
+  paddingMap[padding],
+  className,
+].filter(Boolean).join(' ');
+---
+
+<Tag class={classes}>
+  {Astro.slots.has('header') && (
+    <div class="mb-[var(--space-4)]">
+      <slot name="header" />
+    </div>
+  )}
+  <div>
+    <slot name="content" />
+    <slot />
+  </div>
+  {Astro.slots.has('footer') && (
+    <div class="mt-[var(--space-4)] pt-[var(--space-4)] border-t border-[var(--color-border-subtle)]">
+      <slot name="footer" />
+    </div>
+  )}
+</Tag>

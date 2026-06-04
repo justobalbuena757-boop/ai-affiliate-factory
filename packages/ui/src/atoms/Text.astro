@@ -1,0 +1,60 @@
+---
+type TextVariant = 'display' | 'headline' | 'title' | 'body' | 'caption' | 'label' | 'micro';
+type TextWeight = 'normal' | 'medium' | 'semibold' | 'bold';
+type TextColor = 'primary' | 'secondary' | 'tertiary' | 'muted';
+type TextTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'label' | 'caption';
+
+type Props = {
+  as?: TextTag;
+  variant?: TextVariant;
+  weight?: TextWeight;
+  color?: TextColor;
+  id?: string;
+  class?: string;
+};
+
+const {
+  as: Tag = 'p' as TextTag,
+  variant = 'body' as TextVariant,
+  weight = 'normal' as TextWeight,
+  color = 'primary' as TextColor,
+  id,
+  class: className,
+} = Astro.props as Props;
+
+const variantMap: Record<TextVariant, string> = {
+  display: 'text-[var(--text-display)] leading-[var(--leading-tight)]',
+  headline: 'text-[var(--text-headline)] leading-[var(--leading-tight)]',
+  title: 'text-[var(--text-title)] leading-[var(--leading-snug)]',
+  body: 'text-[var(--text-body)] leading-[var(--leading-relaxed)]',
+  caption: 'text-[var(--text-caption)] leading-[var(--leading-normal)]',
+  label: 'text-[var(--text-label)] leading-[var(--leading-normal)]',
+  micro: 'text-[var(--text-micro)] leading-[var(--leading-normal)]',
+};
+
+const weightMap: Record<TextWeight, string> = {
+  normal: 'font-normal',
+  medium: 'font-medium',
+  semibold: 'font-semibold',
+  bold: 'font-bold',
+};
+
+const colorMap: Record<TextColor, string> = {
+  primary: 'text-[var(--color-text-primary)]',
+  secondary: 'text-[var(--color-text-secondary)]',
+  tertiary: 'text-[var(--color-text-tertiary)]',
+  muted: 'text-[var(--color-text-muted)]',
+};
+
+const classes = [
+  'font-sans',
+  variantMap[variant],
+  weightMap[weight],
+  colorMap[color],
+  className,
+].filter(Boolean).join(' ');
+---
+
+<Tag id={id} class={classes}>
+  <slot />
+</Tag>

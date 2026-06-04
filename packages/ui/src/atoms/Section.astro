@@ -1,0 +1,52 @@
+---
+type SectionTag = 'section' | 'article' | 'div' | 'header' | 'footer' | 'aside' | 'nav';
+type SectionBg = 'surface' | 'surface-secondary' | 'surface-tertiary' | 'elevated' | 'transparent';
+type SectionSpacing = 'sm' | 'md' | 'lg' | 'xl';
+
+type Props = {
+  as?: SectionTag;
+  background?: SectionBg;
+  spacing?: SectionSpacing;
+  ariaLabel?: string;
+  ariaLabelledby?: string;
+  class?: string;
+};
+
+const {
+  as: Tag = 'section' as SectionTag,
+  background = 'transparent' as SectionBg,
+  spacing = 'lg' as SectionSpacing,
+  ariaLabel,
+  ariaLabelledby,
+  class: className,
+} = Astro.props as Props;
+
+const bgMap: Record<SectionBg, string> = {
+  surface: 'bg-[var(--color-surface-primary)]',
+  'surface-secondary': 'bg-[var(--color-surface-secondary)]',
+  'surface-tertiary': 'bg-[var(--color-surface-tertiary)]',
+  elevated: 'bg-[var(--color-surface-elevated)]',
+  transparent: 'bg-transparent',
+};
+
+const spacingMap: Record<SectionSpacing, string> = {
+  sm: 'py-[var(--space-8)]',
+  md: 'py-[var(--space-10)]',
+  lg: 'py-[var(--space-12)]',
+  xl: 'py-[var(--space-14)]',
+};
+
+const classes = [
+  bgMap[background],
+  spacingMap[spacing],
+  className,
+].filter(Boolean).join(' ');
+---
+
+<Tag
+  class={classes}
+  aria-label={ariaLabel}
+  aria-labelledby={ariaLabelledby}
+>
+  <slot />
+</Tag>

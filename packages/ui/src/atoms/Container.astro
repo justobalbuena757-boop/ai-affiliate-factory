@@ -1,0 +1,30 @@
+---
+type ContainerTag = 'div' | 'section' | 'article' | 'header' | 'footer' | 'nav' | 'main' | 'aside';
+type ContainerSize = 'full' | 'wide' | 'default' | 'narrow' | 'prose';
+
+type Props = {
+  as?: ContainerTag;
+  size?: ContainerSize;
+  class?: string;
+};
+
+const { as: Tag = 'div' as ContainerTag, size = 'default' as ContainerSize, class: className } = Astro.props as Props;
+
+const sizeMap: Record<ContainerSize, string> = {
+  full: 'w-full',
+  wide: 'w-full max-w-[var(--layout-container-max)]',
+  default: 'w-full max-w-[var(--layout-container-max)] px-[var(--space-6)]',
+  narrow: 'w-full max-w-[var(--layout-prose-max)] px-[var(--space-6)]',
+  prose: 'w-full max-w-[var(--layout-prose-max)]',
+};
+
+const classes = [
+  'mx-auto',
+  sizeMap[size],
+  className,
+].filter(Boolean).join(' ');
+---
+
+<Tag class={classes}>
+  <slot />
+</Tag>

@@ -1,0 +1,53 @@
+---
+import Container from '../atoms/Container.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+
+export type CTASectionProps = {
+  title: string;
+  description?: string;
+  cta: {
+    label: string;
+    href: string;
+    variant?: 'primary' | 'secondary';
+  };
+  variant?: 'default' | 'centered';
+  background?: 'surface' | 'surface-secondary' | 'accent';
+};
+
+type Props = {
+  cta: CTASectionProps;
+  class?: string;
+};
+
+const { cta: ctaData, class: className } = Astro.props as Props;
+
+const bgMap: Record<NonNullable<Props['cta']['background']>, string> = {
+  surface: 'bg-[var(--color-surface-primary)]',
+  'surface-secondary': 'bg-[var(--color-surface-secondary)]',
+  accent: 'bg-[var(--color-cta-primary-lighter)]',
+};
+---
+
+<section
+  class={['py-[var(--space-12)]', bgMap[ctaData.background ?? 'surface'], className].filter(Boolean).join(' ')}
+  aria-labelledby="cta-title"
+>
+  <Container size={ctaData.variant === 'centered' ? 'narrow' : 'default'}>
+    <div class={ctaData.variant === 'centered' ? 'text-center' : ''}>
+      <Text as="h2" id="cta-title" variant="headline" weight="bold">
+        {ctaData.title}
+      </Text>
+      {ctaData.description && (
+        <Text variant="body" color="secondary" class="mt-[var(--space-4)]">
+          {ctaData.description}
+        </Text>
+      )}
+      <div class="mt-[var(--space-6)]">
+        <Button href={ctaData.cta.href} variant={ctaData.cta.variant ?? 'primary'} size="lg">
+          {ctaData.cta.label}
+        </Button>
+      </div>
+    </div>
+  </Container>
+</section>
