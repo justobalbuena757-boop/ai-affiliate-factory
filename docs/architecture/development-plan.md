@@ -157,15 +157,15 @@
 
 ---
 
-## Fase 7: Quiz Funnel
+## Fase 7: Quiz Funnel ✅
 
-- [ ] `packages/interactive/package.json`
-- [ ] `packages/interactive/src/quiz/` — Quiz engine (Svelte 5)
-- [ ] `packages/interactive/src/widgets/` — Widgets reutilizables
-- [ ] `packages/interactive/src/index.ts`
-- [ ] `apps/brand-x-us/src/pages/quiz/metabolism-quiz.astro`
-- [ ] `apps/brand-x-us/src/islands/QuizWidget.svelte`
-- [ ] Resultados → CTA + segmentación
+- [x] `packages/interactive/src/quiz/types.ts` — QuizQuestion, QuizAnswer, QuizResult
+- [x] `packages/interactive/src/quiz/data.ts` — 8 preguntas con 4 answers each, 4 result tiers con CTAs
+- [x] `packages/interactive/src/quiz/scoring.ts` — normalize 0-100, match result tier
+- [x] `packages/interactive/src/quiz/QuizWidget.svelte` — Svelte 5 runes, 3 pasos: welcome → questions → results, visual feedback, progress bar, resultados con segmentación + CTA
+- [x] `packages/interactive/src/index.ts` — exports QuizWidget + types + data
+- [x] `apps/brand-x-us/src/pages/quiz/metabolism-quiz.astro` — página con client:load island
+- [x] Resultados → 4 segmentos (Optimizer/Builder/Improver/Reset) con CTA + artículo recomendado
 
 ---
 

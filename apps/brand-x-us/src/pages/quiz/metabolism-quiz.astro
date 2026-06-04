@@ -1,0 +1,16 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Container, Section } from '@af/ui';
+import { QuizWidget } from '@af/interactive';
+---
+
+<Layout
+  title="Metabolic Health Quiz — Discover Your Score | Evergreen Vitality Labs"
+  description="Take our 2-minute metabolic health quiz to discover your personalized score and get science-backed recommendations tailored to your results."
+>
+  <Section spacing="lg">
+    <Container size="narrow">
+      <QuizWidget client:load />
+    </Container>
+  </Section>
+</Layout>
